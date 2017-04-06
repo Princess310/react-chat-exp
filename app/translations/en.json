@@ -28,5 +28,12 @@
   "boilerplate.containers.LocaleToggle.de": "de",
   "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.NotFoundPage.header": "Page not found.",
-  "app.components.Footer.name.message": "Health sinks"
+  "app.components.Footer.name.message": "Health sinks",
+
+  "app.containers.LoginPage.header": "Health sinks - login panel",
+  "app.containers.LoginPage.username": "Username",
+  "app.containers.LoginPage.usernameErr": "Username can not be empty",
+  "app.containers.LoginPage.password": "Password",
+  "app.containers.LoginPage.passwordErr": "Password can not be empty",
+  "app.containers.LoginPage.login": "Login"
 }

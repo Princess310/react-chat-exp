@@ -13,30 +13,36 @@ import styled from 'styled-components';
 import Header from 'components/Header';
 import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
+import Grid from 'components/Grid';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 const AppWrapper = styled.div`
-  max-width: calc(768px + 16px * 2);
-  margin: 0 auto;
-  display: flex;
-  min-height: 100%;
-  padding: 0 16px;
-  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 `;
 
+injectTapEventPlugin();
 export function App(props) {
   return (
-    <AppWrapper>
-      <Helmet
-        titleTemplate="%s - React.js Boilerplate"
-        defaultTitle="React.js Boilerplate"
-        meta={[
-          { name: 'description', content: 'A React.js Boilerplate application' },
-        ]}
-      />
-      <Header />
-      {React.Children.toArray(props.children)}
-      <Footer />
-    </AppWrapper>
+    <MuiThemeProvider>
+      <AppWrapper>
+        <Helmet
+          titleTemplate="%s - 健康汇销"
+          defaultTitle="健康汇销"
+          meta={[
+            { name: 'description', content: 'A React.js Boilerplate application' },
+          ]}
+        />
+        {React.Children.toArray(props.children)}
+        <Grid />
+        <Footer />
+      </AppWrapper>
+    </MuiThemeProvider>
   );
 }
 

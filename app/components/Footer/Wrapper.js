@@ -3,8 +3,14 @@ import styled from 'styled-components';
 const Wrapper = styled.footer`
   display: flex;
   justify-content: space-between;
-  padding: 3em 0;
-  border-top: 1px solid #666;
+  align-items: center;
+  position: absolute;
+  padding: 0 7px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  border-top: 1px solid #f0f0f0;
 `;
 
 export default Wrapper;

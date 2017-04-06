@@ -28,5 +28,12 @@
   "boilerplate.containers.LocaleToggle.de": "de",
   "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.NotFoundPage.header": "Page not found.",
-  "app.components.Footer.name.message": "健康汇销"
+  "app.components.Footer.name.message": "健康汇销",
+
+  "app.containers.LoginPage.header": "登录-健康汇销",
+  "app.containers.LoginPage.username": "账号",
+  "app.containers.LoginPage.usernameErr": "账号不能为空",
+  "app.containers.LoginPage.password": "密码",
+  "app.containers.LoginPage.passwordErr": "密码不能为空",
+  "app.containers.LoginPage.login": "登录"
 }

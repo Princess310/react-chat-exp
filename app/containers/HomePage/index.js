@@ -14,10 +14,7 @@ import { makeSelectRepos, makeSelectLoading, makeSelectError } from 'containers/
 import H2 from 'components/H2';
 import ReposList from 'components/ReposList';
 import AtPrefix from './AtPrefix';
-import CenteredSection from './CenteredSection';
-import Form from './Form';
-import Input from './Input';
-import Section from './Section';
+import HomeLink from './HomeLink';
 import messages from './messages';
 import { loadRepos } from '../App/actions';
 import { changeUsername } from './actions';
@@ -44,17 +41,15 @@ export class HomePage extends React.PureComponent { // eslint-disable-line react
     return (
       <article>
         <Helmet
-          title="Home Page"
+          title="首页"
           meta={[
             { name: 'description', content: 'A React.js Boilerplate application homepage' },
           ]}
         />
         <div>
-          <CenteredSection>
-            <H2>
-              <FormattedMessage {...messages.startProjectHeader} />
-            </H2>
-          </CenteredSection>
+          <HomeLink to="/login">
+            <FormattedMessage {...messages.trymeHeader} />
+          </HomeLink>
         </div>
       </article>
     );

@@ -1,43 +1,92 @@
 import 'whatwg-fetch';
 
-/**
- * Parses the JSON returned by a network request
- *
- * @param  {object} response A response from a network request
- *
- * @return {object}          The parsed JSON from the request
- */
-function parseJSON(response) {
-  return response.json();
-}
+const API_ROOT = 'http://192.168.0.111/api/entry/index.php?r=';
 
-/**
- * Checks if a network request came back fine, and throws an error if not
- *
- * @param  {object} response   A response from a network request
- *
- * @return {object|undefined} Returns either the response, or throws an error
- */
-function checkStatus(response) {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  }
+const fetchDao = {
+	doGet: function(url, params){
+		return this.request("GET", url, params);
+	},
 
-  const error = new Error(response.statusText);
-  error.response = response;
-  throw error;
-}
+	doPost: function(url, params){
+		return this.request("POST", url, params);
+	},
 
-/**
- * Requests a URL, returning a promise
- *
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- *
- * @return {object}           The response data
- */
-export default function request(url, options) {
-  return fetch(url, options)
-    .then(checkStatus)
-    .then(parseJSON);
-}
+	doPut: function(url, params){
+		return this.request("PUT", url, params);
+	},
+
+	doDelete: function(url, params){
+		return this.request("DELETE", url, params);
+	},
+
+	doUploadFile: function(url, params){
+		return this.request("POST", url, params, true);
+	},
+
+	paramsParse: function(params) {
+		let arr = [];
+
+		Object.keys(params).forEach((key) => {
+			arr.push(key + '=' + params[key]);
+		});
+
+		return '&' + arr.join('&');
+	},
+
+	request: function(method, u, params, file){
+		const self = this;
+		let url = API_ROOT + u;
+		let config = {
+			method: method,
+			headers: {},
+			credentials: "same-origin"
+		};
+
+		if((method !== "POST" && method !== "PUT") && typeof params !== "undefined"){
+			url += self.paramsParse(params);
+		}
+
+		// only post method to add body config
+		if((method === "POST" || method === "PUT") && typeof params !== "undefined"){
+			let payload = [];
+			Object.keys(params).forEach(key => payload.push(key + "=" + params[key]));
+			config.body = payload.join("&");
+
+			if(file){
+				let formData = new FormData();
+				formData.append("file", params.file);
+				config.body = formData;
+			}else {
+				// change the Content-Type for mime
+				config.headers["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
+			}
+		}
+
+		return new Promise(function (resolve, reject) {
+			fetch(url, config)
+			.then(self.checkStatus)
+			.then(self.parseJSON)
+			.then(function(data) {
+				resolve(data);
+			}).catch(function(error){
+				reject(error);
+			});
+		});
+	},
+
+	checkStatus: function(response){
+		if (response.status >= 200 && response.status < 300) {
+			return response;
+		} else {
+			let error = new Error(response.statusText);
+			error.response = response;
+			throw error;
+		}
+	},
+
+	parseJSON: function(response){
+		return response.json();
+	}
+};
+
+export default fetchDao;

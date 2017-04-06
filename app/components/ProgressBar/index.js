@@ -1,5 +1,6 @@
 import React from 'react';
 import ProgressBar from './ProgressBar';
+import Wrapper from './Wrapper';
 
 function withProgressBar(WrappedComponent) {
   class AppWithProgressBar extends React.Component {
@@ -47,10 +48,10 @@ function withProgressBar(WrappedComponent) {
 
     render() {
       return (
-        <div>
+        <Wrapper>
           <ProgressBar percent={this.state.progress} updateProgress={this.updateProgress} />
           <WrappedComponent {...this.props} />
-        </div>
+        </Wrapper>
       );
     }
   }
