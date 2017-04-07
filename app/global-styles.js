@@ -60,4 +60,12 @@ injectGlobal`
       opacity: .5;
     }
   }
+
+  ::-webkit-scrollbar{width:2px;height:2px}
+  ::-webkit-scrollbar-button:vertical{display:none}
+  ::-webkit-scrollbar-track:vertical{background-color:transparent;}
+  ::-webkit-scrollbar-track-piece{background-color:transparent;}
+  ::-webkit-scrollbar-thumb:vertical{background-color:#00BCD4;border-radius:2px}
+  ::-webkit-scrollbar-thumb:vertical:hover,
+  ::-webkit-scrollbar-thumb:vertical:active {background-color: #00ACC1}
 `;

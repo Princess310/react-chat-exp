@@ -9,21 +9,28 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import makeSelectChatPage from './selectors';
+import makeSelectChatPage, { makeSelectCurrentUser } from './selectors';
 import messages from './messages';
+
+import Wrapper, { Container } from './Wrapper';
+import ChatPanel from 'containers/ChatPanel';
+import ChatContent from 'containers/ChatContent';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <div>
+      <Container>
         <Helmet
           title="ChatPage"
           meta={[
             { name: 'description', content: 'Description of ChatPage' },
           ]}
         />
-        <FormattedMessage {...messages.header} />
-      </div>
+        <Wrapper>
+          <ChatPanel />
+          <ChatContent />
+        </Wrapper>
+      </Container>
     );
   }
 }
@@ -34,6 +41,7 @@ ChatPage.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   ChatPage: makeSelectChatPage(),
+  currentUser: makeSelectCurrentUser(),
 });
 
 function mapDispatchToProps(dispatch) {

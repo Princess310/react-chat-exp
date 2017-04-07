@@ -5,6 +5,8 @@ import { createSelector } from 'reselect';
  */
 const selectChatPageDomain = () => (state) => state.get('chatPage');
 
+const selectAppGlobale = (state) => state.get('global');
+
 /**
  * Other specific selectors
  */
@@ -19,7 +21,13 @@ const makeSelectChatPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectCurrentUser = () => createSelector(
+  selectAppGlobale,
+  (globalState) => globalState.get('currentUser')
+);
+
 export default makeSelectChatPage;
 export {
   selectChatPageDomain,
+  makeSelectCurrentUser,
 };

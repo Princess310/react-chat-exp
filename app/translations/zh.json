@@ -35,5 +35,6 @@
   "app.containers.LoginPage.usernameErr": "账号不能为空",
   "app.containers.LoginPage.password": "密码",
   "app.containers.LoginPage.passwordErr": "密码不能为空",
-  "app.containers.LoginPage.login": "登录"
+  "app.containers.LoginPage.login": "登录",
+  "app.containers.ChatPanel.headerSearch": "搜索"
 }

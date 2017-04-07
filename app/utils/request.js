@@ -1,6 +1,6 @@
 import 'whatwg-fetch';
 
-const API_ROOT = 'http://192.168.0.111/api/entry/index.php?r=';
+const API_ROOT = 'https://jkhz-test.alijian.net/index.php?r=';
 
 const fetchDao = {
 	doGet: function(url, params){
@@ -67,7 +67,11 @@ const fetchDao = {
 			.then(self.checkStatus)
 			.then(self.parseJSON)
 			.then(function(data) {
-				resolve(data);
+				if(data && data.code !== 200) {
+					reject(error);
+				}else {
+					resolve(data);
+				}
 			}).catch(function(error){
 				reject(error);
 			});

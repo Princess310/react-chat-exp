@@ -67,12 +67,12 @@ export default function createRoutes(store) {
         importModules.catch(errorLoading);
       },
       onEnter(nextState, replace) {
-        if(true){
-          replace({
-            pathname: '/login',
-            state: { nextPathname: '/login' }
-          });
-        }
+        // if(true){
+        //   replace({
+        //     pathname: '/login',
+        //     state: { nextPathname: '/login' }
+        //   });
+        // }
       }
     }, {
       path: 'login',
