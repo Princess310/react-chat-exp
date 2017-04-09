@@ -11,9 +11,9 @@ import { translationMessages } from '../../../i18n';
 
 const messages = defineMessages({
   someMessage: {
-    id: 'some.id',
-    defaultMessage: 'This is some default message',
-    en: 'This is some en message',
+    id: 'app.components.Footer.name.message',
+    defaultMessage: 'Health sinks',
+    en: 'Health sinks',
   },
 });
 
