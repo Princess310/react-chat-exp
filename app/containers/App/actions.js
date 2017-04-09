@@ -16,14 +16,14 @@
  */
 
 import {
-  LOAD_USER
+  LOAD_USER,
 } from './constants';
 
 export function loadUser(user) {
   return {
     type: LOAD_USER,
     payload: {
-      data: user
-    }
-  }
+      data: user,
+    },
+  };
 }

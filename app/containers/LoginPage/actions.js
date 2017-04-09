@@ -6,7 +6,7 @@
 
 import {
   DEFAULT_ACTION,
-  DO_LOGIN
+  DO_LOGIN,
 } from './constants';
 
 export function defaultAction() {
@@ -20,7 +20,7 @@ export function doLogin(username, password) {
     type: DO_LOGIN,
     payload: {
       username,
-      password
-    }
-  }
+      password,
+    },
+  };
 }

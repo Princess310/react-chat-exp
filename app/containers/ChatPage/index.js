@@ -7,14 +7,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import makeSelectChatPage, { makeSelectCurrentUser } from './selectors';
-import messages from './messages';
 
-import Wrapper, { Container } from './Wrapper';
 import ChatPanel from 'containers/ChatPanel';
 import ChatContent from 'containers/ChatContent';
+
+import makeSelectChatPage, { makeSelectCurrentUser } from './selectors';
+import Wrapper, { Container } from './Wrapper';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {

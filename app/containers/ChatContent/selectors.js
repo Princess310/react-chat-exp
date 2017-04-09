@@ -16,7 +16,7 @@ const selectChatContentDomain = () => (state) => state.get('chatContent');
 
 const makeSelectChatContent = () => createSelector(
   selectChatContentDomain(),
-  (substate) => null
+  () => null
 );
 
 export default makeSelectChatContent;

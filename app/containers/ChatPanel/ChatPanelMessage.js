@@ -6,14 +6,12 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
-import makeSelectCurrentUser from './selectors';
-import messages from './messages';
 
-import Wrapper from './Wrapper';
 import Avatar from 'material-ui/Avatar';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
+
+import makeSelectCurrentUser from './selectors';
 
 export class ChatPanel extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -33,7 +31,7 @@ export class ChatPanel extends React.Component { // eslint-disable-line react/pr
 }
 
 ChatPanel.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  currentUser: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

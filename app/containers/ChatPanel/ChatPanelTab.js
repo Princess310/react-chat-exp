@@ -1,8 +1,6 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-import {Tabs, Tab} from 'material-ui/Tabs';
-import Slider from 'material-ui/Slider';
+import { Tabs, Tab } from 'material-ui/Tabs';
 import styled from 'styled-components';
 
 import ChatPanelMessage from './ChatPanelMessage';
@@ -24,13 +22,13 @@ const styles = {
 class ChatPanelHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
-      <Tabs style={{position: 'relative'}}>
-        <Tab icon={<span className='mdi mdi-comment-processing-outline' />} >
-            <TabWrapper>
-              <ChatPanelMessage />
-            </TabWrapper>
+      <Tabs style={{ position: 'relative' }}>
+        <Tab icon={<span className="mdi mdi-comment-processing-outline" />} >
+          <TabWrapper>
+            <ChatPanelMessage />
+          </TabWrapper>
         </Tab>
-        <Tab icon={<span className='mdi mdi-city' />} >
+        <Tab icon={<span className="mdi mdi-city" />} >
           <TabWrapper>
             <h2 style={styles.headline}>Tab Two</h2>
             <p>
@@ -38,7 +36,7 @@ class ChatPanelHeader extends React.Component { // eslint-disable-line react/pre
             </p>
           </TabWrapper>
         </Tab>
-        <Tab  icon={<span className='mdi mdi-contact-mail' />} >
+        <Tab icon={<span className="mdi mdi-contact-mail" />} >
           <TabWrapper>
             <h2 style={styles.headline}>Tab Three</h2>
             <p>

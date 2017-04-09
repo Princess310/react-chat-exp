@@ -8,15 +8,16 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import Subheader from 'material-ui/Subheader';
+
 import makeSelectLoginPage from './selectors';
 import messages from './messages';
 import Warpper, { Container } from './Wrapper';
 
 import { doLogin } from './actions';
-
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import Subheader from 'material-ui/Subheader';
 
 export class LoginPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -26,31 +27,32 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
     passwordErr: false,
   }
 
-  handleUsernameChange = (e: object, v: string) => {
+  handleUsernameChange = (e, v) => {
     this.setState({
-      username: v
+      username: v,
     });
   }
 
-  handlePasswordChange = (e: object, v: string) => {
+  handlePasswordChange = (e, v) => {
     this.setState({
-      password: v
+      password: v,
     });
   }
 
   handleLogin = () => {
     const { username, password } = this.state;
-    let checkUsername = false, checkPassword = false;
+    let checkUsername = false;
+    let checkPassword = false;
 
-    if(username.trim() === '') {
+    if (username.trim() === '') {
       checkUsername = true;
-    }else {
+    } else {
       checkUsername = false;
     }
 
-    if(password.trim() === '') {
+    if (password.trim() === '') {
       checkPassword = true;
-    }else {
+    } else {
       checkPassword = false;
     }
 
@@ -60,11 +62,11 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
     });
 
     // if validate err
-    if(checkUsername || checkPassword) {
+    if (checkUsername || checkPassword) {
       return false;
     }
 
-    this.props.doLogin(username, password);
+    return this.props.doLogin(username, password);
   }
 
   render() {
@@ -84,7 +86,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
             onChange={this.handlePasswordChange}
             hintText={<FormattedMessage {...messages.password} />}
             errorText={this.state.passwordErr && <FormattedMessage {...messages.passwordErr} />}
-            type='password'
+            type="password"
           />
 
           <RaisedButton
@@ -104,7 +106,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
 }
 
 LoginPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  doLogin: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -114,7 +116,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    doLogin: (u, p) => dispatch(doLogin(u, p))
+    doLogin: (u, p) => dispatch(doLogin(u, p)),
   };
 }
 

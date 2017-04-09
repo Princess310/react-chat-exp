@@ -6,10 +6,8 @@
 
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import makeSelectChatContent from './selectors';
-import messages from './messages';
 
 import Wrapper from './Wrapper';
 

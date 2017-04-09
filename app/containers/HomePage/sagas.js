@@ -2,11 +2,11 @@
  * Gets the repositories of the user from Github
  */
 
-import { take, call, put, select, cancel, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+// import { take, call, put, select, cancel, takeLatest } from 'redux-saga/effects';
+// import { LOCATION_CHANGE } from 'react-router-redux';
 
-import request from 'utils/request';
-import { makeSelectUsername } from 'containers/HomePage/selectors';
+// import request from 'utils/request';
+// import { makeSelectUsername } from 'containers/HomePage/selectors';
 
 /**
  * Github repos request/response handler

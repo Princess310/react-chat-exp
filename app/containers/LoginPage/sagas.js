@@ -1,11 +1,11 @@
-import { take, call, put, select, cancel, takeLatest } from 'redux-saga/effects';
+import { take, put, cancel, takeLatest } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { DO_LOGIN } from './constants';
-import { browserHistory } from 'react-router'
+import { browserHistory } from 'react-router';
 
 import { loadUser } from 'containers/App/actions';
-
 import request from 'utils/request';
+
+import { DO_LOGIN } from './constants';
 
 export function* doLogin(action) {
   try {
@@ -16,7 +16,7 @@ export function* doLogin(action) {
 
     browserHistory.push('/chat');
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 }
 

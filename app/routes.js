@@ -66,14 +66,14 @@ export default function createRoutes(store) {
 
         importModules.catch(errorLoading);
       },
-      onEnter(nextState, replace) {
-        // if(true){
-        //   replace({
-        //     pathname: '/login',
-        //     state: { nextPathname: '/login' }
-        //   });
-        // }
-      }
+      // onEnter(nextState, replace) {
+      //   if(true){
+      //     replace({
+      //       pathname: '/login',
+      //       state: { nextPathname: '/login' }
+      //     });
+      //   }
+      // }
     }, {
       path: 'login',
       name: 'loginPage',

@@ -29,5 +29,5 @@ export default defineMessages({
   login: {
     id: 'app.containers.LoginPage.login',
     defaultMessage: '登录',
-  }
+  },
 });

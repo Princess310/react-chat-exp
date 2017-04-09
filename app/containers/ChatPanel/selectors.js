@@ -15,9 +15,9 @@ const selectAppGlobale = (state) => state.get('global');
  * Default selector used by ChatPanel
  */
 
- const makeSelectCurrentUser = () => createSelector(
-   selectAppGlobale,
-   (globalState) => globalState.get('currentUser')
- );
+const makeSelectCurrentUser = () => createSelector(
+  selectAppGlobale,
+  (globalState) => globalState.get('currentUser')
+);
 
 export default makeSelectCurrentUser;

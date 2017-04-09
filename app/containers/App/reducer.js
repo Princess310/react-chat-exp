@@ -13,12 +13,12 @@
 import { fromJS } from 'immutable';
 
 import {
-  LOAD_USER
+  LOAD_USER,
 } from './constants';
 
 // The initial state of the App
 const initialState = fromJS({
-  currentUser: {}
+  currentUser: {},
 });
 
 function appReducer(state = initialState, action) {
@@ -29,7 +29,7 @@ function appReducer(state = initialState, action) {
       return state.set('currentUser', data);
     }
     default: {
-      return state
+      return state;
     }
   }
 }

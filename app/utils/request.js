@@ -3,94 +3,96 @@ import 'whatwg-fetch';
 const API_ROOT = 'https://jkhz-test.alijian.net/index.php?r=';
 
 const fetchDao = {
-	doGet: function(url, params){
-		return this.request("GET", url, params);
-	},
+  doGet(url, params) {
+    return this.request('GET', url, params);
+  },
 
-	doPost: function(url, params){
-		return this.request("POST", url, params);
-	},
+  doPost(url, params) {
+    return this.request('POST', url, params);
+  },
 
-	doPut: function(url, params){
-		return this.request("PUT", url, params);
-	},
+  doPut(url, params) {
+    return this.request('PUT', url, params);
+  },
 
-	doDelete: function(url, params){
-		return this.request("DELETE", url, params);
-	},
+  doDelete(url, params) {
+    return this.request('DELETE', url, params);
+  },
 
-	doUploadFile: function(url, params){
-		return this.request("POST", url, params, true);
-	},
+  doUploadFile(url, params) {
+    return this.request('POST', url, params, true);
+  },
 
-	paramsParse: function(params) {
-		let arr = [];
+  paramsParse(params) {
+    const arr = [];
 
-		Object.keys(params).forEach((key) => {
-			arr.push(key + '=' + params[key]);
-		});
+    Object.keys(params).forEach((key) => {
+      arr.push(`${key}=${params[key]}`);
+    });
 
-		return '&' + arr.join('&');
-	},
+    return `& + ${arr.join('&')}`;
+  },
 
-	request: function(method, u, params, file){
-		const self = this;
-		let url = API_ROOT + u;
-		let config = {
-			method: method,
-			headers: {},
-			credentials: "same-origin"
-		};
+  request(method, u, params, file) {
+    const self = this;
+    let url = API_ROOT + u;
+    const config = {
+      method,
+      headers: {},
+      credentials: 'same-origin',
+    };
 
-		if((method !== "POST" && method !== "PUT") && typeof params !== "undefined"){
-			url += self.paramsParse(params);
-		}
+    if ((method !== 'POST' && method !== 'PUT') && typeof params !== 'undefined') {
+      url += self.paramsParse(params);
+    }
 
-		// only post method to add body config
-		if((method === "POST" || method === "PUT") && typeof params !== "undefined"){
-			let payload = [];
-			Object.keys(params).forEach(key => payload.push(key + "=" + params[key]));
-			config.body = payload.join("&");
+    // only post method to add body config
+    if ((method === 'POST' || method === 'PUT') && typeof params !== 'undefined') {
+      const payload = [];
+      Object.keys(params).forEach((key) => {
+        payload.push(`${key}=${params[key]}`);
+      });
+      config.body = payload.join('&');
 
-			if(file){
-				let formData = new FormData();
-				formData.append("file", params.file);
-				config.body = formData;
-			}else {
-				// change the Content-Type for mime
-				config.headers["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
-			}
-		}
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', params.file);
+        config.body = formData;
+      } else {
+        // change the Content-Type for mime
+        config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+      }
+    }
 
-		return new Promise(function (resolve, reject) {
-			fetch(url, config)
-			.then(self.checkStatus)
-			.then(self.parseJSON)
-			.then(function(data) {
-				if(data && data.code !== 200) {
-					reject(error);
-				}else {
-					resolve(data);
-				}
-			}).catch(function(error){
-				reject(error);
-			});
-		});
-	},
+    return new Promise((resolve, reject) => {
+      fetch(url, config)
+      .then(self.checkStatus)
+      .then(self.parseJSON)
+      .then((data) => {
+        if (data && data.code !== 200) {
+          reject(data);
+        } else {
+          resolve(data);
+        }
+      }).catch((error) => {
+        reject(error);
+      });
+    });
+  },
 
-	checkStatus: function(response){
-		if (response.status >= 200 && response.status < 300) {
-			return response;
-		} else {
-			let error = new Error(response.statusText);
-			error.response = response;
-			throw error;
-		}
-	},
+  checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response;
+    }
 
-	parseJSON: function(response){
-		return response.json();
-	}
+    const error = new Error(response.statusText);
+    error.response = response;
+    throw error;
+  },
+
+  parseJSON(response) {
+    return response.json();
+  },
 };
 
 export default fetchDao;
