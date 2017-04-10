@@ -59,7 +59,7 @@ export default function createRoutes(store) {
         const renderRoute = loadModule(cb);
 
         importModules.then(([reducer, sagas, component]) => {
-          injectReducer('chatPage', reducer.default);
+          injectReducer('chat', reducer.default);
           injectSagas(sagas.default);
           renderRoute(component);
         });

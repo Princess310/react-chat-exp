@@ -3,7 +3,8 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the chatContent state domain
  */
-const selectChatContentDomain = () => (state) => state.get('chatContent');
+ const selectAppGlobale = (state) => state.get('global');
+const selectChat = (state) => state.get('chat');
 
 /**
  * Other specific selectors
@@ -14,12 +15,23 @@ const selectChatContentDomain = () => (state) => state.get('chatContent');
  * Default selector used by ChatContent
  */
 
-const makeSelectChatContent = () => createSelector(
-  selectChatContentDomain(),
-  () => null
+const makeSelectChatTab = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTab'),
 );
 
-export default makeSelectChatContent;
+const makeSelectChatMessage = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatMessageList'),
+);
+
+const makeSelectCurrentUser = () => createSelector(
+  selectAppGlobale,
+  (globalState) => globalState.get('currentUser')
+);
+
 export {
-  selectChatContentDomain,
+  makeSelectChatTab,
+  makeSelectChatMessage,
+  makeSelectCurrentUser,
 };

@@ -3,7 +3,7 @@ import { createSelector } from 'reselect';
 /**
  * Direct selector to the chatPage state domain
  */
-const selectChatPageDomain = () => (state) => state.get('chatPage');
+const selectChatPageDomain = () => (state) => state.get('chat');
 
 const selectAppGlobale = (state) => state.get('global');
 

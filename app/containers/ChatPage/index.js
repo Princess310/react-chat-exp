@@ -14,8 +14,19 @@ import ChatContent from 'containers/ChatContent';
 
 import makeSelectChatPage, { makeSelectCurrentUser } from './selectors';
 import Wrapper, { Container } from './Wrapper';
+import { fetchUser, fetchMessageUsers } from './actions';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  componentWillMount() {
+    const { currentUser, fetchUser, fetchMessageUsers } = this.props;
+
+    if(!currentUser.id) {
+      fetchUser();
+    }else {
+      fetchMessageUsers();
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -35,7 +46,7 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
 }
 
 ChatPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  fetchUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -45,7 +56,8 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    fetchUser: () => dispatch(fetchUser()),
+    fetchMessageUsers: () => dispatch(fetchMessageUsers()),
   };
 }
 

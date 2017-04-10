@@ -1,7 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { makeSelectChatTab } from './selectors';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import styled from 'styled-components';
+
+import { chageTab } from 'containers/ChatPage/actions';
 
 import ChatPanelMessage from './ChatPanelMessage';
 
@@ -19,16 +24,42 @@ const styles = {
   },
 };
 
-class ChatPanelHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
+class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
+    const { chatTab } = this.props;
+    let selectTab = 0;
+
+    switch (chatTab) {
+      case 'message':
+        selectTab = 0;
+        break;
+      case 'business':
+        selectTab = 1;
+        break;
+      case 'contact':
+        selectTab = 2;
+        break;
+      default:
+        selectTab = 0;
+    }
+
     return (
-      <Tabs style={{ position: 'relative' }}>
-        <Tab icon={<span className="mdi mdi-comment-processing-outline" />} >
+      <Tabs
+        style={{ position: 'relative' }}
+        initialSelectedIndex={selectTab}
+      >
+        <Tab
+          icon={<span className="mdi mdi-comment-processing-outline" />}
+          onActive={() => this.props.chageTab('message')}
+        >
           <TabWrapper>
             <ChatPanelMessage />
           </TabWrapper>
         </Tab>
-        <Tab icon={<span className="mdi mdi-city" />} >
+        <Tab
+          icon={<span className="mdi mdi-city" />}
+          onActive={() => this.props.chageTab('business')}
+        >
           <TabWrapper>
             <h2 style={styles.headline}>Tab Two</h2>
             <p>
@@ -36,7 +67,10 @@ class ChatPanelHeader extends React.Component { // eslint-disable-line react/pre
             </p>
           </TabWrapper>
         </Tab>
-        <Tab icon={<span className="mdi mdi-contact-mail" />} >
+        <Tab
+          icon={<span className="mdi mdi-contact-mail" />}
+          onActive={() => this.props.chageTab('contact')}
+        >
           <TabWrapper>
             <h2 style={styles.headline}>Tab Three</h2>
             <p>
@@ -49,4 +83,14 @@ class ChatPanelHeader extends React.Component { // eslint-disable-line react/pre
   }
 }
 
-export default ChatPanelHeader;
+const mapStateToProps = createStructuredSelector({
+  chatTab: makeSelectChatTab(),
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    chageTab: (tab) => dispatch(chageTab(tab)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPanelTab);

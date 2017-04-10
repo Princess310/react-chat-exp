@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
  */
 
 const selectAppGlobale = (state) => state.get('global');
+const selectChat = (state) => state.get('chat');
 
 /**
  * Other specific selectors
@@ -20,4 +21,18 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+const makeSelectChatTab = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTab')
+);
+
+const makeSelectChatMessageUsers = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatMassageUsers')
+)
+
 export default makeSelectCurrentUser;
+export {
+  makeSelectChatTab,
+  makeSelectChatMessageUsers,
+}
