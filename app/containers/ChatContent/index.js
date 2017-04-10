@@ -50,7 +50,7 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
 }
 
 ChatContent.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  chatTab: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({

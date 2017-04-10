@@ -29,10 +29,10 @@ const makeSelectChatTab = () => createSelector(
 const makeSelectChatMessageUsers = () => createSelector(
   selectChat,
   (substate) => substate.get('chatMassageUsers')
-)
+);
 
 export default makeSelectCurrentUser;
 export {
   makeSelectChatTab,
   makeSelectChatMessageUsers,
-}
+};

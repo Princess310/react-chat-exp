@@ -21,24 +21,22 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
   }
 
   render() {
-    const { messageUsers, fetchMessageList } = this.props;
+    const { messageUsers, getMessageList } = this.props;
     const { msgCount } = this.state;
 
-    const listView = messageUsers.map((user, key) => {
-      return (
-        <ListItem
-          key={key}
-          leftAvatar={<Avatar src={user.avator} />}
-          rightIcon={user.msgCount ? <Badge
-            badgeContent={user.msgCount}
-            secondary={true} /> : null
-          }
-          primaryText={user.nickname}
-          secondaryText={user.msg.header.summary}
-          onTouchTap={() => {fetchMessageList(user.uid, '', msgCount)}}
-        />
-      );
-    });
+    const listView = messageUsers.map((user, key) => (
+      <ListItem
+        key={key}
+        leftAvatar={<Avatar src={user.avator} />}
+        rightIcon={user.msgCount ?
+          <Badge badgeContent={user.msgCount} secondary={true} />
+          : null
+        }
+        primaryText={user.nickname}
+        secondaryText={user.msg.header.summary}
+        onTouchTap={() => { getMessageList(user.uid, '', msgCount); }}
+      />
+    ));
     return (
       <List>
         {listView}
@@ -48,7 +46,8 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
 }
 
 ChatMessage.propTypes = {
-  currentUser: PropTypes.object,
+  messageUsers: PropTypes.array,
+  getMessageList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -57,7 +56,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchMessageList: (touid, nextkey, count) => dispatch(fetchMessageList(touid, nextkey, count)),
+    getMessageList: (touid, nextkey, count) => dispatch(fetchMessageList(touid, nextkey, count)),
   };
 }
 

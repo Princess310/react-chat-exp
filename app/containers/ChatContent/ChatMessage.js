@@ -10,17 +10,15 @@ import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
 
 import Chip from 'material-ui/Chip';
-import Avatar from 'material-ui/Avatar';
 
 import { makeSelectChatMessage, makeSelectCurrentUser } from './selectors';
 
 import Wrapper from './Wrapper';
 
-export class ChatContent extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class ChatMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { messageList, currentUser } = this.props;
     const { chat: { userid } } = currentUser;
-    console.log('messageList', userid);
 
     const listView = messageList.map((msgInfo, index) => {
       const { customize } = msgInfo.msg;
@@ -29,12 +27,12 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
       if (userid === im.getNick(msgInfo.from)) {
         return (
           <Chip key={index}>{msg.value}</Chip>
-        )
-      }else {
-        return (
-          <Chip key={index}>{msg.value}</Chip>
-        )
+        );
       }
+
+      return (
+        <Chip key={index}>{msg.value}</Chip>
+      );
     });
 
     return (
@@ -45,8 +43,9 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
   }
 }
 
-ChatContent.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+ChatMessage.propTypes = {
+  messageList: PropTypes.array.isRequired,
+  currentUser: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -60,4 +59,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatContent);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage);

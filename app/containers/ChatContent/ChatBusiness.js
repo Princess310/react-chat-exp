@@ -10,7 +10,7 @@ import { createStructuredSelector } from 'reselect';
 
 import Wrapper from './Wrapper';
 
-export class ChatContent extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class ChatBusiness extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <Wrapper>
@@ -20,13 +20,11 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
   }
 }
 
-ChatContent.propTypes = {
+ChatBusiness.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  
-});
+const mapStateToProps = createStructuredSelector({});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -34,4 +32,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatContent);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBusiness);

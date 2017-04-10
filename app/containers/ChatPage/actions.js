@@ -32,8 +32,8 @@ export function chageTab(tab) {
     type: CHANGE_TAB,
     payload: {
       tab,
-    }
-  }
+    },
+  };
 }
 
 export function fetchMessageUsers() {
@@ -47,8 +47,8 @@ export function loadMessageUsers(list) {
     type: LOAD_MESSAGE_USERS,
     payload: {
       list,
-    }
-  }
+    },
+  };
 }
 
 export function fetchMessageList(touid, nextkey, count) {
@@ -57,8 +57,8 @@ export function fetchMessageList(touid, nextkey, count) {
     payload: {
       touid,
       nextkey,
-      count
-    }
+      count,
+    },
   };
 }
 
@@ -67,8 +67,8 @@ export function loadMessageList(list) {
     type: LOAD_MESSAGE_LIST,
     payload: {
       list,
-    }
-  }
+    },
+  };
 }
 
 export function loadMessageListNextkey(nextkey) {
@@ -76,6 +76,6 @@ export function loadMessageListNextkey(nextkey) {
     type: LOAD_MESSAGE_LIST_NEXTKEY,
     payload: {
       nextkey,
-    }
-  }
+    },
+  };
 }

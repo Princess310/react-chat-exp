@@ -27,11 +27,11 @@ export function* fetchMessageUsers() {
     const { cnts } = res.data;
     const contactMap = new Map();
     const contactIds = [];
-    for (let contact of cnts) {
+    for (const contact of cnts) {
       const id = im.getNick(contact.uid);
 
       // check for not sys msg
-      if(id !== im.getSysName()) {
+      if (id !== im.getSysName()) {
         contactMap.set(id, contact);
         contactIds.push(id);
       }
@@ -41,7 +41,7 @@ export function* fetchMessageUsers() {
     const usersData = yield request.doGet('chat/get-user-info', { user_ids: contactIds.join(',') });
     const usersList = usersData.list;
 
-    for (let user of usersList) {
+    for (const user of usersList) {
       const userId = user.im_account;
 
       contactMap.set(userId, Object.assign(contactMap.get(userId), user));
@@ -51,7 +51,7 @@ export function* fetchMessageUsers() {
     const countData = yield im.getUnreadMsgCount(20);
     const countList = countData.data;
 
-    for (let count of countList) {
+    for (const count of countList) {
       const userId = im.getNick(count.contact);
 
       if (contactMap.get(userId)) {
@@ -61,7 +61,7 @@ export function* fetchMessageUsers() {
 
     // get list result
     const resultList = [];
-    for (let [userId, user] of contactMap) {
+    for (const [, user] of contactMap) {
       resultList.push(user);
     }
 
@@ -94,6 +94,7 @@ export function* defaultSaga() {
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
   yield cancel(watcherMessageUser);
+  yield cancel(watcherMessageList);
 }
 
 // All sagas to be loaded

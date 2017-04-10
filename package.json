@@ -83,6 +83,9 @@
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": "airbnb",
+    "globals": {
+      "WSDK": true
+    },
     "env": {
       "browser": true,
       "node": true,
@@ -146,6 +149,7 @@
       "prefer-spread": 0,
       "func-names": 0,
       "prefer-rest-params": 0,
+      "no-restricted-syntax": 0,
       "react/forbid-prop-types": 0,
       "react/jsx-first-prop-new-line": [
         2,

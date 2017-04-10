@@ -3,11 +3,11 @@ import { createLogger } from 'redux-logger';
 
 const stateTransformer = (state) => {
   if (Iterable.isIterable(state)) return state.toJS();
-  else return state;
+  return state;
 };
 
 const logger = createLogger({
   stateTransformer,
-})
+});
 
 export default logger;

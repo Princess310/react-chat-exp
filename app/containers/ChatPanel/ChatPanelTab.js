@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { makeSelectChatTab } from './selectors';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import styled from 'styled-components';
 
 import { chageTab } from 'containers/ChatPage/actions';
 
+import { makeSelectChatTab } from './selectors';
 import ChatPanelMessage from './ChatPanelMessage';
 
 const TabWrapper = styled.div`
@@ -82,6 +82,11 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
     );
   }
 }
+
+ChatPanelTab.propTypes = {
+  chatTab: PropTypes.string,
+  chageTab: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
   chatTab: makeSelectChatTab(),
