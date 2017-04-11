@@ -29,26 +29,24 @@ const SectionWrapper = styled.div`
 
 class YaoyueItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   state = {
-    statusMine: ["邀约邀请已发送", "您同意了邀约邀请", "您拒绝了邀约邀请", "您取消了邀约邀请"],
-    statusTouch: ["向您发起邀约", "同意了您的邀约邀请", "拒绝了您的邀约邀请", "取消了您的邀约邀请"],
+    statusMine: ['邀约邀请已发送', '您同意了邀约邀请', '您拒绝了邀约邀请', '您取消了邀约邀请'],
+    statusTouch: ['向您发起邀约', '同意了您的邀约邀请', '拒绝了您的邀约邀请', '取消了您的邀约邀请'],
   }
 
   render() {
     const {
       direction,
       avatar,
-      id,
       status,
       address,
       date,
       remark,
-      from,
       touchUser,
     } = this.props;
 
     const title = direction === 'left' ?
       (touchUser.nickname + this.state.statusTouch[status])
-      : (this.state.statusMine[status])
+      : (this.state.statusMine[status]);
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
@@ -69,8 +67,8 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
             <SectionWrapper>{remark}</SectionWrapper>
           </FlexRow>
           <ActionFooter
-            saveText='同意'
-            cancelText='忽略'
+            saveText="同意"
+            cancelText="忽略"
           />
         </FlexColumn>
       </ChatBubble>
@@ -85,10 +83,10 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
     {
       ChatBubbleElement,
       avatarElement,
-    }
+    };
 
     const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({justifyContent: justify});
+    const inlineStyle = autoprefixer({ justifyContent: justify });
 
     return (
       <ItemWrapper style={inlineStyle}>
@@ -99,7 +97,13 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
 }
 
 YaoyueItem.propTypes = {
-
+  direction: PropTypes.string,
+  avatar: PropTypes.string,
+  status: PropTypes.string,
+  address: PropTypes.string,
+  date: PropTypes.string,
+  remark: PropTypes.string,
+  touchUser: PropTypes.object,
 };
 
 export default YaoyueItem;

@@ -12,7 +12,6 @@ import pallete from 'styles/colors';
 
 import ChatHeader from 'components/ChatHeader';
 import ChatMessageItem from 'components/ChatMessageItem';
-import Chip from 'material-ui/Chip';
 import styled from 'styled-components';
 
 import {
@@ -73,6 +72,7 @@ ChatMessage.propTypes = {
     PropTypes.bool,
   ]),
   currentUser: PropTypes.object,
+  touchUser: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

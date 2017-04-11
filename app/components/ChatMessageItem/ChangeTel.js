@@ -5,11 +5,9 @@
 */
 
 import React, { PropTypes } from 'react';
-import styled from 'styled-components';
 import { createChildFragment } from 'utils/childUtils';
 import FlexColumn from 'components/FlexColumn';
 import autoprefixer from 'utils/autoprefixer';
-import pallete from 'styles/colors';
 
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
@@ -18,8 +16,8 @@ import { ItemWrapper } from './Wrapper';
 
 class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   state = {
-    statusMine: ["请求交换电话已发送", "您同意了手机号的交换请求", "您拒绝了手机号的交换请求"],
-    statusTouch: ["我想和您交换联系方式，您是否同意？", "同意了您手机号的交换请求", "拒绝了您手机号的交换请求"],
+    statusMine: ['请求交换电话已发送', '您同意了手机号的交换请求', '您拒绝了手机号的交换请求'],
+    statusTouch: ['我想和您交换联系方式，您是否同意？', '同意了您手机号的交换请求', '拒绝了您手机号的交换请求'],
   }
 
   render() {
@@ -27,12 +25,11 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
       avatar,
       direction,
       status,
-      from,
     } = this.props;
 
     const title = direction === 'left' ?
       (this.state.statusTouch[status])
-      : (this.state.statusMine[status])
+      : (this.state.statusMine[status]);
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
@@ -40,8 +37,8 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
         <FlexColumn>
           <header>{title}</header>
           <ActionFooter
-            saveText='同意'
-            cancelText='取消'
+            saveText="同意"
+            cancelText="取消"
           />
         </FlexColumn>
       </ChatBubble>
@@ -56,7 +53,7 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
     {
       ChatBubbleElement,
       avatarElement,
-    }
+    };
 
     const chatElement = createChildFragment(chatFragment);
     const inlineStyle = autoprefixer({
@@ -73,7 +70,9 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
 }
 
 ChangeTel.propTypes = {
-
+  avatar: PropTypes.string,
+  direction: PropTypes.string,
+  status: PropTypes.string,
 };
 
 export default ChangeTel;

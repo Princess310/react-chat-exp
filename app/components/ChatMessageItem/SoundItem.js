@@ -20,7 +20,6 @@ class SoundItem extends React.PureComponent { // eslint-disable-line react/prefe
       direction,
       url,
       time,
-      size,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
@@ -30,7 +29,7 @@ class SoundItem extends React.PureComponent { // eslint-disable-line react/prefe
         Sound
       </ChatBubble>
     );
-    const timeElement = (<span style={{color: pallete.text.help}}>{time}{`"`}</span>);
+    const timeElement = (<span style={{ color: pallete.text.help }}>{time}{'"'}</span>);
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 
     const chatFragment = direction === 'left' ?
@@ -43,10 +42,10 @@ class SoundItem extends React.PureComponent { // eslint-disable-line react/prefe
       timeElement,
       ChatBubbleElement,
       avatarElement,
-    }
+    };
 
     const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({justifyContent: justify, alignItems: 'center'});
+    const inlineStyle = autoprefixer({ justifyContent: justify, alignItems: 'center' });
     return (
       <ItemWrapper style={inlineStyle}>
         {chatElement}
@@ -56,7 +55,10 @@ class SoundItem extends React.PureComponent { // eslint-disable-line react/prefe
 }
 
 SoundItem.propTypes = {
-
+  avatar: PropTypes.string,
+  direction: PropTypes.string,
+  url: PropTypes.string,
+  time: PropTypes.string,
 };
 
 export default SoundItem;

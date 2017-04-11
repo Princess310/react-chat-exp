@@ -6,11 +6,6 @@
 
 import React, { PropTypes } from 'react';
 // import styled from 'styled-components';
-
-import { FormattedMessage } from 'react-intl';
-import Avatar from 'material-ui/Avatar';
-
-import messages from './messages';
 import MessageItem from './MessageItem';
 import ShareMoment from './ShareMoment';
 import YaoyueItem from './YaoyueItem';
@@ -23,7 +18,6 @@ import Wrapper from './Wrapper';
 
 class ChatMessage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
-    console.log(this.props);
     const {
       type,
       ...other

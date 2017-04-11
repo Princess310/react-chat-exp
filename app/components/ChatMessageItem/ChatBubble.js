@@ -18,15 +18,18 @@ const Wrapper = styled(Paper)`
 `;
 
 class MessageBubble extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  static defaultProps = {
+    style: {},
+  }
+
   render() {
     const {
-      direction,
       children,
       style,
     } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper style={style}>
         {children}
       </Wrapper>
     );
@@ -34,7 +37,8 @@ class MessageBubble extends React.PureComponent { // eslint-disable-line react/p
 }
 
 MessageBubble.propTypes = {
-
+  children: PropTypes.node,
+  style: PropTypes.object,
 };
 
 export default MessageBubble;

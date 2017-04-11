@@ -32,10 +32,10 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
     {
       ChatBubbleElement,
       avatarElement,
-    }
+    };
 
     const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({justifyContent: justify});
+    const inlineStyle = autoprefixer({ justifyContent: justify });
     return (
       <ItemWrapper style={inlineStyle}>
         {chatElement}
@@ -45,7 +45,9 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
 }
 
 MessageItem.propTypes = {
-
+  avatar: PropTypes.string,
+  value: PropTypes.string,
+  direction: PropTypes.string,
 };
 
 export default MessageItem;

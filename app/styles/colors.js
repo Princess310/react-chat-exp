@@ -43,20 +43,20 @@ const pallete = {
       },
       disable: {
         background: '#9cccf1',
-      }
+      },
     },
     warning: {
       color: '#ffffff',
       background: '#ffb501',
       hover: {
         background: '#d58612',
-      }
+      },
     },
     grey: {
       color: '#ffffff',
       background: '#bcbcbc',
-    }
-  }
+    },
+  },
 };
 
 export default pallete;

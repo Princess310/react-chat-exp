@@ -23,7 +23,6 @@ class ShareMoment extends React.PureComponent { // eslint-disable-line react/pre
       title,
       content,
       pic,
-      id,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
@@ -32,8 +31,8 @@ class ShareMoment extends React.PureComponent { // eslint-disable-line react/pre
         <FlexColumn>
           <header>{title}</header>
           <FlexRow>
-            {pic && pic !== '' ? <img src={pic} style={{ width: '56px', height: '56px' }} /> : null}
-            <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help, }}>{content}</section>
+            {pic && pic !== '' ? <img src={pic} role="presentation" style={{ width: '56px', height: '56px' }} /> : null}
+            <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help }}>{content}</section>
           </FlexRow>
         </FlexColumn>
       </ChatBubble>
@@ -48,10 +47,10 @@ class ShareMoment extends React.PureComponent { // eslint-disable-line react/pre
     {
       ChatBubbleElement,
       avatarElement,
-    }
+    };
 
     const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({justifyContent: justify});
+    const inlineStyle = autoprefixer({ justifyContent: justify });
 
     return (
       <ItemWrapper style={inlineStyle}>
@@ -62,7 +61,11 @@ class ShareMoment extends React.PureComponent { // eslint-disable-line react/pre
 }
 
 ShareMoment.propTypes = {
-
+  direction: PropTypes.string,
+  avatar: PropTypes.string,
+  title: PropTypes.string,
+  content: PropTypes.string,
+  pic: PropTypes.string,
 };
 
 export default ShareMoment;

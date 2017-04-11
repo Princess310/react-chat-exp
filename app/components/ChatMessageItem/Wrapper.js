@@ -14,4 +14,4 @@ const ItemWrapper = styled.div`
 
 export {
   ItemWrapper,
-}
+};

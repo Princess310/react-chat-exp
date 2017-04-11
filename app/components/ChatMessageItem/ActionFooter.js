@@ -32,7 +32,8 @@ class ActionFooter extends React.PureComponent { // eslint-disable-line react/pr
 }
 
 ActionFooter.propTypes = {
-
+  saveText: PropTypes.string,
+  cancelText: PropTypes.string,
 };
 
 export default ActionFooter;

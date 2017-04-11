@@ -21,6 +21,10 @@ const Bubble = styled(Paper)`
 `;
 
 class CenterBubble extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+  static defaultProps = {
+    style: {},
+  }
+
   render() {
     const {
       children,
@@ -28,7 +32,7 @@ class CenterBubble extends React.PureComponent { // eslint-disable-line react/pr
     } = this.props;
 
     return (
-      <Wrapper>
+      <Wrapper style={{ style }}>
         <Bubble style={{ color: pallete.white, backgroundColor: 'rgba(0, 0, 0, 0.56)', fontSize: '14px' }}>
           {children}
         </Bubble>
@@ -38,7 +42,8 @@ class CenterBubble extends React.PureComponent { // eslint-disable-line react/pr
 }
 
 CenterBubble.propTypes = {
-
+  children: PropTypes.any,
+  style: PropTypes.object,
 };
 
 export default CenterBubble;

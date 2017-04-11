@@ -8,9 +8,6 @@ import React, { PropTypes } from 'react';
 import styled from 'styled-components';
 import Paper from 'material-ui/Paper';
 
-import { FormattedMessage } from 'react-intl';
-import messages from './messages';
-
 const Wrapper = styled(Paper)`
   height: 48px;
   width: 100%;

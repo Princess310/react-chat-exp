@@ -8,12 +8,14 @@ export function createChildFragment(fragments) {
 
   // Only create non-empty key fragments
   for (const key in fragments) {
-    const currentChild = fragments[key];
+    if (Object.prototype.hasOwnProperty.call(fragments, key)) {
+      const currentChild = fragments[key];
 
-    if (currentChild) {
-      if (validChildrenCount === 0) firstKey = key;
-      newFragments[key] = currentChild;
-      validChildrenCount++;
+      if (currentChild) {
+        if (validChildrenCount === 0) firstKey = key;
+        newFragments[key] = currentChild;
+        validChildrenCount += 1;
+      }
     }
   }
 

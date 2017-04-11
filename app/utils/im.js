@@ -15,11 +15,9 @@ const im = {
       credential: pwd,
       timeout: 5000,
       success: (data) => {
-        console.log('im login success', data);
         resolve(data);
       },
       error: (error) => {
-        console.log('im login error', error);
         reject(error);
       },
     });

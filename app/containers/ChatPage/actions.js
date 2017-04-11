@@ -82,11 +82,11 @@ export function loadMessageListNextkey(nextkey) {
   };
 }
 
-export function fetchTouchUser(to_uid) {
+export function fetchTouchUser(id) {
   return {
     type: FETCH_TOUCH_USER,
     payload: {
-      to_uid
+      to_uid: id,
     },
   };
 }
@@ -95,7 +95,7 @@ export function loadTouchUser(data) {
   return {
     type: LOAD_TOUCH_USER,
     payload: {
-      data
+      data,
     },
   };
 }
