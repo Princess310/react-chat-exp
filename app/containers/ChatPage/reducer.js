@@ -11,13 +11,15 @@ import {
   LOAD_MESSAGE_USERS,
   LOAD_MESSAGE_LIST,
   LOAD_MESSAGE_LIST_NEXTKEY,
+  LOAD_TOUCH_USER,
 } from './constants';
 
 const initialState = fromJS({
   chatTab: 'message',
-  chatMassageUsers: [],
-  chatMessageList: [],
+  chatMassageUsers: false,
+  chatMessageList: false,
   chatMessageNextkey: '',
+  chatTouchUser: false,
 });
 
 function chatPageReducer(state = initialState, action) {
@@ -43,6 +45,11 @@ function chatPageReducer(state = initialState, action) {
       const { nextkey } = action.payload;
 
       return state.set('chatMessageNextkey', nextkey);
+    }
+    case LOAD_TOUCH_USER: {
+      const { data } = action.payload;
+
+      return state.set('chatTouchUser', data);
     }
     default:
       return state;

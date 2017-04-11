@@ -13,6 +13,8 @@ import {
   FETCH_MESSAGE_LIST,
   LOAD_MESSAGE_LIST,
   LOAD_MESSAGE_LIST_NEXTKEY,
+  FETCH_TOUCH_USER,
+  LOAD_TOUCH_USER,
 } from './constants';
 
 export function defaultAction() {
@@ -76,6 +78,24 @@ export function loadMessageListNextkey(nextkey) {
     type: LOAD_MESSAGE_LIST_NEXTKEY,
     payload: {
       nextkey,
+    },
+  };
+}
+
+export function fetchTouchUser(to_uid) {
+  return {
+    type: FETCH_TOUCH_USER,
+    payload: {
+      to_uid
+    },
+  };
+}
+
+export function loadTouchUser(data) {
+  return {
+    type: LOAD_TOUCH_USER,
+    payload: {
+      data
     },
   };
 }

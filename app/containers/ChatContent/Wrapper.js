@@ -5,8 +5,8 @@ const Wrapper = styled(Paper)`
   width: 760px;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  flex-direction: column;
 `;
 
 export default Wrapper;

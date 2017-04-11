@@ -27,11 +27,17 @@ const makeSelectChatMessage = () => createSelector(
 
 const makeSelectCurrentUser = () => createSelector(
   selectAppGlobale,
-  (globalState) => globalState.get('currentUser')
+  (globalState) => globalState.get('currentUser'),
+);
+
+const makeSelectTouchUser = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTouchUser'),
 );
 
 export {
   makeSelectChatTab,
   makeSelectChatMessage,
   makeSelectCurrentUser,
+  makeSelectTouchUser,
 };

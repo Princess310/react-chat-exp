@@ -7,7 +7,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { fetchMessageList } from 'containers/ChatPage/actions';
+import { fetchMessageList, fetchTouchUser } from 'containers/ChatPage/actions';
 
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
@@ -15,16 +15,16 @@ import Badge from 'material-ui/Badge';
 
 import { makeSelectChatMessageUsers } from './selectors';
 
-export class ChatMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class ChatPanelMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
     msgCount: 10,
   }
 
   render() {
-    const { messageUsers, getMessageList } = this.props;
+    const { messageUsers, getMessageList, getTouchUser } = this.props;
     const { msgCount } = this.state;
 
-    const listView = messageUsers.map((user, key) => (
+    const listView = messageUsers ? messageUsers.map((user, key) => (
       <ListItem
         key={key}
         leftAvatar={<Avatar src={user.avator} />}
@@ -34,9 +34,12 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
         }
         primaryText={user.nickname}
         secondaryText={user.msg.header.summary}
-        onTouchTap={() => { getMessageList(user.uid, '', msgCount); }}
+        onTouchTap={() => {
+          getTouchUser(user.id);
+          getMessageList(user.uid, '', msgCount);
+        }}
       />
-    ));
+    )) : null;
     return (
       <List>
         {listView}
@@ -45,9 +48,13 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
   }
 }
 
-ChatMessage.propTypes = {
-  messageUsers: PropTypes.array,
+ChatPanelMessage.propTypes = {
+  messageUsers: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.bool,
+  ]),
   getMessageList: PropTypes.func,
+  getTouchUser: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -57,7 +64,8 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getMessageList: (touid, nextkey, count) => dispatch(fetchMessageList(touid, nextkey, count)),
+    getTouchUser: (id) => dispatch(fetchTouchUser(id)),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatPanelMessage);

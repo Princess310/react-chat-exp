@@ -4,8 +4,18 @@ import { loadUser } from 'containers/App/actions';
 import request from 'utils/request';
 import im from 'utils/im';
 
-import { FETCH_USER, FETCH_MESSAGE_USERS, FETCH_MESSAGE_LIST } from './constants';
-import { loadMessageUsers, loadMessageList, loadMessageListNextkey } from './actions';
+import {
+  FETCH_USER,
+  FETCH_MESSAGE_USERS,
+  FETCH_MESSAGE_LIST,
+  FETCH_TOUCH_USER,
+} from './constants';
+import {
+  loadMessageUsers,
+  loadMessageList,
+  loadMessageListNextkey,
+  loadTouchUser,
+} from './actions';
 
 export function* fetchUser() {
   try {
@@ -73,6 +83,7 @@ export function* fetchMessageUsers() {
 
 export function* fetchMessageList(action) {
   try {
+    yield put(loadMessageList([]));
     const { touid, nextkey, count } = action.payload;
     // Call our request helper (see 'utils/request')
     const res = yield im.chat.getHistory(im.getNick(touid), nextkey, count);
@@ -85,16 +96,30 @@ export function* fetchMessageList(action) {
   }
 }
 
+export function* fetchTouchUser(action) {
+  try {
+    const res = yield request.doGet('interview/info', action.payload);
+
+    const { data: { user } } = res;
+
+    yield put(loadTouchUser(user));
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
 // Individual exports for testing
 export function* defaultSaga() {
   const watcher = yield takeLatest(FETCH_USER, fetchUser);
   const watcherMessageUser = yield takeLatest(FETCH_MESSAGE_USERS, fetchMessageUsers);
   const watcherMessageList = yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
+  const watcherTouchUser = yield takeLatest(FETCH_TOUCH_USER, fetchTouchUser);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
   yield cancel(watcherMessageUser);
   yield cancel(watcherMessageList);
+  yield cancel(watcherTouchUser);
 }
 
 // All sagas to be loaded
