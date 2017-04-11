@@ -72,7 +72,10 @@ ChatMessage.propTypes = {
     PropTypes.bool,
   ]),
   currentUser: PropTypes.object,
-  touchUser: PropTypes.object,
+  touchUser: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({

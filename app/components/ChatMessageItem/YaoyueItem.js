@@ -103,7 +103,10 @@ YaoyueItem.propTypes = {
   address: PropTypes.string,
   date: PropTypes.string,
   remark: PropTypes.string,
-  touchUser: PropTypes.object,
+  touchUser: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
 };
 
 export default YaoyueItem;
