@@ -9,12 +9,14 @@ import {
   FETCH_MESSAGE_USERS,
   FETCH_MESSAGE_LIST,
   FETCH_TOUCH_USER,
+  SEND_CHAT_MESSAGE,
 } from './constants';
 import {
   loadMessageUsers,
   loadMessageList,
   loadMessageListNextkey,
   loadTouchUser,
+  loadChatMessage,
 } from './actions';
 
 export function* fetchUser() {
@@ -96,6 +98,16 @@ export function* fetchMessageList(action) {
   }
 }
 
+export function* sendMessage(action) {
+  try {
+    const { touid, summary, content } = action.payload;
+    const res = yield im.chat.sendCustomMsg(touid, JSON.stringify(content), summary);
+    console.log('msg res', res);
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
 export function* fetchTouchUser(action) {
   try {
     const res = yield request.doGet('interview/info', action.payload);
@@ -114,12 +126,14 @@ export function* defaultSaga() {
   const watcherMessageUser = yield takeLatest(FETCH_MESSAGE_USERS, fetchMessageUsers);
   const watcherMessageList = yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
   const watcherTouchUser = yield takeLatest(FETCH_TOUCH_USER, fetchTouchUser);
+  const watcherSendMsg = yield takeLatest(SEND_CHAT_MESSAGE, sendMessage);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
   yield cancel(watcherMessageUser);
   yield cancel(watcherMessageList);
   yield cancel(watcherTouchUser);
+  yield cancel(watcherSendMsg);
 }
 
 // All sagas to be loaded

@@ -12,18 +12,18 @@ import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
 import { ItemWrapper } from './Wrapper';
 
-class MessageItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class PictureItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     const {
       avatar,
-      value,
+      url,
       direction,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
       <ChatBubble direction={direction} >
-        <pre dangerouslySetInnerHTML={{__html: twemoji.parse(value)}} />
+        <img src={url} role="presentation" style={{ width: '200px', height: '200px' }} />
       </ChatBubble>
     );
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';
@@ -48,10 +48,10 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
   }
 }
 
-MessageItem.propTypes = {
+PictureItem.propTypes = {
   avatar: PropTypes.string,
-  value: PropTypes.string,
+  url: PropTypes.string,
   direction: PropTypes.string,
 };
 
-export default MessageItem;
+export default PictureItem;

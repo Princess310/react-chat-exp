@@ -15,6 +15,8 @@ import {
   LOAD_MESSAGE_LIST_NEXTKEY,
   FETCH_TOUCH_USER,
   LOAD_TOUCH_USER,
+  SEND_CHAT_MESSAGE,
+  LOAD_CHAT_MESSAGE,
 } from './constants';
 
 export function defaultAction() {
@@ -98,4 +100,24 @@ export function loadTouchUser(data) {
       data,
     },
   };
+}
+
+export function sendChatMessage(touid, content, summary) {
+  return {
+    type: SEND_CHAT_MESSAGE,
+    payload: {
+      touid,
+      content,
+      summary,
+    },
+  };
+}
+
+export function loadChatMessage(data) {
+  return {
+    type: LOAD_CHAT_MESSAGE,
+    payload: {
+      data,
+    },
+  }
 }

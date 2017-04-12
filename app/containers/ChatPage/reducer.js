@@ -12,6 +12,7 @@ import {
   LOAD_MESSAGE_LIST,
   LOAD_MESSAGE_LIST_NEXTKEY,
   LOAD_TOUCH_USER,
+  LOAD_CHAT_MESSAGE,
 } from './constants';
 
 const initialState = fromJS({
@@ -45,6 +46,11 @@ function chatPageReducer(state = initialState, action) {
       const { nextkey } = action.payload;
 
       return state.set('chatMessageNextkey', nextkey);
+    }
+    case LOAD_CHAT_MESSAGE: {
+      const { data } = action.payload;
+console.log('msg data', data);
+      return state;
     }
     case LOAD_TOUCH_USER: {
       const { data } = action.payload;

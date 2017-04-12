@@ -12,7 +12,10 @@ import pallete from 'styles/colors';
 
 import ChatHeader from 'components/ChatHeader';
 import ChatMessageItem from 'components/ChatMessageItem';
+import ChatTool from 'components/ChatTool';
 import styled from 'styled-components';
+
+import { sendChatMessage } from 'containers/ChatPage/actions';
 
 import {
   makeSelectChatMessage,
@@ -28,6 +31,12 @@ const ContentWrapper = styled.div`
   height: 440px;
   overflow-y: scroll;
   background-color: ${pallete.background.light}
+`;
+
+const ChatWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 152px;
 `;
 
 export class ChatMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -55,14 +64,20 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
       />);
     }) : null;
 
-    return (
+    const contentView = touchUser ?
+    (
       <Wrapper>
         <ChatHeader title={touchUser ? touchUser.nickname : ''} />
         <ContentWrapper>
           {listView}
         </ContentWrapper>
+        <ChatWrapper>
+          <ChatTool sendChatMessage={(content, summary) => this.props.sendChatMessage(touchUser.im_account, content, summary)} />
+        </ChatWrapper>
       </Wrapper>
-    );
+    ) : null;
+
+    return contentView;
   }
 }
 
@@ -86,7 +101,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    sendChatMessage: (touid, content, summary) => dispatch(sendChatMessage(touid, content, summary)),
   };
 }
 

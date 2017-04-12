@@ -29,6 +29,33 @@ injectGlobal`
     line-height: 1.5em;
   }
 
+  code,
+  kbd,
+  pre,
+  samp {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .chat-editor {
+    height: 104px;
+    padding: 0 15px 15px;
+    overflow-y: scroll;
+  }
+
+  .chat-editor:focus {
+    outline: transparent;
+  }
+  .chat-editor:hover {
+    cursor: text;
+  }
+
   .grid-system{
     z-index:9999;
     .grid-canvas{
@@ -59,6 +86,12 @@ injectGlobal`
       transform: scale(0.7);
       opacity: .5;
     }
+  }
+
+  img.emoji {
+    width: 16px;
+    height: 16px;
+    margin: 0 2px;
   }
 
   ::-webkit-scrollbar{width:2px;height:2px}

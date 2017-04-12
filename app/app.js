@@ -18,6 +18,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import { useScroll } from 'react-router-scroll';
 import 'sanitize.css/sanitize.css';
 import '!!style-loader!css-loader!./styles/material-icons.css';
+import '!!style-loader!css-loader!./styles/emoji-mart.css';
 
 // Import root app
 import App from 'containers/App';

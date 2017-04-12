@@ -14,6 +14,7 @@ import UserCard from './UserCard';
 import ShareBusiness from './ShareBusiness';
 import CenterBubble from './CenterBubble';
 import SoundItem from './SoundItem';
+import PictureItem from './PictureItem';
 import Wrapper from './Wrapper';
 
 class ChatMessage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -48,6 +49,9 @@ class ChatMessage extends React.PureComponent { // eslint-disable-line react/pre
         break;
       case 'sound':
         itemView = (<SoundItem {...other} />);
+        break;
+      case 'pic':
+        itemView = (<PictureItem {...other} />);
         break;
       default:
         itemView = (<CenterBubble>other</CenterBubble>);
