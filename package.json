@@ -84,7 +84,8 @@
     "parser": "babel-eslint",
     "extends": "airbnb",
     "globals": {
-      "WSDK": true
+      "WSDK": true,
+      "twemoji": true
     },
     "env": {
       "browser": true,
@@ -153,6 +154,7 @@
       "no-nested-ternary": 0,
       "no-unneeded-ternary": 0,
       "react/forbid-prop-types": 0,
+      "react/no-danger": 0,
       "react/jsx-first-prop-new-line": [
         2,
         "multiline"

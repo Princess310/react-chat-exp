@@ -119,5 +119,5 @@ export function loadChatMessage(data) {
     payload: {
       data,
     },
-  }
+  };
 }

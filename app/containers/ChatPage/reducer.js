@@ -48,8 +48,8 @@ function chatPageReducer(state = initialState, action) {
       return state.set('chatMessageNextkey', nextkey);
     }
     case LOAD_CHAT_MESSAGE: {
-      const { data } = action.payload;
-console.log('msg data', data);
+      // const { data } = action.payload;
+
       return state;
     }
     case LOAD_TOUCH_USER: {

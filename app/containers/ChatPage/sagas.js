@@ -16,7 +16,6 @@ import {
   loadMessageList,
   loadMessageListNextkey,
   loadTouchUser,
-  loadChatMessage,
 } from './actions';
 
 export function* fetchUser() {
@@ -101,8 +100,7 @@ export function* fetchMessageList(action) {
 export function* sendMessage(action) {
   try {
     const { touid, summary, content } = action.payload;
-    const res = yield im.chat.sendCustomMsg(touid, JSON.stringify(content), summary);
-    console.log('msg res', res);
+    yield im.chat.sendCustomMsg(touid, JSON.stringify(content), summary);
   } catch (err) {
     // console.log(err);
   }

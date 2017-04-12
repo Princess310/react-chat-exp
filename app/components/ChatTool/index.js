@@ -21,7 +21,7 @@ const HeaderWrapper = styled(FlexRow)`
   color: ${pallete.text.help};
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 const ActionItem = styled(IconButton)`
   font-size: 24px;
@@ -51,6 +51,19 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
   state = {
     showEmojiPanel: false,
     selectRange: null,
+  }
+
+  getSelection() {
+    let sel = null;
+    if (window.getSelection) {
+      sel = window.getSelection();
+      if (sel.getRangeAt && sel.rangeCount) {
+        return sel.getRangeAt(0);
+      }
+    } else if (document.selection && document.selection.createRange) {
+      return document.selection.createRange();
+    }
+    return null;
   }
 
   handleSendMessage = () => {
@@ -87,32 +100,20 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
   saveSelection() {
     const selectRange = this.getSelection();
     this.setState({
-      selectRange: selectRange,
+      selectRange,
     });
   }
 
-  getSelection() {
-    let sel, range, html;
-    if (window.getSelection) {
-      sel = window.getSelection();
-      if (sel.getRangeAt && sel.rangeCount) {
-        return sel.getRangeAt(0);
-      }
-    } else if (document.selection && document.selection.createRange) {
-      return document.selection.createRange();
-    }
-    return null;
-  }
-
   restoreSelection() {
-    let sel, range, html;
-    if (range) {
+    let sel = null;
+    const { selectRange } = this.state;
+    if (selectRange) {
       if (window.getSelection) {
         sel = window.getSelection();
         sel.removeAllRanges();
-        sel.addRange(range);
-      } else if (document.selection && range.select) {
-        range.select();
+        sel.addRange(selectRange);
+      } else if (document.selection && selectRange.select) {
+        selectRange.select();
       }
     }
 
@@ -126,11 +127,11 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
 
     if (selectRange) {
       selectRange.deleteContents();
-      selectRange.insertNode( dom );
+      selectRange.insertNode(dom);
     }
   }
 
-  handleSelectEmoji = (emoji, e) => {
+  handleSelectEmoji = (emoji) => {
     const { selectRange } = this.state;
 
     if (selectRange) {
@@ -161,7 +162,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
         { this.state.showEmojiPanel &&
           <div>
             <Picker
-              set='twitter'
+              set="twitter"
               sheetSize={20}
               onClick={this.handleSelectEmoji}
               style={{
@@ -183,9 +184,9 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
         <pre
           className="chat-editor"
           contentEditable="plaintext-only"
-          onKeyUp={ this.handleKeyUp }
-          onClick={ () => { this.saveSelection() } }
-          ref={ (r) => { this.editor = r } }
+          onKeyUp={this.handleKeyUp}
+          onClick={() => { this.saveSelection(); }}
+          ref={(r) => { this.editor = r; }}
         />
       </div>
     );

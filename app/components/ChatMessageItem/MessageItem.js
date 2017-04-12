@@ -23,7 +23,7 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
       <ChatBubble direction={direction} >
-        <pre dangerouslySetInnerHTML={{__html: twemoji.parse(value)}} />
+        <pre dangerouslySetInnerHTML={{ __html: twemoji.parse(value) }} />
       </ChatBubble>
     );
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';

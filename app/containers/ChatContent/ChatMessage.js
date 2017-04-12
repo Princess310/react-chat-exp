@@ -91,6 +91,7 @@ ChatMessage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  sendChatMessage: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
