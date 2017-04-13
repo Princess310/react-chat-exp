@@ -35,9 +35,15 @@ const makeSelectTouchUser = () => createSelector(
   (substate) => substate.get('chatTouchUser'),
 );
 
+const makeSelectClearChatMessage = () => createSelector(
+  selectChat,
+  (substate) => substate.get('clearChatContent'),
+);
+
 export {
   makeSelectChatTab,
   makeSelectChatMessage,
   makeSelectCurrentUser,
   makeSelectTouchUser,
+  makeSelectClearChatMessage,
 };

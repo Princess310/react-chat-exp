@@ -3,6 +3,23 @@ const APP_KEY = 23354047;
 const SYS_NAME = 'system';
 
 const im = {
+  statusCode: {
+    SUCCESS: 1000,
+    NOT_LOGIN: 1001,
+    TIMEOUT: 1002,
+    OTHER_ERROR: 1003,
+    PARSE_ERROR: 1004,
+    NET_ERROR: 1005,
+    KICK_OFF: 1006,
+    LOGIN_INFO_ERROR: 1007,
+    ALREADY_LOGIN: 1008,
+    NO_MESSAGE: 1009,
+    PARAM_ERROR: 1010,
+    OFTEN_LOGIN: 1011,
+    SERVER_ALREADY_LOGIN: 1012,
+    NO_USER: 1013,
+    PASSWORD_ERROR: 1014,
+  },
   getSysName: () => SYS_NAME,
   getNick: (luid) => sdk.Base.getNick(luid),
   destroy: () => {
@@ -103,7 +120,7 @@ const im = {
     setReadState: (touid) => (new Promise((resolve, reject) => {
       sdk.Chat.setReadState({
         touid,
-        timestamp: Math.floor((new Date()) / 1000),
+        timestamp: Math.floor((+new Date()) / 1000),
         success: (data) => {
           resolve(data);
         },
@@ -112,7 +129,7 @@ const im = {
         },
       });
     })),
-    startListenMsg: (touid) => (new Promise((resolve, reject) => {
+    startListenMsg: (touid, emitFn) => (new Promise((resolve, reject) => {
       sdk.Chat.startListenMsg({
         touid,
         success: (data) => {
@@ -136,6 +153,11 @@ const im = {
         error: (error) => {
           reject(error);
         },
+      });
+    })),
+    recieveMsg: (fn) => (new Promise((resolve, reject) => {
+      sdk.Event.on('CHAT.MSG_RECEIVED', (data) => {
+        fn(data);
       });
     })),
   },

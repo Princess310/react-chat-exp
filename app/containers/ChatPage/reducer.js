@@ -5,6 +5,7 @@
  */
 
 import { fromJS } from 'immutable';
+import im from 'utils/im';
 import {
   DEFAULT_ACTION,
   CHANGE_TAB,
@@ -13,6 +14,7 @@ import {
   LOAD_MESSAGE_LIST_NEXTKEY,
   LOAD_TOUCH_USER,
   LOAD_CHAT_MESSAGE,
+  LOAD_CLEAR_MESSAGE_CONTENT,
 } from './constants';
 
 const initialState = fromJS({
@@ -21,6 +23,7 @@ const initialState = fromJS({
   chatMessageList: false,
   chatMessageNextkey: '',
   chatTouchUser: false,
+  clearChatContent: false,
 });
 
 function chatPageReducer(state = initialState, action) {
@@ -40,7 +43,7 @@ function chatPageReducer(state = initialState, action) {
     case LOAD_MESSAGE_LIST: {
       const { list } = action.payload;
 
-      return state.set('chatMessageList', list);
+      return state.set('chatMessageList', list.reverse());
     }
     case LOAD_MESSAGE_LIST_NEXTKEY: {
       const { nextkey } = action.payload;
@@ -48,14 +51,28 @@ function chatPageReducer(state = initialState, action) {
       return state.set('chatMessageNextkey', nextkey);
     }
     case LOAD_CHAT_MESSAGE: {
-      // const { data } = action.payload;
+      const { data } = action.payload;
+      const chatTouchUser = state.get('chatTouchUser');
+      const list = state.get('chatMessageList');
+      let newList = list;
+      
+      if (chatTouchUser && ((chatTouchUser.im_account === data.from || chatTouchUser.im_account === data.to) ||
+          (chatTouchUser.im_account === im.getNick(data.from) || chatTouchUser.im_account === im.getNick(data.to)))
+        ) {
+        newList = [...list, data];
+      }
 
-      return state;
+      return state.set('chatMessageList', newList);
     }
     case LOAD_TOUCH_USER: {
       const { data } = action.payload;
 
       return state.set('chatTouchUser', data);
+    }
+    case LOAD_CLEAR_MESSAGE_CONTENT: {
+      const { doClear } = action.payload;
+
+      return state.set('clearChatContent', doClear);
     }
     default:
       return state;

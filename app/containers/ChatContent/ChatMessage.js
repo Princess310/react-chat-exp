@@ -21,6 +21,7 @@ import {
   makeSelectChatMessage,
   makeSelectCurrentUser,
   makeSelectTouchUser,
+  makeSelectClearChatMessage,
 } from './selectors';
 
 import Wrapper from './Wrapper';
@@ -41,7 +42,7 @@ const ChatWrapper = styled.div`
 
 export class ChatMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { messageList, currentUser, touchUser } = this.props;
+    const { messageList, currentUser, touchUser, clearChatMessage } = this.props;
     let userId = '';
 
     if (currentUser.id) {
@@ -72,7 +73,13 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
           {listView}
         </ContentWrapper>
         <ChatWrapper>
-          <ChatTool sendChatMessage={(content, summary) => this.props.sendChatMessage(touchUser.im_account, content, summary)} />
+          <ChatTool
+            clearMessage={clearChatMessage}
+            sendChatMessage={(content, summary) => {
+              this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summary);
+            }}
+            currentUser={currentUser}
+          />
         </ChatWrapper>
       </Wrapper>
     ) : null;
@@ -92,17 +99,19 @@ ChatMessage.propTypes = {
     PropTypes.bool,
   ]),
   sendChatMessage: PropTypes.func,
+  clearChatMessage: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   messageList: makeSelectChatMessage(),
   currentUser: makeSelectCurrentUser(),
   touchUser: makeSelectTouchUser(),
+  clearChatMessage: makeSelectClearChatMessage(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    sendChatMessage: (touid, content, summary) => dispatch(sendChatMessage(touid, content, summary)),
+    sendChatMessage: (userid, touid, content, summary) => dispatch(sendChatMessage(userid, touid, content, summary)),
   };
 }
 

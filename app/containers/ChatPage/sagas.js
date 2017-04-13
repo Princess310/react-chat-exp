@@ -16,6 +16,8 @@ import {
   loadMessageList,
   loadMessageListNextkey,
   loadTouchUser,
+  loadChatMessage,
+  clearChatMessage,
 } from './actions';
 
 export function* fetchUser() {
@@ -99,8 +101,33 @@ export function* fetchMessageList(action) {
 
 export function* sendMessage(action) {
   try {
-    const { touid, summary, content } = action.payload;
-    yield im.chat.sendCustomMsg(touid, JSON.stringify(content), summary);
+    const { userid, touid, summary, content } = action.payload;
+    const res = yield im.chat.sendCustomMsg(touid, JSON.stringify(content), summary);
+
+    if (res.code === im.statusCode.SUCCESS) {
+      const newMsg = {
+        from: userid,
+        to: touid,
+        msg: {
+          header: {
+            summary: summary,
+          },
+          customize: JSON.stringify(content),
+        },
+        time: (new Date()).getTime(),
+      };
+
+      yield put(loadChatMessage(newMsg));
+
+      // clear the chat message first
+      yield put(clearChatMessage(true));
+    }
+
+    // reset the store status
+    yield put(clearChatMessage(false));
+
+    // then refresh the message users info
+    yield fetchMessageUsers();
   } catch (err) {
     // console.log(err);
   }
@@ -110,9 +137,15 @@ export function* fetchTouchUser(action) {
   try {
     const res = yield request.doGet('interview/info', action.payload);
 
+    if (res.code === 200) {
+      yield put(clearChatMessage(true));
+    }
     const { data: { user } } = res;
 
     yield put(loadTouchUser(user));
+    yield put(clearChatMessage(false));
+    // add listener for chat message
+    yield im.chat.startListenMsg(user.im_account);
   } catch (err) {
     // console.log(err);
   }

@@ -26,8 +26,14 @@ const makeSelectCurrentUser = () => createSelector(
   (globalState) => globalState.get('currentUser')
 );
 
+const makeSelectTouchUser = () => createSelector(
+  selectChatPageDomain(),
+  (substate) => substate.get('chatTouchUser'),
+);
+
 export default makeSelectChatPage;
 export {
   selectChatPageDomain,
   makeSelectCurrentUser,
+  makeSelectTouchUser,
 };

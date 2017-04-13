@@ -14,6 +14,8 @@ import IconButton from 'material-ui/IconButton';
 import Overlay from 'material-ui/internal/Overlay';
 import { Picker } from 'emoji-mart';
 
+import oss from 'utils/oss';
+
 const HeaderWrapper = styled(FlexRow)`
   padding: 0 15px 0 0;
   height: 48px;
@@ -67,13 +69,54 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
   }
 
   handleSendMessage = () => {
-    const msg = this.editor.innerHTML;
-    const content = {
-      type: 'text',
-      value: msg,
-    };
+    let msg = this.editor.innerHTML;
+    const imgReg = /<img.*?(?:>|\/>)/gi;
+    const altReg = /alt=[\'\"]?([^\'\"]*)[\'\"]?/i;
 
+    const arr = msg.match(imgReg);
+    if (arr && arr.length > 0) {
+      for (const img of arr) {
+        msg = msg.replace(img, img.match(altReg)[1]);
+      }
+    }
+
+  const content = {
+    type: 'text',
+    value: msg,
+  };
     this.props.sendChatMessage(content, msg);
+  }
+
+  handleFileChange = (e) => {
+    const { id } = this.props.currentUser;
+    const file = e.target.files[0];
+
+    if (file) {
+      const { name, size } = file;
+
+      const path = oss.getFolderPath('avatar', id) + "__" + size + "__" + oss.getFileSuffix(name);
+
+      // upload file here
+      oss.multipartUpload(path, file).then((res) => {
+        const url =  oss.getImgDomain(oss.getFileDomain() + oss.getFilePath(res.name));
+        const img = new Image();
+
+        img.src = oss.getImgSuitablePath(url);
+        img.onload = () => {
+          const width = img.width;
+          const height = img.height;
+          const content = {
+            type: 'pic',
+            url,
+            width,
+            height,
+            size,
+          };
+
+          this.props.sendChatMessage(content, '[图片]');
+        };
+      });
+    }
   }
 
   handleKeyUp = (e) => {
@@ -143,6 +186,13 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
     this.handleTouchTapOverlay();
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { clearMessage } = nextProps;
+    if (clearMessage) {
+      this.editor.innerHTML = '';
+    }
+  }
+
   render() {
     return (
       <div>
@@ -150,7 +200,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
           <FlexRow>
             <ActionItem iconClassName="mdi mdi-emoticon" iconStyle={{ color: pallete.text.help }} onTouchTap={this.handleShowEmoji} />
             <div style={{ position: 'relative' }}>
-              <FileItem type="file" accept="image/jpg,image/jpeg,image/png,image/gif" />
+              <FileItem type="file" accept="image/jpg,image/jpeg,image/png,image/gif" onChange={this.handleFileChange} />
               <ActionItem iconClassName="mdi mdi-file" iconStyle={{ color: pallete.text.help }} />
             </div>
           </FlexRow>
@@ -195,6 +245,8 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
 
 ChatTool.propTypes = {
   sendChatMessage: PropTypes.func,
+  clearMessage: PropTypes.bool,
+  currentUser: PropTypes.object,
 };
 
 export default ChatTool;

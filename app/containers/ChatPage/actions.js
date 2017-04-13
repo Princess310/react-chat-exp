@@ -17,6 +17,7 @@ import {
   LOAD_TOUCH_USER,
   SEND_CHAT_MESSAGE,
   LOAD_CHAT_MESSAGE,
+  LOAD_CLEAR_MESSAGE_CONTENT,
 } from './constants';
 
 export function defaultAction() {
@@ -102,10 +103,11 @@ export function loadTouchUser(data) {
   };
 }
 
-export function sendChatMessage(touid, content, summary) {
+export function sendChatMessage(userid, touid, content, summary) {
   return {
     type: SEND_CHAT_MESSAGE,
     payload: {
+      userid,
       touid,
       content,
       summary,
@@ -118,6 +120,15 @@ export function loadChatMessage(data) {
     type: LOAD_CHAT_MESSAGE,
     payload: {
       data,
+    },
+  };
+}
+
+export function clearChatMessage(doClear) {
+  return {
+    type: LOAD_CLEAR_MESSAGE_CONTENT,
+    payload: {
+      doClear,
     },
   };
 }
