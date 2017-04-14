@@ -19,32 +19,54 @@ import { makeSelectChatMessageUsers } from './selectors';
 export class ChatPanelMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
     msgCount: 10,
+    tel: {
+      statusMine: ['请求交换电话已发送', '您同意了手机号的交换请求', '您拒绝了手机号的交换请求'],
+      statusTouch: ['我想和您交换联系方式，您是否同意？', '同意了您手机号的交换请求', '拒绝了您手机号的交换请求'],
+    },
+    yaoyue: {
+      statusMine: ['邀约邀请已发送', '您同意了邀约邀请', '您拒绝了邀约邀请', '您取消了邀约邀请'],
+      statusTouch: ['向您发起邀约', '同意了您的邀约邀请', '拒绝了您的邀约邀请', '取消了您的邀约邀请'],
+    }
   }
 
   render() {
     const { messageUsers, getMessageList, getTouchUser, getMessageUsers } = this.props;
-    const { msgCount } = this.state;
+    const { msgCount, tel, yaoyue } = this.state;
 
-    const listView = messageUsers ? messageUsers.map((user, key) => (
-      <ListItem
-        key={key}
-        leftAvatar={<Avatar src={user.avator} />}
-        rightIcon={user.msgCount ?
-          <Badge badgeContent={user.msgCount} secondary={true} />
-          : null
-        }
-        primaryText={user.nickname}
-        secondaryText={user.msg.header.summary}
-        onTouchTap={() => {
-          getTouchUser(user.id);
-          getMessageList(user.uid, '', msgCount);
+    const listView = messageUsers ? messageUsers.map((user, key) => {
+      const { msg } = user;
+      const { customize } = msg;
+      const { type, status, from } = JSON.parse(customize);
+      let summary = user.msg.header.summary;
 
-          im.chat.setReadState(user.im_account).then(() => {
-            getMessageUsers();
-          });
-        }}
-      />
-    )) : null;
+      // reset summary for tel and yaoyue msg
+      if (type === 'exchange-tel') {
+        summary = from === user.im_account ? tel.statusTouch[status] : tel.statusTouch[statusMine]
+      } else if (type === 'yaoyue') {
+        summary = from === user.im_account ? yaoyue.statusTouch[status] : yaoyue.statusTouch[statusMine]
+      }
+
+      return (
+        <ListItem
+          key={key}
+          leftAvatar={<Avatar src={user.avator} />}
+          rightIcon={user.msgCount ?
+            <Badge badgeContent={user.msgCount} secondary={true} />
+            : null
+          }
+          primaryText={user.nickname}
+          secondaryText={user.msg.header.summary}
+          onTouchTap={() => {
+            getTouchUser(user.id);
+            getMessageList(user.uid, '', msgCount);
+
+            im.chat.setReadState(user.im_account).then(() => {
+              getMessageUsers();
+            });
+          }}
+        />
+      )
+    }) : null;
     return (
       <List>
         {listView}

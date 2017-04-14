@@ -12,6 +12,9 @@ import autoprefixer from 'utils/autoprefixer';
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
 import ActionFooter from './ActionFooter';
+import CenterBubble from './CenterBubble';
+import TimeLine from './TimeLine';
+import CenterIconBubble from './CenterIconBubble';
 import { ItemWrapper } from './Wrapper';
 
 class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -20,52 +23,108 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
     statusTouch: ['我想和您交换联系方式，您是否同意？', '同意了您手机号的交换请求', '拒绝了您手机号的交换请求'],
   }
 
+  handleCancel = () => {
+    const { sendChatMessage, disAgreeChangeTel, currentUser } = this.props;
+
+    const summary = this.state.statusTouch[1];
+    const content = {
+      type: 'exchange-tel',
+      status: '2',
+      from: currentUser.im_account,
+    };
+
+    sendChatMessage(content, summary);
+    disAgreeChangeTel();
+  }
+
+  handleSave = () => {
+    const { sendChatMessage, agreeChangeTel, currentUser } = this.props;
+
+    const summary = this.state.statusTouch[1];
+    const content = {
+      type: 'exchange-tel',
+      status: '1',
+      from: currentUser.im_account,
+    };
+
+    sendChatMessage(content, summary);
+    agreeChangeTel();
+  }
+
   render() {
     const {
       avatar,
       direction,
       status,
+      touchUser,
+      msgTime,
     } = this.props;
 
     const title = direction === 'left' ?
       (this.state.statusTouch[status])
       : (this.state.statusMine[status]);
 
-    const avatarElement = (<Avatar src={avatar} />);
-    const ChatBubbleElement = (
-      <ChatBubble direction={direction} >
+    if (status === '0' && direction === 'left') {
+      const avatarElement = (<Avatar src={avatar} />);
+      const ChatBubbleElement = (
         <FlexColumn>
-          <header>{title}</header>
-          <ActionFooter
-            saveText="同意"
-            cancelText="取消"
-          />
+          <TimeLine time={msgTime} direction={direction} />
+          <ChatBubble direction={direction} >
+            <FlexColumn>
+              <header>{title}</header>
+              <ActionFooter
+                saveText="同意"
+                cancelText="取消"
+                onSave={this.handleSave}
+                onCancel={this.handleCancel}
+              />
+            </FlexColumn>
+          </ChatBubble>
         </FlexColumn>
-      </ChatBubble>
-    );
-    const justify = direction === 'left' ? 'flex-start' : 'flex-end';
+      );
+      const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 
-    const chatFragment = direction === 'left' ?
-    {
-      avatarElement,
-      ChatBubbleElement,
-    } :
-    {
-      ChatBubbleElement,
-      avatarElement,
-    };
+      const chatFragment = direction === 'left' ?
+      {
+        avatarElement,
+        ChatBubbleElement,
+      } :
+      {
+        ChatBubbleElement,
+        avatarElement,
+      };
 
-    const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({
-      justifyContent: justify,
-      width: '120px',
-    });
+      const chatElement = createChildFragment(chatFragment);
+      const inlineStyle = autoprefixer({
+        justifyContent: justify,
+      });
 
-    return (
-      <ItemWrapper style={inlineStyle}>
-        {chatElement}
-      </ItemWrapper>
-    );
+      return (
+        <ItemWrapper style={inlineStyle}>
+          {chatElement}
+        </ItemWrapper>
+      );
+    } else if (status === '1') {
+      return (
+        <FlexColumn>
+          <TimeLine time={msgTime} direction='center' />
+          <CenterIconBubble
+            iconClassName="mdi mdi-cellphone-iphone"
+          >
+            {`${touchUser.nickname}的手机号 ${touchUser.mobile}`}
+          </CenterIconBubble>
+        </FlexColumn>
+      );
+    } else {
+      return (
+        <FlexColumn>
+          <TimeLine time={msgTime} direction='center' />
+          <CenterBubble>
+            {title}
+          </CenterBubble>
+        </FlexColumn>
+      );
+    }
   }
 }
 

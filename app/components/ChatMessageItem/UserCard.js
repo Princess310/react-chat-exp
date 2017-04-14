@@ -13,6 +13,7 @@ import pallete from 'styles/colors';
 
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
+import TimeLine from './TimeLine';
 import { ItemWrapper } from './Wrapper';
 
 class UserCard extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -23,19 +24,23 @@ class UserCard extends React.PureComponent { // eslint-disable-line react/prefer
       title,
       content,
       pic,
+      msgTime,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
-      <ChatBubble direction={direction} >
-        <FlexColumn>
-          <header>{title}</header>
-          <FlexRow>
-            {pic && pic !== '' ? <img src={pic} role="presentation" style={{ width: '56px', height: '56px' }} /> : null}
-            <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help }}>{content}</section>
-          </FlexRow>
-        </FlexColumn>
-      </ChatBubble>
+      <FlexColumn>
+        <TimeLine time={msgTime} direction={direction} />
+        <ChatBubble direction={direction} >
+          <FlexColumn>
+            <header>{title}</header>
+            <FlexRow>
+              {pic && pic !== '' ? <img src={pic} role="presentation" style={{ width: '56px', height: '56px' }} /> : null}
+              <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help }}>{content}</section>
+            </FlexRow>
+          </FlexColumn>
+        </ChatBubble>
+      </FlexColumn>
     );
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 

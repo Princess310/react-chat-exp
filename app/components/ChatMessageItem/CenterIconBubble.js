@@ -5,6 +5,7 @@
 */
 
 import React, { PropTypes } from 'react';
+import FlexRow from 'components/FlexRow';
 import Paper from 'material-ui/Paper';
 import styled from 'styled-components';
 import pallete from 'styles/colors';
@@ -20,7 +21,7 @@ const Bubble = styled(Paper)`
   padding: 4px 15px;
 `;
 
-class CenterBubble extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
+class CenterIconBubble extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   static defaultProps = {
     style: {},
   }
@@ -29,21 +30,26 @@ class CenterBubble extends React.PureComponent { // eslint-disable-line react/pr
     const {
       children,
       style,
+      iconClassName,
     } = this.props;
 
     return (
       <Wrapper style={{ style }}>
-        <Bubble style={{ color: pallete.theme, backgroundColor: pallete.background.chatBubble, fontSize: '14px' }}>
-          {children}
+        <Bubble style={{ backgroundColor: pallete.white, fontSize: '14px' }}>
+          <FlexRow>
+            <span className={iconClassName} style={{ marginRight: '4px', color: pallete.theme }} />
+            <span>{children}</span>
+          </FlexRow>
         </Bubble>
       </Wrapper>
     );
   }
 }
 
-CenterBubble.propTypes = {
+CenterIconBubble.propTypes = {
   children: PropTypes.any,
   style: PropTypes.object,
+  iconClassName: PropTypes.string,
 };
 
-export default CenterBubble;
+export default CenterIconBubble;

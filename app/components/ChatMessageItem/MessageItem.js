@@ -5,11 +5,13 @@
 */
 
 import React, { PropTypes } from 'react';
+import FlexColumn from 'components/FlexColumn';
 import { createChildFragment } from 'utils/childUtils';
 import autoprefixer from 'utils/autoprefixer';
 
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
+import TimeLine from './TimeLine';
 import { ItemWrapper } from './Wrapper';
 
 class MessageItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -18,13 +20,17 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
       avatar,
       value,
       direction,
+      msgTime,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
-      <ChatBubble direction={direction} >
-        <pre dangerouslySetInnerHTML={{ __html: twemoji.parse(value) }} />
-      </ChatBubble>
+      <FlexColumn>
+        <TimeLine time={msgTime} direction={direction} />
+        <ChatBubble direction={direction} >
+          <pre dangerouslySetInnerHTML={{ __html: twemoji.parse(value) }} />
+        </ChatBubble>
+      </FlexColumn>
     );
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 

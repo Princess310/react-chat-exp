@@ -10,6 +10,10 @@ import {
   FETCH_MESSAGE_LIST,
   FETCH_TOUCH_USER,
   SEND_CHAT_MESSAGE,
+  DO_AGREE_EXCHANGE_TEL,
+  DO_DISAGREE_EXCHANGE_TEL,
+  DO_AGREE_INTERVIEW,
+  DO_DISAGREE_INTERVIEW,
 } from './constants';
 import {
   loadMessageUsers,
@@ -86,13 +90,12 @@ export function* fetchMessageUsers() {
 
 export function* fetchMessageList(action) {
   try {
-    yield put(loadMessageList([]));
     const { touid, nextkey, count } = action.payload;
     // Call our request helper (see 'utils/request')
     const res = yield im.chat.getHistory(im.getNick(touid), nextkey, count);
     const { msgs, nextKey } = res.data;
 
-    yield put(loadMessageList(msgs));
+    yield put(loadMessageList(msgs, nextkey));
     yield put(loadMessageListNextkey(nextKey));
   } catch (err) {
     // console.log(err);
@@ -151,6 +154,38 @@ export function* fetchTouchUser(action) {
   }
 }
 
+export function* agreeChangeTel(action) {
+  try {
+    const res = yield request.doPut('interview/disagree-exchange', action.payload);
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* disAgreeChangeTel(action) {
+  try {
+    const res = yield request.doPut('interview/agree-exchange', action.payload);
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* agreeInterview(action) {
+  try {
+    const res = yield request.doPut('interview/agree', action.payload);
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* disAgreeInterview(action) {
+  try {
+    const res = yield request.doPut('interview/refuse', action.payload);
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
 // Individual exports for testing
 export function* defaultSaga() {
   const watcher = yield takeLatest(FETCH_USER, fetchUser);
@@ -158,6 +193,10 @@ export function* defaultSaga() {
   const watcherMessageList = yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
   const watcherTouchUser = yield takeLatest(FETCH_TOUCH_USER, fetchTouchUser);
   const watcherSendMsg = yield takeLatest(SEND_CHAT_MESSAGE, sendMessage);
+  const watcherAgreeTel = yield takeLatest(DO_AGREE_EXCHANGE_TEL, agreeChangeTel);
+  const watcherDisAgreeTel = yield takeLatest(DO_DISAGREE_EXCHANGE_TEL, disAgreeChangeTel);
+  const watcherAgreeInterview = yield takeLatest(DO_AGREE_INTERVIEW, agreeInterview);
+  const watcherDisAgreeInterview = yield takeLatest(DO_DISAGREE_INTERVIEW, disAgreeInterview);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
@@ -165,6 +204,10 @@ export function* defaultSaga() {
   yield cancel(watcherMessageList);
   yield cancel(watcherTouchUser);
   yield cancel(watcherSendMsg);
+  yield cancel(watcherAgreeTel);
+  yield cancel(watcherDisAgreeTel);
+  yield cancel(watcherAgreeInterview);
+  yield cancel(watcherDisAgreeInterview);
 }
 
 // All sagas to be loaded

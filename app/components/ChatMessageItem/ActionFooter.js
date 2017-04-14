@@ -20,12 +20,14 @@ class ActionFooter extends React.PureComponent { // eslint-disable-line react/pr
     const {
       saveText,
       cancelText,
+      onSave,
+      onCancel,
     } = this.props;
 
     return (
       <FlexRow>
-        <ActionItem primary={true} label={saveText} />
-        <ActionItem secondary={true} label={cancelText} />
+        <ActionItem primary={true} label={saveText} onTouchTap={() => { onSave() }} />
+        <ActionItem secondary={true} label={cancelText} onTouchTap={() => { onCancel() }} />
       </FlexRow>
     );
   }
@@ -34,6 +36,8 @@ class ActionFooter extends React.PureComponent { // eslint-disable-line react/pr
 ActionFooter.propTypes = {
   saveText: PropTypes.string,
   cancelText: PropTypes.string,
+  onSave: PropTypes.func,
+  onCancel: PropTypes.func,
 };
 
 export default ActionFooter;

@@ -41,9 +41,14 @@ function chatPageReducer(state = initialState, action) {
       return state.set('chatMassageUsers', list);
     }
     case LOAD_MESSAGE_LIST: {
-      const { list } = action.payload;
+      const { list, nextkey } = action.payload;
+      const oldList = state.get('chatMessageList');
+      let newList = list.reverse();
+      if (nextkey !== '') {
+        newList = [...newList, ...oldList];
+      }
 
-      return state.set('chatMessageList', list.reverse());
+      return state.set('chatMessageList', newList);
     }
     case LOAD_MESSAGE_LIST_NEXTKEY: {
       const { nextkey } = action.payload;
@@ -55,7 +60,7 @@ function chatPageReducer(state = initialState, action) {
       const chatTouchUser = state.get('chatTouchUser');
       const list = state.get('chatMessageList');
       let newList = list;
-      
+
       if (chatTouchUser && ((chatTouchUser.im_account === data.from || chatTouchUser.im_account === data.to) ||
           (chatTouchUser.im_account === im.getNick(data.from) || chatTouchUser.im_account === im.getNick(data.to)))
         ) {

@@ -40,10 +40,16 @@ const makeSelectClearChatMessage = () => createSelector(
   (substate) => substate.get('clearChatContent'),
 );
 
+const makeSelectMessageNextkey = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatMessageNextkey'),
+);
+
 export {
   makeSelectChatTab,
   makeSelectChatMessage,
   makeSelectCurrentUser,
   makeSelectTouchUser,
   makeSelectClearChatMessage,
+  makeSelectMessageNextkey,
 };

@@ -14,6 +14,8 @@ import pallete from 'styles/colors';
 
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
+import CenterBubble from './CenterBubble';
+import TimeLine from './TimeLine';
 import ActionFooter from './ActionFooter';
 import { ItemWrapper } from './Wrapper';
 
@@ -33,6 +35,40 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
     statusTouch: ['向您发起邀约', '同意了您的邀约邀请', '拒绝了您的邀约邀请', '取消了您的邀约邀请'],
   }
 
+  handleSave = () => {
+    const { id, address, date, remark, agreeInterview, currentUser, sendChatMessage } = this.props;
+
+    const summary = this.state.statusTouch[1];
+    const content = {
+      type: 'yaoyue',
+      status: '1',
+      address,
+      date,
+      remark,
+      from: currentUser.im_account,
+    };
+
+    sendChatMessage(content, summary);
+    agreeInterview(id);
+  }
+
+  handleCancel = () => {
+    const { id, address, date, remark, disAgreeInterview, currentUser, sendChatMessage } = this.props;
+
+    const summary = this.state.statusTouch[1];
+    const content = {
+      type: 'yaoyue',
+      status: '2',
+      address,
+      date,
+      remark,
+      from: currentUser.im_account,
+    };
+
+    sendChatMessage(content, summary);
+    disAgreeInterview(id);
+  }
+
   render() {
     const {
       direction,
@@ -42,61 +78,79 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
       date,
       remark,
       touchUser,
+      msgTime,
     } = this.props;
 
     const title = direction === 'left' ?
       (touchUser.nickname + this.state.statusTouch[status])
       : (this.state.statusMine[status]);
 
-    const avatarElement = (<Avatar src={avatar} />);
-    const ChatBubbleElement = (
-      <ChatBubble direction={direction} >
+    if (status === '0') {
+      const avatarElement = (<Avatar src={avatar} />);
+      const ChatBubbleElement = (
         <FlexColumn>
-          <header>{title}</header>
-          <FlexRow>
-            <span>面谈地点</span>
-            <SectionWrapper>{address}</SectionWrapper>
-            <span className="mdi mdi-map-marker" style={{ color: pallete.theme }} />
-          </FlexRow>
-          <FlexRow>
-            <span>面谈时间</span>
-            <SectionWrapper>{date}</SectionWrapper>
-          </FlexRow>
-          <FlexRow>
-            <span>面谈事项</span>
-            <SectionWrapper>{remark}</SectionWrapper>
-          </FlexRow>
-          <ActionFooter
-            saveText="同意"
-            cancelText="忽略"
-          />
+          <TimeLine time={msgTime} direction={direction} />
+          <ChatBubble direction={direction} >
+            <FlexColumn>
+              <header>{title}</header>
+              <FlexRow>
+                <span>面谈地点</span>
+                <SectionWrapper>{address}</SectionWrapper>
+                <span className="mdi mdi-map-marker" style={{ color: pallete.theme }} />
+              </FlexRow>
+              <FlexRow>
+                <span>面谈时间</span>
+                <SectionWrapper>{date}</SectionWrapper>
+              </FlexRow>
+              <FlexRow>
+                <span>面谈事项</span>
+                <SectionWrapper>{remark}</SectionWrapper>
+              </FlexRow>
+              {direction === 'left' && <ActionFooter
+                saveText="同意"
+                cancelText="忽略"
+                onSave={this.handleSave}
+                onCancel={this.handleCancel}
+              />}
+            </FlexColumn>
+          </ChatBubble>
         </FlexColumn>
-      </ChatBubble>
-    );
-    const justify = direction === 'left' ? 'flex-start' : 'flex-end';
+      );
+      const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 
-    const chatFragment = direction === 'left' ?
-    {
-      avatarElement,
-      ChatBubbleElement,
-    } :
-    {
-      ChatBubbleElement,
-      avatarElement,
-    };
+      const chatFragment = direction === 'left' ?
+      {
+        avatarElement,
+        ChatBubbleElement,
+      } :
+      {
+        ChatBubbleElement,
+        avatarElement,
+      };
 
-    const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({ justifyContent: justify });
+      const chatElement = createChildFragment(chatFragment);
+      const inlineStyle = autoprefixer({ justifyContent: justify });
 
-    return (
-      <ItemWrapper style={inlineStyle}>
-        {chatElement}
-      </ItemWrapper>
-    );
+      return (
+        <ItemWrapper style={inlineStyle}>
+          {chatElement}
+        </ItemWrapper>
+      );
+    } else {
+      return (
+        <FlexColumn>
+          <TimeLine time={msgTime} direction='center' />
+          <CenterBubble>
+            {title}
+          </CenterBubble>
+        </FlexColumn>
+      )
+    }
   }
 }
 
 YaoyueItem.propTypes = {
+  id: PropTypes.string,
   direction: PropTypes.string,
   avatar: PropTypes.string,
   status: PropTypes.string,

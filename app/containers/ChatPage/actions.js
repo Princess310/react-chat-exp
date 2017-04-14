@@ -18,6 +18,10 @@ import {
   SEND_CHAT_MESSAGE,
   LOAD_CHAT_MESSAGE,
   LOAD_CLEAR_MESSAGE_CONTENT,
+  DO_AGREE_EXCHANGE_TEL,
+  DO_DISAGREE_EXCHANGE_TEL,
+  DO_AGREE_INTERVIEW,
+  DO_DISAGREE_INTERVIEW,
 } from './constants';
 
 export function defaultAction() {
@@ -67,11 +71,12 @@ export function fetchMessageList(touid, nextkey, count) {
   };
 }
 
-export function loadMessageList(list) {
+export function loadMessageList(list, nextkey) {
   return {
     type: LOAD_MESSAGE_LIST,
     payload: {
       list,
+      nextkey,
     },
   };
 }
@@ -129,6 +134,44 @@ export function clearChatMessage(doClear) {
     type: LOAD_CLEAR_MESSAGE_CONTENT,
     payload: {
       doClear,
+    },
+  };
+}
+
+export function agreeChangeTel(uid) {
+  return {
+    type: DO_AGREE_EXCHANGE_TEL,
+    payload: {
+      to_uid: uid,
+    },
+  };
+}
+
+export function disAgreeChangeTel(uid) {
+  return {
+    type: DO_DISAGREE_EXCHANGE_TEL,
+    payload: {
+      to_uid: uid,
+    },
+  };
+}
+
+export function agreeInterview(uid, id) {
+  return {
+    type: DO_AGREE_INTERVIEW,
+    payload: {
+      to_uid: uid,
+      interview_id: id,
+    },
+  };
+}
+
+export function disAgreeInterview(uid, id) {
+  return {
+    type: DO_DISAGREE_INTERVIEW,
+    payload: {
+      to_uid: uid,
+      interview_id: id,
     },
   };
 }

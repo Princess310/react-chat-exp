@@ -80,10 +80,10 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
       }
     }
 
-  const content = {
-    type: 'text',
-    value: msg,
-  };
+    const content = {
+      type: 'text',
+      value: msg,
+    };
     this.props.sendChatMessage(content, msg);
   }
 
@@ -119,7 +119,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
     }
   }
 
-  handleKeyUp = (e) => {
+  handleKeyDown = (e) => {
     if (e.keyCode === 13 && e.ctrlKey) {
       this.handleSendMessage();
     }
@@ -234,7 +234,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
         <pre
           className="chat-editor"
           contentEditable="plaintext-only"
-          onKeyUp={this.handleKeyUp}
+          onKeyDown={this.handleKeyDown}
           onClick={() => { this.saveSelection(); }}
           ref={(r) => { this.editor = r; }}
         />

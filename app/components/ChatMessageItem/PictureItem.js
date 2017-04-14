@@ -8,8 +8,10 @@ import React, { PropTypes } from 'react';
 import { createChildFragment } from 'utils/childUtils';
 import autoprefixer from 'utils/autoprefixer';
 
+import FlexColumn from 'components/FlexColumn';
 import Avatar from 'material-ui/Avatar';
 import ChatBubble from './ChatBubble';
+import TimeLine from './TimeLine';
 import { ItemWrapper } from './Wrapper';
 
 class PictureItem extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -18,13 +20,17 @@ class PictureItem extends React.PureComponent { // eslint-disable-line react/pre
       avatar,
       url,
       direction,
+      msgTime,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
-      <ChatBubble direction={direction} >
-        <img src={url} role="presentation" style={{ width: '200px', height: '200px' }} />
-      </ChatBubble>
+      <FlexColumn>
+        <TimeLine time={msgTime} direction={direction} />
+        <ChatBubble direction={direction} >
+          <img src={url} role="presentation" style={{ width: '200px', height: '200px' }} />
+        </ChatBubble>
+      </FlexColumn>
     );
     const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 
