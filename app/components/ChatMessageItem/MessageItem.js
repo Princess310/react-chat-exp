@@ -24,15 +24,17 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
+    const justify = direction === 'left' ? 'flex-start' : 'flex-end';
+    const alignStyle = autoprefixer({ alignItems: justify });
+    const inlineStyle = autoprefixer({ justifyContent: justify });
     const ChatBubbleElement = (
-      <FlexColumn>
+      <FlexColumn style={alignStyle}>
         <TimeLine time={msgTime} direction={direction} />
         <ChatBubble direction={direction} >
           <pre dangerouslySetInnerHTML={{ __html: twemoji.parse(value) }} />
         </ChatBubble>
       </FlexColumn>
     );
-    const justify = direction === 'left' ? 'flex-start' : 'flex-end';
 
     const chatFragment = direction === 'left' ?
     {
@@ -45,7 +47,6 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
     };
 
     const chatElement = createChildFragment(chatFragment);
-    const inlineStyle = autoprefixer({ justifyContent: justify });
     return (
       <ItemWrapper style={inlineStyle}>
         {chatElement}
