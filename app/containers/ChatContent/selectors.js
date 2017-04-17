@@ -45,6 +45,21 @@ const makeSelectMessageNextkey = () => createSelector(
   (substate) => substate.get('chatMessageNextkey'),
 );
 
+const makeSelectTouchGroup = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTouchGroup'),
+);
+
+const makeSelectChatGroupMessage = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatGroupMessageList'),
+);
+
+const makeSelectGroupNextkey = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatGroupMessageNextkey'),
+);
+
 export {
   makeSelectChatTab,
   makeSelectChatMessage,
@@ -52,4 +67,7 @@ export {
   makeSelectTouchUser,
   makeSelectClearChatMessage,
   makeSelectMessageNextkey,
+  makeSelectTouchGroup,
+  makeSelectChatGroupMessage,
+  makeSelectGroupNextkey,
 };

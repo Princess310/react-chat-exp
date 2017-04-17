@@ -15,22 +15,20 @@ import ChatMessageItem from 'components/ChatMessageItem';
 import ChatTool from 'components/ChatTool';
 import ChatLoadMore from 'components/ChatLoadMore';
 import styled from 'styled-components';
+import { Base64 } from 'js-base64';
 
 import {
-  sendChatMessage,
-  fetchMessageList,
-  agreeChangeTel,
-  disAgreeChangeTel,
-  agreeInterview,
-  disAgreeInterview,
+  fetchGroupMessageList,
+  sendChatGroupMessage,
+  fetchMessageGroups,
 } from 'containers/ChatPage/actions';
 
 import {
-  makeSelectChatMessage,
+  makeSelectChatGroupMessage,
   makeSelectCurrentUser,
-  makeSelectTouchUser,
+  makeSelectTouchGroup,
   makeSelectClearChatMessage,
-  makeSelectMessageNextkey,
+  makeSelectGroupNextkey,
 } from './selectors';
 
 import Wrapper from './Wrapper';
@@ -50,13 +48,13 @@ const ChatWrapper = styled.div`
   height: 152px;
 `;
 
-export class ChatMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
+export class ChatGroupMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
     msgCount: 10,
   }
 
   render() {
-    const { messageList, currentUser, touchUser, clearChatMessage } = this.props;
+    const { messageList, currentUser, touchGroup, clearChatMessage } = this.props;
     let userId = '';
 
     if (currentUser.id) {
@@ -69,42 +67,32 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
       const { customize } = msgInfo.msg;
       const msg = JSON.parse(customize);
       const direction = (userId === im.getNick(msgInfo.from) ? 'right' : 'left');
-      const avatar = (userId === im.getNick(msgInfo.from) ? currentUser.avatar : touchUser.avatar);
+      const avatar = msg.head;
+
+      // base 64 decode
+      if (msg.type === 'text') {
+        msg.value = Base64.decode(msg.value);
+      }
 
       return (<ChatMessageItem
         key={index}
         direction={direction}
         avatar={avatar}
-        touchUser={touchUser}
+        touchGroup={touchGroup}
         currentUser={currentUser}
         msgTime={time}
-        sendChatMessage={(content, summary) => {
-          this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summary);
-        }}
-        agreeChangeTel={() => {
-          this.props.doAgreeChangeTel(touchUser.id);
-        }}
-        disAgreeChangeTel={() => {
-          this.props.doDisAgreeChangeTel(touchUser.id);
-        }}
-        agreeInterview={(id) => {
-          this.props.doAgreeInterview(touchUser.id, id);
-        }}
-        disAgreeInterview={(id) => {
-          this.props.doDisAgreeInterview(touchUser.id, id);
-        }}
         {...msg}
       />);
     }) : null;
 
-    const contentView = touchUser ?
+    const contentView = touchGroup ?
     (
       <Wrapper>
-        <ChatHeader title={touchUser ? touchUser.nickname : ''} />
+        <ChatHeader title={touchGroup ? touchGroup.name : ''} />
         <ContentWrapper>
           <ChatLoadMore
             onLoad={() => {
-              this.props.getMessageList(touchUser.im_account, this.props.nextKey, this.state.msgCount);
+              this.props.getMessageList(touchGroup.tid, this.props.nextKey, this.state.msgCount);
             }}
             visible = { this.props.nextKey !== '' ? true : false }
           />
@@ -114,9 +102,13 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
           <ChatTool
             clearMessage={clearChatMessage}
             sendChatMessage={(content, summary) => {
-              this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summary);
+              content.value = Base64.encode(content.value);
+              content.name = currentUser.nickname;
+              content.head = currentUser.avatar;
+              content.role = touchGroup.role;
+              this.props.sendChatMessage(currentUser.im_account, touchGroup.tid, content, summary);
             }}
-            currentUser={currentUser}
+            currentUser={touchGroup}
           />
         </ChatWrapper>
       </Wrapper>
@@ -126,13 +118,13 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
   }
 }
 
-ChatMessage.propTypes = {
+ChatGroupMessage.propTypes = {
   messageList: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.bool,
   ]),
   currentUser: PropTypes.object,
-  touchUser: PropTypes.oneOfType([
+  touchGroup: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.bool,
   ]),
@@ -140,29 +132,23 @@ ChatMessage.propTypes = {
   clearChatMessage: PropTypes.bool,
   nextKey: PropTypes.string,
   getMessageList: PropTypes.func,
-  doAgreeChangeTel: PropTypes.func,
-  doDisAgreeChangeTel: PropTypes.func,
-  doAgreeInterview: PropTypes.func,
-  doDisAgreeInterview: PropTypes.func,
+  getMessageGroups: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
-  messageList: makeSelectChatMessage(),
+  messageList: makeSelectChatGroupMessage(),
   currentUser: makeSelectCurrentUser(),
-  touchUser: makeSelectTouchUser(),
+  touchGroup: makeSelectTouchGroup(),
   clearChatMessage: makeSelectClearChatMessage(),
-  nextKey: makeSelectMessageNextkey(),
+  nextKey: makeSelectGroupNextkey(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    sendChatMessage: (userid, touid, content, summary) => dispatch(sendChatMessage(userid, touid, content, summary)),
-    getMessageList: (touid, nextkey, count) => dispatch(fetchMessageList(touid, nextkey, count)),
-    doAgreeChangeTel: (uid) => dispatch(agreeChangeTel(uid)),
-    doDisAgreeChangeTel: (uid) => dispatch(disAgreeChangeTel(uid)),
-    doAgreeInterview: (uid, id) => dispatch(agreeInterview(uid, id)),
-    doDisAgreeInterview: (uid, id) => dispatch(disAgreeInterview(uid, id)),
+    sendChatMessage: (userid, tid, content, summary) => dispatch(sendChatGroupMessage(userid, tid, content, summary)),
+    getMessageList: (touid, nextkey, count) => dispatch(fetchGroupMessageList(touid, nextkey, count)),
+    getMessageGroups: () => dispatch(fetchMessageGroups()),
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChatMessage);
+export default connect(mapStateToProps, mapDispatchToProps)(ChatGroupMessage);

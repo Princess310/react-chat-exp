@@ -31,8 +31,26 @@ const makeSelectChatMessageUsers = () => createSelector(
   (substate) => substate.get('chatMassageUsers')
 );
 
+const makeSelectChatMessageGroups = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatMessageGroups')
+);
+
+const makeSelectTouchUser = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTouchUser'),
+);
+
+const makeSelectTouchGroup = () => createSelector(
+  selectChat,
+  (substate) => substate.get('chatTouchGroup'),
+);
+
 export default makeSelectCurrentUser;
 export {
   makeSelectChatTab,
   makeSelectChatMessageUsers,
+  makeSelectChatMessageGroups,
+  makeSelectTouchUser,
+  makeSelectTouchGroup,
 };

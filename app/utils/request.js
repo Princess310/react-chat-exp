@@ -1,6 +1,7 @@
 import 'whatwg-fetch';
 
 const API_ROOT = 'https://jkhz-test.alijian.net/index.php?r=';
+const WEB_ROOT = 'http://wap-jkhz-test.alijian.net/';
 
 const fetchDao = {
   doGet(url, params) {
@@ -21,6 +22,10 @@ const fetchDao = {
 
   doUploadFile(url, params) {
     return this.request('POST', url, params, true);
+  },
+
+  getWebRoot() {
+    return WEB_ROOT;
   },
 
   paramsParse(params) {

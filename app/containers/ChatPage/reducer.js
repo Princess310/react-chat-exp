@@ -15,6 +15,11 @@ import {
   LOAD_TOUCH_USER,
   LOAD_CHAT_MESSAGE,
   LOAD_CLEAR_MESSAGE_CONTENT,
+  LOAD_MESSAGE_GROUPS,
+  LOAD_GROUP_MESSAGE_LIST,
+  LOAD_GROUP_MESSAGE_LIST_NEXTKEY,
+  LOAD_TOUCH_GROUP,
+  LOAD_CHAT_GROUP_MESSAGE,
 } from './constants';
 
 const initialState = fromJS({
@@ -24,6 +29,10 @@ const initialState = fromJS({
   chatMessageNextkey: '',
   chatTouchUser: false,
   clearChatContent: false,
+  chatMessageGroups: false,
+  chatGroupMessageList: false,
+  chatGroupMessageNextkey: '',
+  chatTouchGroup: false,
 });
 
 function chatPageReducer(state = initialState, action) {
@@ -78,6 +87,43 @@ function chatPageReducer(state = initialState, action) {
       const { doClear } = action.payload;
 
       return state.set('clearChatContent', doClear);
+    }
+    case LOAD_MESSAGE_GROUPS: {
+      const { list } = action.payload;
+
+      return state.set('chatMessageGroups', list);
+    }
+    case LOAD_GROUP_MESSAGE_LIST: {
+      const { list, nextkey } = action.payload;
+      const oldList = state.get('chatGroupMessageList');
+      let newList = list.reverse();
+      if (nextkey !== '') {
+        newList = [...newList, ...oldList];
+      }
+
+      return state.set('chatGroupMessageList', newList);
+    }
+    case LOAD_GROUP_MESSAGE_LIST_NEXTKEY: {
+      const { nextkey } = action.payload;
+
+      return state.set('chatGroupMessageNextkey', nextkey);
+    }
+    case LOAD_TOUCH_GROUP: {
+      const { data } = action.payload;
+
+      return state.set('chatTouchGroup', data);
+    }
+    case LOAD_CHAT_GROUP_MESSAGE: {
+      const { data } = action.payload;
+      const chatTouchGroup = state.get('chatTouchGroup');
+      const list = state.get('chatGroupMessageList');
+      let newList = list;
+
+      if (chatTouchGroup && ((chatTouchGroup.tid === data.tid))) {
+        newList = [...list, data];
+      }
+
+      return state.set('chatGroupMessageList', newList);
     }
     default:
       return state;

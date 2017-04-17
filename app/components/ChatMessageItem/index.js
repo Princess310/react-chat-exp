@@ -54,7 +54,7 @@ class ChatMessage extends React.PureComponent { // eslint-disable-line react/pre
         itemView = (<PictureItem {...other} />);
         break;
       default:
-        itemView = (<CenterBubble>other</CenterBubble>);
+        itemView = null;
     }
 
     return (

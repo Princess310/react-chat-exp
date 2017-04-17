@@ -14,7 +14,7 @@ import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import Badge from 'material-ui/Badge';
 
-import { makeSelectChatMessageUsers } from './selectors';
+import { makeSelectChatMessageUsers, makeSelectTouchUser } from './selectors';
 
 export class ChatPanelMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -30,13 +30,14 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    const { messageUsers, getMessageList, getTouchUser, getMessageUsers } = this.props;
+    const { messageUsers, getMessageList, getTouchUser, getMessageUsers, touchUser } = this.props;
     const { msgCount, tel, yaoyue } = this.state;
 
     const listView = messageUsers ? messageUsers.map((user, key) => {
       const { msg } = user;
       const { customize } = msg;
       const { type, status, from } = JSON.parse(customize);
+      const itemStyle = {};
       let summary = user.msg.header.summary;
 
       // reset summary for tel and yaoyue msg
@@ -44,6 +45,11 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
         summary = from === user.im_account ? tel.statusTouch[status] : tel.statusTouch[statusMine]
       } else if (type === 'yaoyue') {
         summary = from === user.im_account ? yaoyue.statusTouch[status] : yaoyue.statusTouch[statusMine]
+      }
+
+      // set active style for touch user
+      if (touchUser && (touchUser.id === user.id)) {
+        itemStyle['backgroundColor'] = 'rgba(0, 0, 0, 0.125)';
       }
 
       return (
@@ -56,6 +62,7 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
           }
           primaryText={user.nickname}
           secondaryText={user.msg.header.summary}
+          style={itemStyle}
           onTouchTap={() => {
             getTouchUser(user.id);
             getMessageList(user.uid, '', msgCount);
@@ -65,7 +72,7 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
             });
           }}
         />
-      )
+      );
     }) : null;
     return (
       <List>
@@ -83,10 +90,15 @@ ChatPanelMessage.propTypes = {
   getMessageList: PropTypes.func,
   getTouchUser: PropTypes.func,
   getMessageUsers: PropTypes.func,
+  touchUser: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({
   messageUsers: makeSelectChatMessageUsers(),
+  touchUser: makeSelectTouchUser(),
 });
 
 function mapDispatchToProps(dispatch) {

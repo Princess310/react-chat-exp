@@ -9,6 +9,7 @@ import { chageTab } from 'containers/ChatPage/actions';
 
 import { makeSelectChatTab } from './selectors';
 import ChatPanelMessage from './ChatPanelMessage';
+import ChatPanelGroup from './ChatPanelGroup';
 
 const TabWrapper = styled.div`
   height: 472px;
@@ -33,11 +34,14 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
       case 'message':
         selectTab = 0;
         break;
-      case 'business':
+      case 'group':
         selectTab = 1;
         break;
-      case 'contact':
+      case 'business':
         selectTab = 2;
+        break;
+      case 'contact':
+        selectTab = 3;
         break;
       default:
         selectTab = 0;
@@ -54,6 +58,14 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
         >
           <TabWrapper>
             <ChatPanelMessage />
+          </TabWrapper>
+        </Tab>
+        <Tab
+          icon={<span className="mdi mdi-comment-multiple-outline" />}
+          onActive={() => this.props.chageTab('group')}
+        >
+          <TabWrapper>
+            <ChatPanelGroup />
           </TabWrapper>
         </Tab>
         <Tab

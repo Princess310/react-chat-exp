@@ -52,8 +52,13 @@ injectGlobal`
   .chat-editor:focus {
     outline: transparent;
   }
+
   .chat-editor:hover {
     cursor: text;
+  }
+
+  iframe {
+    border: none;
   }
 
   .grid-system{

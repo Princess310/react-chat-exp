@@ -11,6 +11,7 @@ import { makeSelectChatTab } from './selectors';
 
 import Wrapper from './Wrapper';
 import ChatMessage from './ChatMessage';
+import ChatGroupMessage from './ChatGroupMessage';
 import ChatBusiness from './ChatBusiness';
 import ChatContact from './ChatContact';
 
@@ -23,6 +24,11 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
       case 'message':
         chatView = (
           <ChatMessage />
+        );
+        break;
+      case 'group':
+        chatView = (
+          <ChatGroupMessage />
         );
         break;
       case 'business':

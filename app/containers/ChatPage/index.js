@@ -15,23 +15,35 @@ import ChatContent from 'containers/ChatContent';
 
 import makeSelectChatPage, { makeSelectCurrentUser, makeSelectTouchUser } from './selectors';
 import Wrapper, { Container } from './Wrapper';
-import { fetchUser, fetchMessageUsers, loadChatMessage } from './actions';
+import {
+  fetchUser,
+  fetchMessageUsers,
+  loadChatMessage,
+  fetchMessageGroups,
+  loadChatGroupMessage,
+} from './actions';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    const { currentUser, getUser, getMessageUsers } = this.props;
+    const { currentUser, getUser, getMessageUsers, getMessageGroups } = this.props;
 
     if (!currentUser.id) {
       getUser();
     } else {
       getMessageUsers();
+      getMessageGroups();
+
+      // start im listen task
+      im.startListenAllMsg();
     }
 
     this.handleListenMessage();
   }
 
   handleListenMessage() {
-    const { getMessageUsers, setChatMessage } = this.props;
+    const { getMessageUsers, setChatMessage, setChatGroupMessage, getMessageGroups } = this.props;
+
+    // single chat
     im.chat.recieveMsg((res) => {
       const { touchUser } = this.props;
       const { data } = res;
@@ -43,6 +55,19 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
         im.chat.setReadState(touchUser.im_account).then(() => {
           getMessageUsers();
         });
+      }
+    });
+
+    // tribe chat
+    im.tribe.recieveMsg((res) => {
+      const { touchUser } = this.props;
+      const { data } = res;
+      const { msgs, touid } = data;
+
+      for (const msg of msgs) {
+        msg.tid = touid;
+        setChatGroupMessage(msg);
+        getMessageGroups();
       }
     });
   }
@@ -73,7 +98,9 @@ ChatPage.propTypes = {
   ]),
   getUser: PropTypes.func,
   getMessageUsers: PropTypes.func,
-  loadChatMessage: PropTypes.func,
+  getMessageGroups: PropTypes.func,
+  setChatMessage: PropTypes.func,
+  setChatGroupMessage: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -87,6 +114,8 @@ function mapDispatchToProps(dispatch) {
     getUser: () => dispatch(fetchUser()),
     getMessageUsers: () => dispatch(fetchMessageUsers()),
     setChatMessage: (data) => dispatch(loadChatMessage(data)),
+    getMessageGroups: () => dispatch(fetchMessageGroups()),
+    setChatGroupMessage: (data) => dispatch(loadChatGroupMessage(data)),
   };
 }
 

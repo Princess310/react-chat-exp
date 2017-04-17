@@ -12,6 +12,13 @@ const ItemWrapper = styled.div`
   margin-bottom: 15px;
 `;
 
+const TouchWrapper = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export {
   ItemWrapper,
+  TouchWrapper,
 };

@@ -14,6 +14,9 @@ import {
   DO_DISAGREE_EXCHANGE_TEL,
   DO_AGREE_INTERVIEW,
   DO_DISAGREE_INTERVIEW,
+  FETCH_MESSAGE_GROUPS,
+  FETCH_GROUP_MESSAGE_LIST,
+  SEND_CHAT_GROUP_MESSAGE,
 } from './constants';
 import {
   loadMessageUsers,
@@ -22,6 +25,10 @@ import {
   loadTouchUser,
   loadChatMessage,
   clearChatMessage,
+  loadMessageGroups,
+  loadGroupMessageList,
+  loadGroupMessageListNextkey,
+  loadChatGroupMessage,
 } from './actions';
 
 export function* fetchUser() {
@@ -32,6 +39,10 @@ export function* fetchUser() {
     yield put(loadUser(res.data));
     yield im.login(res.data.chat.userid, res.data.chat.password);
     yield fetchMessageUsers();
+    yield fetchMessageGroups();
+
+    // start im listen task
+    im.startListenAllMsg();
   } catch (err) {
     // console.log(err);
   }
@@ -147,8 +158,6 @@ export function* fetchTouchUser(action) {
 
     yield put(loadTouchUser(user));
     yield put(clearChatMessage(false));
-    // add listener for chat message
-    yield im.chat.startListenMsg(user.im_account);
   } catch (err) {
     // console.log(err);
   }
@@ -186,6 +195,100 @@ export function* disAgreeInterview(action) {
   }
 }
 
+export function* fetchMessageGroups() {
+  try {
+    const res = yield im.tribe.getTribeList();
+    const { data } = res;
+    const resultList = [];
+
+    // fetch groups infos
+    const groupsList = yield request.doGet('group/lists', { list_type: 4 });
+    const { list } = groupsList;
+
+    // store result list
+    for (const t of data) {
+      for (const group of list) {
+        if (t.tid === +group.im_group_id) {
+          resultList.push(Object.assign(t, group));
+          break;
+        }
+      }
+    }
+
+    // fetch unread msg count
+    const countData = yield im.getUnreadMsgCount(20);
+    const countList = countData.data;
+    for (const count of countList) {
+      const userId = im.getNick(count.contact);
+
+      for (const g of resultList) {
+        if ((im.getGroupPreFix() + g.tid) === userId) {
+          g.msgCount = count.msgCount;
+        }
+      }
+    }
+
+    yield put(loadMessageGroups(resultList));
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* fetchGroupMessageList(action) {
+  try {
+    const { tid, nextkey, count } = action.payload;
+    // Call our request helper (see 'utils/request')
+    const res = yield im.tribe.getHistory(tid, nextkey, count);
+    const { msgs, nextKey } = res.data;
+
+    yield put(loadGroupMessageList(msgs, nextkey));
+    yield put(loadGroupMessageListNextkey(nextKey));
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* sendGroupMessage(action) {
+  try {
+    const { userid, tid, summary, content } = action.payload;
+    const msgInfo = {
+      header: {
+        summary: summary,
+      },
+      customize: JSON.stringify(content),
+    };
+    const res = yield im.tribe.sendMsg(tid, JSON.stringify(msgInfo), summary);
+
+    if (res.code === im.statusCode.SUCCESS) {
+      const newMsg = {
+        from: userid,
+        to: tid,
+        tid: tid,
+        msg: {
+          header: {
+            summary: summary,
+          },
+          customize: JSON.stringify(content),
+        },
+        time: (new Date()).getTime(),
+      };
+
+      yield put(loadChatGroupMessage(newMsg));
+
+      // clear the chat message first
+      yield put(clearChatMessage(true));
+    }
+
+    // reset the store status
+    yield put(clearChatMessage(false));
+
+    // then refresh the message users info
+    // yield fetchMessageUsers();
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
 // Individual exports for testing
 export function* defaultSaga() {
   const watcher = yield takeLatest(FETCH_USER, fetchUser);
@@ -197,6 +300,9 @@ export function* defaultSaga() {
   const watcherDisAgreeTel = yield takeLatest(DO_DISAGREE_EXCHANGE_TEL, disAgreeChangeTel);
   const watcherAgreeInterview = yield takeLatest(DO_AGREE_INTERVIEW, agreeInterview);
   const watcherDisAgreeInterview = yield takeLatest(DO_DISAGREE_INTERVIEW, disAgreeInterview);
+  const watcherMessageGroups = yield takeLatest(FETCH_MESSAGE_GROUPS, fetchMessageGroups);
+  const wactherGroupMessageList = yield takeLatest(FETCH_GROUP_MESSAGE_LIST, fetchGroupMessageList);
+  const wactherSendGroupMsg = yield takeLatest(SEND_CHAT_GROUP_MESSAGE, sendGroupMessage);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
@@ -208,6 +314,9 @@ export function* defaultSaga() {
   yield cancel(watcherDisAgreeTel);
   yield cancel(watcherAgreeInterview);
   yield cancel(watcherDisAgreeInterview);
+  yield cancel(watcherMessageGroups);
+  yield cancel(wactherGroupMessageList);
+  yield cancel(wactherSendGroupMsg);
 }
 
 // All sagas to be loaded

@@ -1,6 +1,7 @@
 const sdk = new WSDK();
 const APP_KEY = 23354047;
 const SYS_NAME = 'system';
+const GROUP_PREFIX = 'chntribe';
 
 const im = {
   statusCode: {
@@ -21,6 +22,7 @@ const im = {
     PASSWORD_ERROR: 1014,
   },
   getSysName: () => SYS_NAME,
+  getGroupPreFix: () => GROUP_PREFIX,
   getNick: (luid) => sdk.Base.getNick(luid),
   destroy: () => {
     sdk.Base.destroy();
@@ -101,6 +103,7 @@ const im = {
         },
         error: (error) => {
           reject(error);
+          console.log('err', console.error);
         },
       });
     })),
@@ -162,11 +165,12 @@ const im = {
     })),
   },
   // tribe chat
-  Tribe: {
+  tribe: {
     sendMsg: (tid, msg) => (new Promise((resolve, reject) => {
       sdk.Tribe.sendMsg({
         tid,
         msg,
+        msgType: 17,
         success: (data) => {
           resolve(data);
         },
@@ -200,8 +204,7 @@ const im = {
       });
     })),
     getTribeList: () => (new Promise((resolve, reject) => {
-      sdk.Tribe.getTribeInfo({
-        tribeTypes: [0, 1, 2],
+      sdk.Tribe.getTribeList({
         success: (data) => {
           resolve(data);
         },
@@ -233,6 +236,11 @@ const im = {
         error: (error) => {
           reject(error);
         },
+      });
+    })),
+    recieveMsg: (fn) => (new Promise((resolve, reject) => {
+      sdk.Event.on('TRIBE.MSG_RECEIVED', (data) => {
+        fn(data);
       });
     })),
   },

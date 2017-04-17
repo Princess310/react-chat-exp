@@ -70,6 +70,11 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
 
   handleSendMessage = () => {
     let msg = this.editor.innerHTML;
+
+    if (msg.trim() === '') {
+      return false;
+    }
+
     const imgReg = /<img.*?(?:>|\/>)/gi;
     const altReg = /alt=[\'\"]?([^\'\"]*)[\'\"]?/i;
 
