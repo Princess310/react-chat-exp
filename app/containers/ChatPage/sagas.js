@@ -29,6 +29,7 @@ import {
   loadGroupMessageList,
   loadGroupMessageListNextkey,
   loadChatGroupMessage,
+  loadGroupList,
 } from './actions';
 
 export function* fetchUser() {
@@ -204,6 +205,8 @@ export function* fetchMessageGroups() {
     // fetch groups infos
     const groupsList = yield request.doGet('group/lists', { list_type: 4 });
     const { list } = groupsList;
+    // store group list info
+    yield put(loadGroupList(list));
 
     // store result list
     for (const t of data) {

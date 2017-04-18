@@ -21,6 +21,8 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
       value,
       direction,
       msgTime,
+      name,
+      role,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
@@ -29,7 +31,7 @@ class MessageItem extends React.PureComponent { // eslint-disable-line react/pre
     const inlineStyle = autoprefixer({ justifyContent: justify });
     const ChatBubbleElement = (
       <FlexColumn style={alignStyle}>
-        <TimeLine time={msgTime} direction={direction} />
+        <TimeLine time={msgTime} direction={direction} name={name} role={role} />
         <ChatBubble direction={direction} >
           <pre dangerouslySetInnerHTML={{ __html: twemoji.parse(value) }} />
         </ChatBubble>

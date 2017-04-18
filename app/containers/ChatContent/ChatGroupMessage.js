@@ -48,6 +48,15 @@ const ChatWrapper = styled.div`
   height: 152px;
 `;
 
+const BlackChatWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  color: ${pallete.text.help};
+`;
+
 export class ChatGroupMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
     msgCount: 10,
@@ -112,7 +121,11 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
           />
         </ChatWrapper>
       </Wrapper>
-    ) : null;
+    ) : (
+      <BlackChatWrapper>
+        未选择聊天
+      </BlackChatWrapper>
+    );
 
     return contentView;
   }

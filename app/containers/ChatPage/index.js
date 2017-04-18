@@ -9,11 +9,12 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
+import request from 'utils/request';
 
 import ChatPanel from 'containers/ChatPanel';
 import ChatContent from 'containers/ChatContent';
 
-import makeSelectChatPage, { makeSelectCurrentUser, makeSelectTouchUser } from './selectors';
+import makeSelectChatPage, { makeSelectCurrentUser, makeSelectTouchUser, makeSelectGroupList } from './selectors';
 import Wrapper, { Container } from './Wrapper';
 import {
   fetchUser,
@@ -52,7 +53,8 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
       for (const msg of msgs) {
         setChatMessage(msg);
 
-        im.chat.setReadState(touchUser.im_account).then(() => {
+        this.handleNotification('chat', msg);
+        touchUser && im.chat.setReadState(touchUser.im_account).then(() => {
           getMessageUsers();
         });
       }
@@ -60,16 +62,77 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
 
     // tribe chat
     im.tribe.recieveMsg((res) => {
-      const { touchUser } = this.props;
       const { data } = res;
       const { msgs, touid } = data;
 
       for (const msg of msgs) {
         msg.tid = touid;
+
+        this.handleNotification('tribe', msg);
         setChatGroupMessage(msg);
         getMessageGroups();
       }
     });
+  }
+
+  popNotice(type, title, content, icon) {
+    if (Notification.permission == "granted") {
+      const notification = new Notification(title, {
+        body: content,
+        icon: icon,
+      });
+
+      notification.onclick = () => {
+        notification.close();
+        window.focus();
+      };
+    }
+  }
+
+  checkNotice(type, title, content, icon) {
+    const self = this;
+
+    if (window.Notification) {
+      if (Notification.permission == "granted") {
+        self.popNotice(type, title, content, icon);
+      } else if (Notification.permission != "denied") {
+        Notification.requestPermission(function (permission) {
+          self.popNotice(type, title, content, icon);
+        });
+      }
+    }
+  }
+
+  handleNotification(type, msgInfo) {
+    const self = this;
+    const { groupList } = this.props;
+    const { msg } = msgInfo;
+    const { header: { summary }, customize } = msg;
+    const info = JSON.parse(customize);
+    let title = '';
+    let content = summary;
+    let icon = '';
+
+    if (type === 'tribe') {
+      for (const group of groupList) {
+        if (group.im_group_id === `${msgInfo.tid}`) {
+          title = group.name;
+          icon = group.head;
+
+          self.checkNotice(type, title, content, icon);
+        }
+      }
+    } else {
+      request.doGet('chat/get-user-info', { user_ids: im.getNick(msgInfo.from) }).then((res) => {
+        const { list } = res;
+        const userInfo = list[0];
+
+        title = userInfo.nickname;
+        icon = userInfo.avatar;
+
+        self.checkNotice(type, title, content, icon);
+      });
+    }
   }
 
   render() {
@@ -101,12 +164,17 @@ ChatPage.propTypes = {
   getMessageGroups: PropTypes.func,
   setChatMessage: PropTypes.func,
   setChatGroupMessage: PropTypes.func,
+  groupList: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.bool,
+  ]),
 };
 
 const mapStateToProps = createStructuredSelector({
   ChatPage: makeSelectChatPage(),
   currentUser: makeSelectCurrentUser(),
   touchUser: makeSelectTouchUser(),
+  groupList: makeSelectGroupList(),
 });
 
 function mapDispatchToProps(dispatch) {

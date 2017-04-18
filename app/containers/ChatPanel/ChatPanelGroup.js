@@ -37,10 +37,10 @@ export class ChatPanelGroup extends React.Component { // eslint-disable-line rea
         <ListItem
           key={key}
           leftAvatar={<Avatar src={group.head} />}
-          rightIcon={group.msgCount ?
-            <Badge badgeContent={group.msgCount} secondary={true} />
-            : null
-          }
+          // rightIcon={group.msgCount ?
+          //   <Badge badgeContent={group.msgCount} secondary={true} />
+          //   : null
+          // }
           primaryText={group.name}
           style={itemStyle}
           onTouchTap={() => {

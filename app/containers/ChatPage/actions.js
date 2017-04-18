@@ -30,6 +30,7 @@ import {
   LOAD_TOUCH_GROUP,
   SEND_CHAT_GROUP_MESSAGE,
   LOAD_CHAT_GROUP_MESSAGE,
+  LOAD_GROUP_LIST,
 } from './constants';
 
 export function defaultAction() {
@@ -255,6 +256,15 @@ export function loadChatGroupMessage(data) {
     type: LOAD_CHAT_GROUP_MESSAGE,
     payload: {
       data,
+    },
+  };
+}
+
+export function loadGroupList(list) {
+  return {
+    type: LOAD_GROUP_LIST,
+    payload: {
+      list,
     },
   };
 }

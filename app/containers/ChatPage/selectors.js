@@ -31,9 +31,15 @@ const makeSelectTouchUser = () => createSelector(
   (substate) => substate.get('chatTouchUser'),
 );
 
+const makeSelectGroupList = () => createSelector(
+  selectChatPageDomain(),
+  (substate) => substate.get('chatGroupList'),
+);
+
 export default makeSelectChatPage;
 export {
   selectChatPageDomain,
   makeSelectCurrentUser,
   makeSelectTouchUser,
+  makeSelectGroupList,
 };

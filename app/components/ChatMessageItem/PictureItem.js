@@ -21,12 +21,14 @@ class PictureItem extends React.PureComponent { // eslint-disable-line react/pre
       url,
       direction,
       msgTime,
+      name,
+      role,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
       <FlexColumn>
-        <TimeLine time={msgTime} direction={direction} />
+        <TimeLine time={msgTime} direction={direction} name={name} role={role} />
         <ChatBubble direction={direction} >
           <img src={url} role="presentation" style={{ width: '200px', height: '200px' }} />
         </ChatBubble>

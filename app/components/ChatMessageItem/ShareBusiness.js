@@ -44,13 +44,15 @@ class ShareBusiness extends React.PureComponent { // eslint-disable-line react/p
       pic,
       msgTime,
       id,
+      name,
+      role,
     } = this.props;
 
     const avatarElement = (<Avatar src={avatar} />);
     const ChatBubbleElement = (
       <div>
         <FlexColumn>
-          <TimeLine time={msgTime} direction={direction} />
+          <TimeLine time={msgTime} direction={direction} name={name} role={role} />
           <TouchWrapper onClick={this.handleOpenDialog}>
             <ChatBubble direction={direction} >
               <FlexColumn>

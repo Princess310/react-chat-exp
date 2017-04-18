@@ -20,6 +20,7 @@ import {
   LOAD_GROUP_MESSAGE_LIST_NEXTKEY,
   LOAD_TOUCH_GROUP,
   LOAD_CHAT_GROUP_MESSAGE,
+  LOAD_GROUP_LIST,
 } from './constants';
 
 const initialState = fromJS({
@@ -33,6 +34,7 @@ const initialState = fromJS({
   chatGroupMessageList: false,
   chatGroupMessageNextkey: '',
   chatTouchGroup: false,
+  chatGroupList: false,
 });
 
 function chatPageReducer(state = initialState, action) {
@@ -124,6 +126,11 @@ function chatPageReducer(state = initialState, action) {
       }
 
       return state.set('chatGroupMessageList', newList);
+    }
+    case LOAD_GROUP_LIST: {
+      const { list } = action.payload;
+
+      return state.set('chatGroupList', list);
     }
     default:
       return state;

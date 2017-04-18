@@ -8,6 +8,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import request from 'utils/request';
 
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -100,6 +101,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
             onTouchTap={this.handleLogin}
           />
         </Warpper>
+        <div id="weixin_login"></div>
       </Container>
     );
   }
