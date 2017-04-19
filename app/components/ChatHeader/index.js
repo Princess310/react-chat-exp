@@ -29,7 +29,7 @@ class ChatHeader extends React.PureComponent { // eslint-disable-line react/pref
 }
 
 ChatHeader.propTypes = {
-  title: PropTypes.string,
+  title: PropTypes.any,
 };
 
 export default ChatHeader;

@@ -5,8 +5,10 @@
 */
 
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import pallete from 'styles/colors';
+import messages from './messages';
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,7 +30,7 @@ class ChatLoadMore extends React.PureComponent { // eslint-disable-line react/pr
       <Wrapper>
         {visible ?
         (<section onTouchTap={() => { this.props.onLoad() }}>
-          查看更多消息
+          <FormattedMessage {...messages.header} />
         </section>) : null}
       </Wrapper>
     );

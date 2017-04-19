@@ -29,6 +29,7 @@
   "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.NotFoundPage.header": "Page not found.",
   "app.components.Footer.name.message": "Health sinks",
+  "app.components.ChatLoadMore.header": "View more information",
 
   "app.containers.LoginPage.header": "Health sinks - login panel",
   "app.containers.LoginPage.username": "Username",

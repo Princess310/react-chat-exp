@@ -29,6 +29,7 @@
   "boilerplate.containers.LocaleToggle.en": "en",
   "boilerplate.containers.NotFoundPage.header": "Page not found.",
   "app.components.Footer.name.message": "健康汇销",
+  "app.components.ChatLoadMore.header": "查看更多消息",
 
   "app.containers.LoginPage.header": "登录-健康汇销",
   "app.containers.LoginPage.username": "账号",
