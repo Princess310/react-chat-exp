@@ -36,5 +36,17 @@
   "app.containers.LoginPage.password": "Password",
   "app.containers.LoginPage.passwordErr": "Password can not be empty",
   "app.containers.LoginPage.login": "Login",
-  "app.containers.ChatPanel.headerSearch": "Search"
+  "app.containers.ChatPanel.headerSearch": "Search",
+  "app.containers.ChatPanel.intro": "Personal profile",
+  "app.containers.ChatPanel.friend": "Friend",
+  "app.containers.ChatPanel.group": "Gruop",
+  "app.containers.ChatPanel.noSearchResult": "No search result",
+  "app.containers.ChatContent.noSelectChat": "No chat",
+  "app.containers.ChatContent.noSelectGroup": "No group",
+  "app.containers.ChatContent.noSelectContact": "No contact",
+  "app.containers.ChatContent.sendMessage": "Send Message",
+  "app.containers.ChatContent.influence": "Activity degree",
+  "app.containers.ChatContent.level": "Integrity level",
+  "app.containers.ChatContent.group": "Group info",
+  "app.containers.ChatContent.contact": "Contact"
 }

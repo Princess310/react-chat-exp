@@ -132,12 +132,12 @@ class ChatPanelSearch extends React.Component { // eslint-disable-line react/pre
           }}
         >
           {showList && <div style={{ maxHeight: '320px' }}>
-            { contacts.length > 0 && <Subheader>好友</Subheader> }
+            { contacts.length > 0 && <Subheader><FormattedMessage {...messages.friend} /></Subheader> }
             {contactListView}
-            { groups.length > 0 && <Subheader>群组</Subheader> }
+            { groups.length > 0 && <Subheader><FormattedMessage {...messages.group} /></Subheader> }
             {groupListView}
           </div>}
-          {!showList && <Subheader>没有相关匹配</Subheader>}
+          {!showList && <Subheader><FormattedMessage {...messages.noSearchResult} /></Subheader>}
         </Popover>
       </Wrapper>
     );

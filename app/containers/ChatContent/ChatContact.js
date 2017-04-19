@@ -5,6 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
@@ -17,6 +18,7 @@ import ExpProgress from 'components/ExpProgress';
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import messages from './messages';
 import Wrapper from './Wrapper';
 
 import {
@@ -62,7 +64,7 @@ export class ChatContact extends React.Component { // eslint-disable-line react/
     const contentView = contact ?
     (
       <Wrapper>
-        <ChatHeader title='联系人' />
+        <ChatHeader title={<FormattedMessage {...messages.contact} />} />
         <ContentWrapper>
           <Avatar src={contact.avatar} size={80} />
           <FlexRow style={{ marginTop: '15px', fontSize: 20 }}>
@@ -70,14 +72,14 @@ export class ChatContact extends React.Component { // eslint-disable-line react/
           </FlexRow>
           <FlexRow style={{ marginTop: '15px', alignItems: 'center' }}>
             {contact.tag_identity_name && <span>{contact.tag_identity_name}</span>}
-            <LabelWrapper>活跃度: </LabelWrapper>
+            <LabelWrapper><FormattedMessage {...messages.influence} />: </LabelWrapper>
             <span style={{ marginLeft: '4px', color: pallete.theme }}>{contact.influence}</span>
-            <LabelWrapper>诚信等级 </LabelWrapper>
+            <LabelWrapper><FormattedMessage {...messages.level} /> </LabelWrapper>
             <ExpProgress progress={contact.integrity_progress} />
             <span style={{ marginLeft: '4px', color: pallete.text.yellow }}>V{contact.integrity_level}</span>
           </FlexRow>
           <RaisedButton
-            label="发消息"
+            label={<FormattedMessage {...messages.sendMessage} />}
             primary={true}
             style={{ marginTop: '40px' }}
             onTouchTap={() => {
@@ -90,7 +92,7 @@ export class ChatContact extends React.Component { // eslint-disable-line react/
       </Wrapper>
     ) : (
       <BlackChatWrapper>
-        未选择用户
+        <FormattedMessage {...messages.noSelectContact} />
       </BlackChatWrapper>
     );
 

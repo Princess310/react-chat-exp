@@ -1,8 +1,11 @@
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { List, ListItem } from 'material-ui/List';
 import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
+
+import messages from './messages';
 
 class ChatPanelHeader extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static contextTypes = {
@@ -69,7 +72,7 @@ class ChatPanelHeader extends React.Component { // eslint-disable-line react/pre
                 />
               </section>
               <section style={{ color: palette.secondaryTextColor, fontSize: '12px' }}>
-                个人简介: {user.intro}
+                <FormattedMessage {...messages.intro} />: {user.intro}
               </section>
             </div>
           </Popover>

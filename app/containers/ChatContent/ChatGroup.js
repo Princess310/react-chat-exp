@@ -5,6 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import styled from 'styled-components';
@@ -16,6 +17,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import QRCode from 'qrcode.react';
 import request from 'utils/request';
 
+import messages from './messages';
 import Wrapper from './Wrapper';
 
 import {
@@ -64,7 +66,7 @@ export class ChatGroup extends React.Component { // eslint-disable-line react/pr
     const contentView = group ?
     (
       <Wrapper>
-        <ChatHeader title='群信息' />
+        <ChatHeader title={<FormattedMessage {...messages.group} />} />
         <ContentWrapper>
           <FlexRow style={{ position: 'relative', marginTop: '15px' }}>
             <QRCode size={240} value={qrcodeUrl} />
@@ -74,7 +76,7 @@ export class ChatGroup extends React.Component { // eslint-disable-line react/pr
             <span>{group.name}</span>
           </FlexRow>
           <RaisedButton
-            label="发消息"
+            label={<FormattedMessage {...messages.sendMessage} />}
             primary={true}
             style={{ marginTop: '40px' }}
             onTouchTap={() => {
@@ -89,7 +91,7 @@ export class ChatGroup extends React.Component { // eslint-disable-line react/pr
       </Wrapper>
     ) : (
       <BlackChatWrapper>
-        未选择群
+        <FormattedMessage {...messages.noSelectGroup} />
       </BlackChatWrapper>
     );
 

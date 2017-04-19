@@ -5,6 +5,7 @@
  */
 
 import React, { PropTypes } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
@@ -33,6 +34,7 @@ import {
   makeSelectMessageNextkey,
 } from './selectors';
 
+import messages from './messages';
 import Wrapper from './Wrapper';
 
 const ContentWrapper = styled.div`
@@ -131,7 +133,7 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
       </Wrapper>
     ) : (
       <BlackChatWrapper>
-        未选择聊天
+        <FormattedMessage {...messages.noSelectChat} />
       </BlackChatWrapper>
     );
 

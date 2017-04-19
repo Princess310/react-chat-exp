@@ -36,5 +36,17 @@
   "app.containers.LoginPage.password": "密码",
   "app.containers.LoginPage.passwordErr": "密码不能为空",
   "app.containers.LoginPage.login": "登录",
-  "app.containers.ChatPanel.headerSearch": "搜索"
+  "app.containers.ChatPanel.headerSearch": "搜索",
+  "app.containers.ChatPanel.intro": "个人简介",
+  "app.containers.ChatPanel.friend": "好友",
+  "app.containers.ChatPanel.group": "群组",
+  "app.containers.ChatPanel.noSearchResult": "没有相关匹配",
+  "app.containers.ChatContent.noSelectChat": "未选择聊天",
+  "app.containers.ChatContent.noSelectGroup": "未选择群",
+  "app.containers.ChatContent.noSelectContact": "未选择用户",
+  "app.containers.ChatContent.sendMessage": "发消息",
+  "app.containers.ChatContent.influence": "活跃度",
+  "app.containers.ChatContent.level": "诚信等级",
+  "app.containers.ChatContent.group": "群信息",
+  "app.containers.ChatContent.contact": "联系人"
 }
