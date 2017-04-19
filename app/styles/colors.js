@@ -29,6 +29,7 @@ const pallete = {
     lighter: '#f0f0f0',
     audio: '#cee2f1',
     chatBubble: '#d9e8f8',
+    progress: '#dfdce0',
   },
   button: {
     default: {

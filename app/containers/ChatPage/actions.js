@@ -10,6 +10,7 @@ import {
   CHANGE_TAB,
   FETCH_MESSAGE_USERS,
   LOAD_MESSAGE_USERS,
+  LOAD_MESSAGE_USER,
   FETCH_MESSAGE_LIST,
   LOAD_MESSAGE_LIST,
   LOAD_MESSAGE_LIST_NEXTKEY,
@@ -24,6 +25,7 @@ import {
   DO_DISAGREE_INTERVIEW,
   FETCH_MESSAGE_GROUPS,
   LOAD_MESSAGE_GROUPS,
+  LOAD_MESSAGE_GROUP,
   FETCH_GROUP_MESSAGE_LIST,
   LOAD_GROUP_MESSAGE_LIST,
   LOAD_GROUP_MESSAGE_LIST_NEXTKEY,
@@ -31,6 +33,13 @@ import {
   SEND_CHAT_GROUP_MESSAGE,
   LOAD_CHAT_GROUP_MESSAGE,
   LOAD_GROUP_LIST,
+  FETCH_USER_CONTACTS,
+  LOAD_USER_CONTACTS,
+  LOAD_USER_CONTACT,
+  FETCH_USER_GROUPS,
+  LOAD_USER_GROUPS,
+  LOAD_USER_GROUP,
+  LOAD_SEARCH_FILTER,
 } from './constants';
 
 export function defaultAction() {
@@ -65,6 +74,15 @@ export function loadMessageUsers(list) {
     type: LOAD_MESSAGE_USERS,
     payload: {
       list,
+    },
+  };
+}
+
+export function loadMessageUser(data) {
+  return {
+    type: LOAD_MESSAGE_USER,
+    payload: {
+      data,
     },
   };
 }
@@ -195,7 +213,16 @@ export function loadMessageGroups(list) {
   return {
     type: LOAD_MESSAGE_GROUPS,
     payload: {
-      list: list
+      list,
+    },
+  };
+}
+
+export function loadMessageGroup(data) {
+  return {
+    type: LOAD_MESSAGE_GROUP,
+    payload: {
+      data,
     },
   };
 }
@@ -265,6 +292,63 @@ export function loadGroupList(list) {
     type: LOAD_GROUP_LIST,
     payload: {
       list,
+    },
+  };
+}
+
+export function fetchUserContacts() {
+  return {
+    type: FETCH_USER_CONTACTS,
+  };
+}
+
+export function loadUserContacts(list) {
+  return {
+    type: LOAD_USER_CONTACTS,
+    payload: {
+      list,
+    },
+  };
+}
+
+export function loadUserContact(data) {
+  return {
+    type: LOAD_USER_CONTACT,
+    payload: {
+      data,
+    },
+  };
+}
+
+export function fetchUserGroups() {
+  return {
+    type: FETCH_USER_GROUPS,
+  };
+}
+
+export function loadUserGroups(list) {
+  return {
+    type: LOAD_USER_GROUPS,
+    payload: {
+      list,
+    },
+  };
+}
+
+export function loadUserGroup(data) {
+  return {
+    type: LOAD_USER_GROUP,
+    payload: {
+      data,
+    },
+  };
+}
+
+export function loadSearchFilter(value) {
+  return {
+    type: LOAD_SEARCH_FILTER,
+    payload: {
+      value,
     },
   };
 }

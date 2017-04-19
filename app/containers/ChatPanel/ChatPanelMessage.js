@@ -8,7 +8,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
-import { fetchMessageList, fetchTouchUser, fetchMessageUsers } from 'containers/ChatPage/actions';
+import { fetchTouchUser, fetchMessageUsers } from 'containers/ChatPage/actions';
 
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
@@ -65,8 +65,6 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
           style={itemStyle}
           onTouchTap={() => {
             getTouchUser(user.id);
-            getMessageList(user.uid, '', msgCount);
-
             im.chat.setReadState(user.im_account).then(() => {
               getMessageUsers();
             });
@@ -87,7 +85,6 @@ ChatPanelMessage.propTypes = {
     PropTypes.array,
     PropTypes.bool,
   ]),
-  getMessageList: PropTypes.func,
   getTouchUser: PropTypes.func,
   getMessageUsers: PropTypes.func,
   touchUser: PropTypes.oneOfType([
@@ -103,7 +100,6 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    getMessageList: (touid, nextkey, count) => dispatch(fetchMessageList(touid, nextkey, count)),
     getTouchUser: (id) => dispatch(fetchTouchUser(id)),
     getMessageUsers: () => dispatch(fetchMessageUsers()),
   };

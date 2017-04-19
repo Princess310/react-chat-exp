@@ -14,7 +14,7 @@ import request from 'utils/request';
 import ChatPanel from 'containers/ChatPanel';
 import ChatContent from 'containers/ChatContent';
 
-import makeSelectChatPage, { makeSelectCurrentUser, makeSelectTouchUser, makeSelectGroupList } from './selectors';
+import makeSelectChatPage, { makeSelectCurrentUser, makeSelectTouchUser, makeSelectGroupList, makeSelectContacts } from './selectors';
 import Wrapper, { Container } from './Wrapper';
 import {
   fetchUser,
@@ -22,17 +22,21 @@ import {
   loadChatMessage,
   fetchMessageGroups,
   loadChatGroupMessage,
+  fetchUserContacts,
+  fetchUserGroups,
 } from './actions';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   componentWillMount() {
-    const { currentUser, getUser, getMessageUsers, getMessageGroups } = this.props;
+    const { currentUser, getUser, getMessageUsers, getMessageGroups, getUserContacts, getUserGroups } = this.props;
 
     if (!currentUser.id) {
       getUser();
     } else {
       getMessageUsers();
       getMessageGroups();
+      getUserContacts();
+      getUserGroups();
 
       // start im listen task
       im.startListenAllMsg();
@@ -105,7 +109,7 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
 
   handleNotification(type, msgInfo) {
     const self = this;
-    const { groupList } = this.props;
+    const { groupList, contactList } = this.props;
     const { msg } = msgInfo;
     const { header: { summary }, customize } = msg;
     const info = JSON.parse(customize);
@@ -123,15 +127,17 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
         }
       }
     } else {
-      request.doGet('chat/get-user-info', { user_ids: im.getNick(msgInfo.from) }).then((res) => {
-        const { list } = res;
-        const userInfo = list[0];
+      for (const userList of contactList) {
+        const { list } = userList;
+        for (const user of list) {
+          if (user.im_account === im.getNick(msgInfo.from)) {
+            title = user.nickname;
+            icon = user.avatar;
 
-        title = userInfo.nickname;
-        icon = userInfo.avatar;
-
-        self.checkNotice(type, title, content, icon);
-      });
+            self.checkNotice(type, title, content, icon);
+          }
+        }
+      }
     }
   }
 
@@ -168,6 +174,12 @@ ChatPage.propTypes = {
     PropTypes.array,
     PropTypes.bool,
   ]),
+  contactList: PropTypes.oneOfType([
+    PropTypes.array,
+    PropTypes.bool,
+  ]),
+  getUserContacts: PropTypes.func,
+  getUserGroups: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -175,6 +187,7 @@ const mapStateToProps = createStructuredSelector({
   currentUser: makeSelectCurrentUser(),
   touchUser: makeSelectTouchUser(),
   groupList: makeSelectGroupList(),
+  contactList: makeSelectContacts(),
 });
 
 function mapDispatchToProps(dispatch) {
@@ -184,6 +197,8 @@ function mapDispatchToProps(dispatch) {
     setChatMessage: (data) => dispatch(loadChatMessage(data)),
     getMessageGroups: () => dispatch(fetchMessageGroups()),
     setChatGroupMessage: (data) => dispatch(loadChatGroupMessage(data)),
+    getUserContacts: () => dispatch(fetchUserContacts()),
+    getUserGroups: () => dispatch(fetchUserGroups()),
   };
 }
 

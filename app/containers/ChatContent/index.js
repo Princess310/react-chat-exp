@@ -12,7 +12,7 @@ import { makeSelectChatTab } from './selectors';
 import Wrapper from './Wrapper';
 import ChatMessage from './ChatMessage';
 import ChatGroupMessage from './ChatGroupMessage';
-import ChatBusiness from './ChatBusiness';
+import ChatGroup from './ChatGroup';
 import ChatContact from './ChatContact';
 
 export class ChatContent extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -31,9 +31,9 @@ export class ChatContent extends React.Component { // eslint-disable-line react/
           <ChatGroupMessage />
         );
         break;
-      case 'business':
+      case 'groupList':
         chatView = (
-          <ChatBusiness />
+          <ChatGroup />
         );
         break;
       case 'contact':

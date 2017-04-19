@@ -17,6 +17,8 @@ import {
   FETCH_MESSAGE_GROUPS,
   FETCH_GROUP_MESSAGE_LIST,
   SEND_CHAT_GROUP_MESSAGE,
+  FETCH_USER_CONTACTS,
+  FETCH_USER_GROUPS,
 } from './constants';
 import {
   loadMessageUsers,
@@ -30,6 +32,8 @@ import {
   loadGroupMessageListNextkey,
   loadChatGroupMessage,
   loadGroupList,
+  loadUserContacts,
+  loadUserGroups,
 } from './actions';
 
 export function* fetchUser() {
@@ -41,6 +45,8 @@ export function* fetchUser() {
     yield im.login(res.data.chat.userid, res.data.chat.password);
     yield fetchMessageUsers();
     yield fetchMessageGroups();
+    yield fetchUserContacts();
+    yield fetchUserGroups();
 
     // start im listen task
     im.startListenAllMsg();
@@ -157,6 +163,13 @@ export function* fetchTouchUser(action) {
     }
     const { data: { user } } = res;
 
+    yield fetchMessageList({
+      payload: {
+        touid: user.im_account,
+        nextkey: '',
+        count: 10,
+      }
+    });
     yield put(loadTouchUser(user));
     yield put(clearChatMessage(false));
   } catch (err) {
@@ -292,6 +305,39 @@ export function* sendGroupMessage(action) {
   }
 }
 
+export function* fetchUserContacts() {
+  try {
+    const res = yield request.doGet('follow/friend-lists');
+    const { list } = res;
+
+    yield put(loadUserContacts(list));
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
+export function* fetchUserGroups() {
+  try {
+    const res = yield request.doGet('group/lists');
+
+    const { data: { host, join } } = res;
+    const list = [
+      {
+        name: '我创建和管理的群',
+        list: host,
+      },
+      {
+        name: '我加入的群',
+        list: join,
+      }
+    ];
+
+    yield put(loadUserGroups(list));
+  } catch (err) {
+    // console.log(err);
+  }
+}
+
 // Individual exports for testing
 export function* defaultSaga() {
   const watcher = yield takeLatest(FETCH_USER, fetchUser);
@@ -304,8 +350,10 @@ export function* defaultSaga() {
   const watcherAgreeInterview = yield takeLatest(DO_AGREE_INTERVIEW, agreeInterview);
   const watcherDisAgreeInterview = yield takeLatest(DO_DISAGREE_INTERVIEW, disAgreeInterview);
   const watcherMessageGroups = yield takeLatest(FETCH_MESSAGE_GROUPS, fetchMessageGroups);
-  const wactherGroupMessageList = yield takeLatest(FETCH_GROUP_MESSAGE_LIST, fetchGroupMessageList);
-  const wactherSendGroupMsg = yield takeLatest(SEND_CHAT_GROUP_MESSAGE, sendGroupMessage);
+  const watcherGroupMessageList = yield takeLatest(FETCH_GROUP_MESSAGE_LIST, fetchGroupMessageList);
+  const watcherSendGroupMsg = yield takeLatest(SEND_CHAT_GROUP_MESSAGE, sendGroupMessage);
+  const watcherUserContacts = yield takeLatest(FETCH_USER_CONTACTS, fetchUserContacts);
+  const watcherUserGroups = yield takeLatest(FETCH_USER_GROUPS, fetchUserGroups);
 
   yield take(LOCATION_CHANGE);
   yield cancel(watcher);
@@ -318,8 +366,10 @@ export function* defaultSaga() {
   yield cancel(watcherAgreeInterview);
   yield cancel(watcherDisAgreeInterview);
   yield cancel(watcherMessageGroups);
-  yield cancel(wactherGroupMessageList);
-  yield cancel(wactherSendGroupMsg);
+  yield cancel(watcherGroupMessageList);
+  yield cancel(watcherSendGroupMsg);
+  yield cancel(watcherUserContacts);
+  yield cancel(watcherUserGroups);
 }
 
 // All sagas to be loaded

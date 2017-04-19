@@ -10,6 +10,8 @@ import { chageTab } from 'containers/ChatPage/actions';
 import { makeSelectChatTab } from './selectors';
 import ChatPanelMessage from './ChatPanelMessage';
 import ChatPanelGroup from './ChatPanelGroup';
+import ChatPanelContacts from './ChatPanelContacts';
+import ChatPanelGroupList from './ChatPanelGroupList';
 
 const TabWrapper = styled.div`
   height: 472px;
@@ -28,33 +30,16 @@ const styles = {
 class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { chatTab } = this.props;
-    let selectTab = 0;
-
-    switch (chatTab) {
-      case 'message':
-        selectTab = 0;
-        break;
-      case 'group':
-        selectTab = 1;
-        break;
-      case 'business':
-        selectTab = 2;
-        break;
-      case 'contact':
-        selectTab = 3;
-        break;
-      default:
-        selectTab = 0;
-    }
 
     return (
       <Tabs
         style={{ position: 'relative' }}
-        initialSelectedIndex={selectTab}
+        value={chatTab}
       >
         <Tab
           icon={<span className="mdi mdi-comment-processing-outline" />}
           onActive={() => this.props.chageTab('message')}
+          value="message"
         >
           <TabWrapper>
             <ChatPanelMessage />
@@ -63,6 +48,7 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
         <Tab
           icon={<span className="mdi mdi-comment-multiple-outline" />}
           onActive={() => this.props.chageTab('group')}
+          value="group"
         >
           <TabWrapper>
             <ChatPanelGroup />
@@ -70,25 +56,19 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
         </Tab>
         <Tab
           icon={<span className="mdi mdi-city" />}
-          onActive={() => this.props.chageTab('business')}
+          onActive={() => this.props.chageTab('groupList')}
+          value="groupList"
         >
           <TabWrapper>
-            <h2 style={styles.headline}>Tab Two</h2>
-            <p>
-              This is another example tab.
-            </p>
+            <ChatPanelGroupList />
           </TabWrapper>
         </Tab>
         <Tab
           icon={<span className="mdi mdi-contact-mail" />}
           onActive={() => this.props.chageTab('contact')}
+          value="contact"
         >
-          <TabWrapper>
-            <h2 style={styles.headline}>Tab Three</h2>
-            <p>
-              This is a third example tab.
-            </p>
-          </TabWrapper>
+          <ChatPanelContacts />
         </Tab>
       </Tabs>
     );
