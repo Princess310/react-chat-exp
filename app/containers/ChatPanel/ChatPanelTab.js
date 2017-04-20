@@ -68,7 +68,9 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
           onActive={() => this.props.chageTab('contact')}
           value="contact"
         >
-          <ChatPanelContacts />
+          <TabWrapper>
+            <ChatPanelContacts />
+          </TabWrapper>
         </Tab>
       </Tabs>
     );

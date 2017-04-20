@@ -1,6 +1,6 @@
 import { take, put, cancel, takeLatest } from 'redux-saga/effects';
 import { LOCATION_CHANGE } from 'react-router-redux';
-import { browserHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 
 import { loadUser } from 'containers/App/actions';
 import request from 'utils/request';
@@ -17,7 +17,7 @@ export function* doLogin(action) {
     yield im.login(res.data.chat.userid, res.data.chat.password);
     yield put(loadUser(res.data));
 
-    browserHistory.push('/chat');
+    hashHistory.push('/chat');
   } catch (err) {
     // console.log(err);
   }
