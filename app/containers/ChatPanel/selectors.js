@@ -75,7 +75,7 @@ const makeSelectFilterContacts = () => createSelector(
             segment: false,
             style: pinyin.STYLE_NORMAL,
           });
-          const convertStr = convertArr.join(' ');
+          const convertStr = convertArr.join('');
           if (filter.trim() !== '' && (contact.nickname.includes(filter) || convertStr.includes(filter))) {
             filerList.push(contact);
           }
@@ -100,7 +100,7 @@ const makeSelectFilterGroups = () => createSelector(
             segment: false,
             style: pinyin.STYLE_NORMAL,
           });
-          const convertStr = convertArr.join(' ');
+          const convertStr = convertArr.join('');
           if (filter.trim() !== '' && (group.name.includes(filter) || convertStr.includes(filter))) {
             filerList.push(group);
           }

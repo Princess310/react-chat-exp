@@ -29,26 +29,12 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
   }
 
   componentDidMount() {
-    request.doGet('user/js-api-config').then((res) => {
-      console.log('res', res);
-      const { list } = res;
-      const { appId } = list;
-
-      const obj = new WxLogin({
-        id: 'weixin_login',
-        appid: appId,
-        scope: 'snsapi_login',
-        redirect_uri: `${request.getDomain()}/chat`,
-        state: 2,
-      });
-
-      console.log('wexin_login', {
-        id: 'weixin_login',
-        appid: appId,
-        scope: 'snsapi_login',
-        redirect_uri: `${request.getDomain()}/chat`,
-        state: 2,
-      });
+    const obj = new WxLogin({
+      id: 'weixin_login',
+      appid: 'wx6cfafa809546088c',
+      scope: 'snsapi_login',
+      redirect_uri: `${request.getDomain()}/chat`,
+      state: 2,
     });
   }
 

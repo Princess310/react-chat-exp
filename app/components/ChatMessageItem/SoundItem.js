@@ -35,7 +35,7 @@ class SoundItem extends React.PureComponent { // eslint-disable-line react/prefe
       });
 
       this.timer = setInterval(() => {
-        timeElement.innerHTML = +time-- + '"';
+        timeElement.innerHTML = --time + '"';
       }, 1000);
     } else {
       audio.pause();
