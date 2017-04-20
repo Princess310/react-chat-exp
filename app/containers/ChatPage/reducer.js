@@ -69,13 +69,13 @@ function chatPageReducer(state = initialState, action) {
       let resultList = [];
       let storeUser = {};
 
-      const newList = oldList.filter((user) => {
+      const newList = oldList ? oldList.filter((user) => {
         if (data.id === user.id) {
           storeUser = user;
         }
 
         return data.id !== user.id;
-      });
+      }) : [];
 
       if (storeUser.id) {
         resultList = [storeUser, ...newList];
@@ -142,13 +142,13 @@ function chatPageReducer(state = initialState, action) {
       let resultList = [];
       let storeGroup = {};
 
-      const newList = oldList.filter((group) => {
+      const newList = oldList ? oldList.filter((group) => {
         if (data.id === group.id) {
           storeGroup = group;
         }
 
         return data.id !== group.id;
-      });
+      }) : [];
 
       if (storeGroup.id) {
         resultList = [storeGroup, ...newList];

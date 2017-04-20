@@ -28,6 +28,10 @@ const fetchDao = {
     return WEB_ROOT;
   },
 
+  getDomain() {
+    return window.document.domain;
+  },
+
   paramsParse(params) {
     const arr = [];
 
