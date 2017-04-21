@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import pinyin from 'pinyin';
+import pinyin from 'utils/pinyin';
 
 /**
  * Direct selector to the chatPanel state domain
