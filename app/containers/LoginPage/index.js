@@ -33,15 +33,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
       id: 'weixin_login',
       appid: 'wx6cfafa809546088c',
       scope: 'snsapi_login',
-      redirect_uri: encodeURIComponent(`http://${request.getDomain()}/#/chat`),
-      state: 2,
-    });
-
-    console.log('config', {
-      id: 'weixin_login',
-      appid: 'wx6cfafa809546088c',
-      scope: 'snsapi_login',
-      redirect_uri: encodeURIComponent(`http://${request.getDomain()}/#/chat`),
+      redirect_uri: encodeURIComponent(`http://${request.getDomain()}/#/wechat`),
       state: 2,
     });
   }
