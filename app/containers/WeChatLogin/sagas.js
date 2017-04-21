@@ -24,7 +24,7 @@ export function* doWechatLogin(action) {
     yield im.login(res.data.chat.userid, res.data.chat.password);
     yield put(loadUser(res.data));
 
-    hashHistory.replace('/chat');
+    hashHistory.push('/chat');
   } catch (err) {
     // console.log(err);
   }
