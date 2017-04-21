@@ -16,6 +16,7 @@ export function* doWechatLogin(action) {
     const { code } = action.payload;
     const res = yield request.doPost('user/third-login', {
       type: 1,
+      webWeChat: 1,
       code,
     });
 
@@ -23,7 +24,7 @@ export function* doWechatLogin(action) {
     yield im.login(res.data.chat.userid, res.data.chat.password);
     yield put(loadUser(res.data));
 
-    hashHistory.push('/chat');
+    hashHistory.replace('/chat');
   } catch (err) {
     // console.log(err);
   }
