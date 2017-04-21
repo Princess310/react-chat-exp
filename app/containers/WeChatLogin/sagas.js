@@ -16,7 +16,7 @@ export function* doWechatLogin(action) {
     const { code } = action.payload;
     const res = yield request.doPost('user/third-login', {
       type: 1,
-      webWeChat: 1,
+      pc: 1,
       code,
     });
 
