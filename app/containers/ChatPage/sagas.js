@@ -340,6 +340,7 @@ export function* fetchUserGroups() {
 
 // Individual exports for testing
 export function* defaultSaga() {
+  console.log('register sagas');
   const watcher = yield takeLatest(FETCH_USER, fetchUser);
   const watcherMessageUser = yield takeLatest(FETCH_MESSAGE_USERS, fetchMessageUsers);
   const watcherMessageList = yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
