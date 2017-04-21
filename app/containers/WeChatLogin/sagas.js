@@ -14,7 +14,7 @@ export function* defaultSaga() {
 export function* doWechatLogin(action) {
   try {
     const { code } = action.payload;
-    const res = yield request.doPut('user/third-login', {
+    const res = yield request.doPost('user/third-login', {
       type: 1,
       code,
     });
