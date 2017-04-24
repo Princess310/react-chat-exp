@@ -64,12 +64,12 @@ export function injectAsyncSagas(store, isValid) {
       '(app/utils...) injectAsyncSagas: Received an empty `sagas` array'
     );
 
-    if(!asyncSagas[name]){
+    if (!asyncSagas[name]) {
       asyncSagas[name] = [];
     }
 
     sagas.filter((saga) => {
-      if(asyncSagas[name].includes(saga.name)) {
+      if (asyncSagas[name].includes(saga.name)) {
         return false;
       }
 
