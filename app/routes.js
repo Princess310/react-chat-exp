@@ -31,7 +31,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('home', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('home', sagas.default);
 
           renderRoute(component);
         });
@@ -60,7 +60,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('chat', reducer.default);
-          injectSagas(sagas.default, 'chat');
+          injectSagas('chat', sagas.default, 'chat');
           renderRoute(component);
         });
 
@@ -88,7 +88,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('loginPage', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('loginPage', sagas.default);
           renderRoute(component);
         });
 
@@ -108,7 +108,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('wechatLogin', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas('wechatLogin', sagas.default);
           renderRoute(component);
         });
 
