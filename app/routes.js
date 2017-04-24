@@ -60,7 +60,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('chat', reducer.default);
-          injectSagas(sagas.default);
+          injectSagas(sagas.default, 'chat');
           renderRoute(component);
         });
 
