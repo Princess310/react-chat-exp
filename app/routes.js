@@ -31,7 +31,7 @@ export default function createRoutes(store) {
 
         importModules.then(([reducer, sagas, component]) => {
           injectReducer('home', reducer.default);
-          injectSagas('home', sagas.default);
+          injectSagas(sagas.default);
 
           renderRoute(component);
         });
@@ -49,46 +49,76 @@ export default function createRoutes(store) {
     }, {
       path: 'chat',
       name: 'chatPage',
+      onEnter(nextState, replace, callback) {
+        const importModules = import('containers/ChatPage/sagas');
+
+        importModules.then((sagas) => {
+          if (this.loadedSagas) {
+            callback();
+            return;
+          }
+
+          this.loadedSagas = injectSagas(sagas.default);
+          callback();
+        });
+
+        importModules.catch(errorLoading);
+      },
+      onLeave() {
+        if (this.loadedSagas) {
+          this.loadedSagas.forEach((saga) => saga.cancel());
+          delete this.loadedSagas;
+        }
+      },
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/ChatPage/reducer'),
-          import('containers/ChatPage/sagas'),
           import('containers/ChatPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('chat', reducer.default);
-          injectSagas('chat', sagas.default, 'chat');
           renderRoute(component);
         });
 
         importModules.catch(errorLoading);
       },
-      // onEnter(nextState, replace) {
-      //   if(true){
-      //     replace({
-      //       pathname: '/login',
-      //       state: { nextPathname: '/login' }
-      //     });
-      //   }
-      // }
     }, {
       path: 'login',
       name: 'loginPage',
+      onEnter(nextState, replace, callback) {
+        const importModules = import('containers/LoginPage/sagas');
+
+        importModules.then((sagas) => {
+          if (this.loadedSagas) {
+            callback();
+            return;
+          }
+
+          this.loadedSagas = injectSagas(sagas.default);
+          callback();
+        });
+
+        importModules.catch(errorLoading);
+      },
+      onLeave() {
+        if (this.loadedSagas) {
+          this.loadedSagas.forEach((saga) => saga.cancel());
+          delete this.loadedSagas;
+        }
+      },
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/LoginPage/reducer'),
-          import('containers/LoginPage/sagas'),
           import('containers/LoginPage'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('loginPage', reducer.default);
-          injectSagas('loginPage', sagas.default);
           renderRoute(component);
         });
 
@@ -97,18 +127,37 @@ export default function createRoutes(store) {
     }, {
       path: 'wechat',
       name: 'wechatLogin',
+      onEnter(nextState, replace, callback) {
+        const importModules = import('containers/WeChatLogin/sagas');
+
+        importModules.then((sagas) => {
+          if (this.loadedSagas) {
+            callback();
+            return;
+          }
+
+          this.loadedSagas = injectSagas(sagas.default);
+          callback();
+        });
+
+        importModules.catch(errorLoading);
+      },
+      onLeave() {
+        if (this.loadedSagas) {
+          this.loadedSagas.forEach((saga) => saga.cancel());
+          delete this.loadedSagas;
+        }
+      },
       getComponent(nextState, cb) {
         const importModules = Promise.all([
           import('containers/WeChatLogin/reducer'),
-          import('containers/WeChatLogin/sagas'),
           import('containers/WeChatLogin'),
         ]);
 
         const renderRoute = loadModule(cb);
 
-        importModules.then(([reducer, sagas, component]) => {
+        importModules.then(([reducer, component]) => {
           injectReducer('wechatLogin', reducer.default);
-          injectSagas('wechatLogin', sagas.default);
           renderRoute(component);
         });
 

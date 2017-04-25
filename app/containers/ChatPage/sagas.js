@@ -1,5 +1,4 @@
-import { take, cancel, put, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { put, takeLatest } from 'redux-saga/effects';
 import { loadUser } from 'containers/App/actions';
 import request from 'utils/request';
 import im from 'utils/im';
@@ -131,7 +130,7 @@ export function* sendMessage(action) {
         to: touid,
         msg: {
           header: {
-            summary: summary,
+            summary,
           },
           customize: JSON.stringify(content),
         },
@@ -168,7 +167,7 @@ export function* fetchTouchUser(action) {
         touid: user.im_account,
         nextkey: '',
         count: 10,
-      }
+      },
     });
     yield put(loadTouchUser(user));
     yield put(clearChatMessage(false));
@@ -179,7 +178,7 @@ export function* fetchTouchUser(action) {
 
 export function* agreeChangeTel(action) {
   try {
-    const res = yield request.doPut('interview/disagree-exchange', action.payload);
+    yield request.doPut('interview/disagree-exchange', action.payload);
   } catch (err) {
     // console.log(err);
   }
@@ -187,7 +186,7 @@ export function* agreeChangeTel(action) {
 
 export function* disAgreeChangeTel(action) {
   try {
-    const res = yield request.doPut('interview/agree-exchange', action.payload);
+    yield request.doPut('interview/agree-exchange', action.payload);
   } catch (err) {
     // console.log(err);
   }
@@ -195,7 +194,7 @@ export function* disAgreeChangeTel(action) {
 
 export function* agreeInterview(action) {
   try {
-    const res = yield request.doPut('interview/agree', action.payload);
+    yield request.doPut('interview/agree', action.payload);
   } catch (err) {
     // console.log(err);
   }
@@ -203,7 +202,7 @@ export function* agreeInterview(action) {
 
 export function* disAgreeInterview(action) {
   try {
-    const res = yield request.doPut('interview/refuse', action.payload);
+    yield request.doPut('interview/refuse', action.payload);
   } catch (err) {
     // console.log(err);
   }
@@ -269,7 +268,7 @@ export function* sendGroupMessage(action) {
     const { userid, tid, summary, content } = action.payload;
     const msgInfo = {
       header: {
-        summary: summary,
+        summary,
       },
       customize: JSON.stringify(content),
     };
@@ -279,10 +278,10 @@ export function* sendGroupMessage(action) {
       const newMsg = {
         from: userid,
         to: tid,
-        tid: tid,
+        tid,
         msg: {
           header: {
-            summary: summary,
+            summary,
           },
           customize: JSON.stringify(content),
         },
@@ -329,7 +328,7 @@ export function* fetchUserGroups() {
       {
         name: '我加入的群',
         list: join,
-      }
+      },
     ];
 
     yield put(loadUserGroups(list));
@@ -340,37 +339,20 @@ export function* fetchUserGroups() {
 
 // Individual exports for testing
 export function* defaultSaga() {
-  console.log('register sagas');
-  const watcher = yield takeLatest(FETCH_USER, fetchUser);
-  const watcherMessageUser = yield takeLatest(FETCH_MESSAGE_USERS, fetchMessageUsers);
-  const watcherMessageList = yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
-  const watcherTouchUser = yield takeLatest(FETCH_TOUCH_USER, fetchTouchUser);
-  const watcherSendMsg = yield takeLatest(SEND_CHAT_MESSAGE, sendMessage);
-  const watcherAgreeTel = yield takeLatest(DO_AGREE_EXCHANGE_TEL, agreeChangeTel);
-  const watcherDisAgreeTel = yield takeLatest(DO_DISAGREE_EXCHANGE_TEL, disAgreeChangeTel);
-  const watcherAgreeInterview = yield takeLatest(DO_AGREE_INTERVIEW, agreeInterview);
-  const watcherDisAgreeInterview = yield takeLatest(DO_DISAGREE_INTERVIEW, disAgreeInterview);
-  const watcherMessageGroups = yield takeLatest(FETCH_MESSAGE_GROUPS, fetchMessageGroups);
-  const watcherGroupMessageList = yield takeLatest(FETCH_GROUP_MESSAGE_LIST, fetchGroupMessageList);
-  const watcherSendGroupMsg = yield takeLatest(SEND_CHAT_GROUP_MESSAGE, sendGroupMessage);
-  const watcherUserContacts = yield takeLatest(FETCH_USER_CONTACTS, fetchUserContacts);
-  const watcherUserGroups = yield takeLatest(FETCH_USER_GROUPS, fetchUserGroups);
-
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
-  yield cancel(watcherMessageUser);
-  yield cancel(watcherMessageList);
-  yield cancel(watcherTouchUser);
-  yield cancel(watcherSendMsg);
-  yield cancel(watcherAgreeTel);
-  yield cancel(watcherDisAgreeTel);
-  yield cancel(watcherAgreeInterview);
-  yield cancel(watcherDisAgreeInterview);
-  yield cancel(watcherMessageGroups);
-  yield cancel(watcherGroupMessageList);
-  yield cancel(watcherSendGroupMsg);
-  yield cancel(watcherUserContacts);
-  yield cancel(watcherUserGroups);
+  yield takeLatest(FETCH_USER, fetchUser);
+  yield takeLatest(FETCH_MESSAGE_USERS, fetchMessageUsers);
+  yield takeLatest(FETCH_MESSAGE_LIST, fetchMessageList);
+  yield takeLatest(FETCH_TOUCH_USER, fetchTouchUser);
+  yield takeLatest(SEND_CHAT_MESSAGE, sendMessage);
+  yield takeLatest(DO_AGREE_EXCHANGE_TEL, agreeChangeTel);
+  yield takeLatest(DO_DISAGREE_EXCHANGE_TEL, disAgreeChangeTel);
+  yield takeLatest(DO_AGREE_INTERVIEW, agreeInterview);
+  yield takeLatest(DO_DISAGREE_INTERVIEW, disAgreeInterview);
+  yield takeLatest(FETCH_MESSAGE_GROUPS, fetchMessageGroups);
+  yield takeLatest(FETCH_GROUP_MESSAGE_LIST, fetchGroupMessageList);
+  yield takeLatest(SEND_CHAT_GROUP_MESSAGE, sendGroupMessage);
+  yield takeLatest(FETCH_USER_CONTACTS, fetchUserContacts);
+  yield takeLatest(FETCH_USER_GROUPS, fetchUserGroups);
 }
 
 // All sagas to be loaded

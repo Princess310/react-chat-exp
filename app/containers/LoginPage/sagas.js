@@ -1,5 +1,4 @@
-import { take, put, cancel, takeLatest } from 'redux-saga/effects';
-import { LOCATION_CHANGE } from 'react-router-redux';
+import { put, takeLatest } from 'redux-saga/effects';
 import { hashHistory } from 'react-router';
 
 import { loadUser } from 'containers/App/actions';
@@ -29,10 +28,7 @@ export function* defaultSaga() {
 }
 
 export function* loginSaga() {
-  const watcher = yield takeLatest(DO_LOGIN, doLogin);
-
-  yield take(LOCATION_CHANGE);
-  yield cancel(watcher);
+  yield takeLatest(DO_LOGIN, doLogin);
 }
 
 // All sagas to be loaded

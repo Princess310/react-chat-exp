@@ -10,7 +10,6 @@ import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 
-import { makeSelectFilterContacts, makeSelectFilterGroups } from './selectors';
 import {
   loadSearchFilter,
   fetchTouchUser,
@@ -20,6 +19,8 @@ import {
   fetchGroupMessageList,
   chageTab,
 } from 'containers/ChatPage/actions';
+
+import { makeSelectFilterContacts, makeSelectFilterGroups } from './selectors';
 import messages from './messages';
 
 const Wrapper = styled.div`
@@ -37,7 +38,7 @@ class ChatPanelSearch extends React.Component { // eslint-disable-line react/pre
     const value = e.target.value;
 
     this.setState({
-      value: value,
+      value,
       anchorEl: e.currentTarget,
     });
 
@@ -54,7 +55,7 @@ class ChatPanelSearch extends React.Component { // eslint-disable-line react/pre
     setFilter(value);
   }
 
-  handleRequestClose = (e) => {
+  handleRequestClose = () => {
     this.setState({
       openPopup: false,
     });
@@ -66,51 +67,47 @@ class ChatPanelSearch extends React.Component { // eslint-disable-line react/pre
       groups,
       loadUser,
       getTouchUser,
-      loadMessageGroup,
+      getMessageGroup,
       loadGroup,
       getMessageList,
-      chageTab,
+      chageTabName,
     } = this.props;
-    const { value } = this.state;console.log('props', this.props);
-    const contactListView = contacts.map((contact, index) => {
-      return (
-        <ListItem
-          key={index}
-          leftAvatar={<Avatar src={contact.avatar} />}
-          primaryText={contact.nickname}
-          onTouchTap={() => {
-            loadUser(contact);
-            getTouchUser(contact.id);
-            chageTab('message');
-            this.setState({
-              openPopup: false,
-              value: '',
-            });
-          }}
-        />
-      );
-    });
+    const { value } = this.state;
+    const contactListView = contacts.map((contact, index) => (
+      <ListItem
+        key={index}
+        leftAvatar={<Avatar src={contact.avatar} />}
+        primaryText={contact.nickname}
+        onTouchTap={() => {
+          loadUser(contact);
+          getTouchUser(contact.id);
+          chageTabName('message');
+          this.setState({
+            openPopup: false,
+            value: '',
+          });
+        }}
+      />
+    ));
 
-    const groupListView = groups.map((group, index) => {
-      return (
-        <ListItem
-          key={index}
-          leftAvatar={<Avatar src={group.head} />}
-          primaryText={group.name}
-          onTouchTap={() => {
-            group.tid = group.im_group_id;
-            loadMessageGroup(group);
-            loadGroup(group);
-            getMessageList(group.im_group_id, '', 10);
-            chageTab('group');
-            this.setState({
-              openPopup: false,
-              value: '',
-            });
-          }}
-        />
-      );
-    });
+    const groupListView = groups.map((group, index) => (
+      <ListItem
+        key={index}
+        leftAvatar={<Avatar src={group.head} />}
+        primaryText={group.name}
+        onTouchTap={() => {
+          group.tid = group.im_group_id;
+          getMessageGroup(group);
+          loadGroup(group);
+          getMessageList(group.im_group_id, '', 10);
+          chageTabName('group');
+          this.setState({
+            openPopup: false,
+            value: '',
+          });
+        }}
+      />
+    ));
 
     const showList = contacts.length > 0 || groups.length > 0;
 
@@ -133,9 +130,13 @@ class ChatPanelSearch extends React.Component { // eslint-disable-line react/pre
         >
           {showList && <div style={{ maxHeight: '320px' }}>
             { contacts.length > 0 && <Subheader><FormattedMessage {...messages.friend} /></Subheader> }
-            {contactListView}
+            <List>
+              {contactListView}
+            </List>
             { groups.length > 0 && <Subheader><FormattedMessage {...messages.group} /></Subheader> }
-            {groupListView}
+            <List>
+              {groupListView}
+            </List>
           </div>}
           {!showList && <Subheader><FormattedMessage {...messages.noSearchResult} /></Subheader>}
         </Popover>
@@ -150,8 +151,10 @@ ChatPanelSearch.propTypes = {
   getTouchUser: PropTypes.func,
   getMessageList: PropTypes.func,
   loadGroup: PropTypes.func,
-  loadMessageGroup: PropTypes.func,
-  chageTab: PropTypes.func,
+  getMessageGroup: PropTypes.func,
+  chageTabName: PropTypes.func,
+  contacts: PropTypes.array,
+  groups: PropTypes.array,
 };
 
 
@@ -166,9 +169,9 @@ function mapDispatchToProps(dispatch) {
     loadUser: (data) => dispatch(loadMessageUser(data)),
     getTouchUser: (id) => dispatch(fetchTouchUser(id)),
     getMessageList: (tid, nextkey, count) => dispatch(fetchGroupMessageList(tid, nextkey, count)),
-    loadMessageGroup: (data) => dispatch(loadMessageGroup(data)),
+    getMessageGroup: (data) => dispatch(loadMessageGroup(data)),
     loadGroup: (data) => dispatch(loadTouchGroup(data)),
-    chageTab: (tab) => dispatch(chageTab(tab)),
+    chageTabName: (tab) => dispatch(chageTab(tab)),
   };
 }
 
