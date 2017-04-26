@@ -11,6 +11,8 @@ const Wrapper = styled.footer`
   bottom: 0;
   height: 40px;
   border-top: 1px solid #f0f0f0;
+  background-color: #fff;
+  z-index: 99;
 `;
 
 export default Wrapper;

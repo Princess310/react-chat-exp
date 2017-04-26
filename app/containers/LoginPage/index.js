@@ -96,12 +96,22 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
             onChange={this.handleUsernameChange}
             hintText={<FormattedMessage {...messages.username} />}
             errorText={this.state.usernameErr && <FormattedMessage {...messages.usernameErr} />}
+            onKeyUp={(e) => {
+              if (e.which === 13) {
+                this.handleLogin(e);
+              }
+            }}
           />
           <TextField
             onChange={this.handlePasswordChange}
             hintText={<FormattedMessage {...messages.password} />}
             errorText={this.state.passwordErr && <FormattedMessage {...messages.passwordErr} />}
             type="password"
+            onKeyUp={(e) => {
+              if (e.which === 13) {
+                this.handleLogin(e);
+              }
+            }}
           />
 
           <RaisedButton

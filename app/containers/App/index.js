@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import Footer from 'components/Footer';
 import withProgressBar from 'components/ProgressBar';
 import Grid from 'components/Grid';
+import Gallery from 'components/Gallery';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -39,6 +40,7 @@ export function App(props) {
         />
         {React.Children.toArray(props.children)}
         <Grid />
+        <Gallery />
         <Footer />
       </AppWrapper>
     </MuiThemeProvider>

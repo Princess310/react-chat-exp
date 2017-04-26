@@ -117,7 +117,10 @@ SoundItem.propTypes = {
   avatar: PropTypes.string,
   direction: PropTypes.string,
   url: PropTypes.string,
-  time: PropTypes.string,
+  time: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+  ]),
   name: PropTypes.string,
   msgTime: PropTypes.number,
   role: PropTypes.string,
