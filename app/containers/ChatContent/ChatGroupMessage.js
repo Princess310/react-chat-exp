@@ -23,7 +23,6 @@ import FlexCenter from 'components/FlexCenter';
 import {
   fetchGroupMessageList,
   sendChatGroupMessage,
-  fetchMessageGroups,
 } from 'containers/ChatPage/actions';
 
 import {
@@ -109,7 +108,7 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
         onLoad={() => {
           this.props.getMessageList(touchGroup.tid, this.props.nextKey, this.state.msgCount);
         }}
-        visible = { (this.props.nextKey && this.props.nextKey !== '') ? true : false }
+        visible={(this.props.nextKey && this.props.nextKey !== '') ? true : false}
       />
     );
 
@@ -159,7 +158,7 @@ ChatGroupMessage.propTypes = {
   clearChatMessage: PropTypes.bool,
   nextKey: PropTypes.string,
   getMessageList: PropTypes.func,
-  getMessageGroups: PropTypes.func,
+  loadingList: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -175,7 +174,6 @@ function mapDispatchToProps(dispatch) {
   return {
     sendChatMessage: (userid, tid, content, summary) => dispatch(sendChatGroupMessage(userid, tid, content, summary)),
     getMessageList: (touid, nextkey, count) => dispatch(fetchGroupMessageList(touid, nextkey, count)),
-    getMessageGroups: () => dispatch(fetchMessageGroups()),
   };
 }
 

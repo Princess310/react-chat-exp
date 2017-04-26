@@ -103,7 +103,6 @@ const im = {
         },
         error: (error) => {
           reject(error);
-          console.log('err', console.error);
         },
       });
     })),
@@ -132,7 +131,7 @@ const im = {
         },
       });
     })),
-    startListenMsg: (touid, emitFn) => (new Promise((resolve, reject) => {
+    startListenMsg: (touid) => (new Promise((resolve, reject) => {
       sdk.Chat.startListenMsg({
         touid,
         success: (data) => {
@@ -158,7 +157,7 @@ const im = {
         },
       });
     })),
-    recieveMsg: (fn) => (new Promise((resolve, reject) => {
+    recieveMsg: (fn) => (new Promise(() => {
       sdk.Event.on('CHAT.MSG_RECEIVED', (data) => {
         fn(data);
       });
@@ -238,7 +237,7 @@ const im = {
         },
       });
     })),
-    recieveMsg: (fn) => (new Promise((resolve, reject) => {
+    recieveMsg: (fn) => (new Promise(() => {
       sdk.Event.on('TRIBE.MSG_RECEIVED', (data) => {
         fn(data);
       });

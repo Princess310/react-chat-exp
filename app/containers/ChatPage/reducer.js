@@ -247,28 +247,20 @@ function chatPageReducer(state = initialState, action) {
       switch (type) {
         case 'messageUsers':
           return state.set('loadingMessageUsers', bool);
-          break;
         case 'messageList':
           return state.set('loadingMessageList', bool);
-          break;
         case 'messageGroups':
           return state.set('loadingMessageGroups', bool);
-          break;
         case 'gruopMessageList':
           return state.set('loadingGroupMessageList', bool);
-          break;
         case 'userContacts':
           return state.set('loadingUserContacts', bool);
-          break;
         case 'userGruops':
           return state.set('loadingUserGroups', bool);
-          break;
         case 'groupList':
           return state.set('loadingGroupList', bool);
-          break;
         case 'touchUser':
           return state.set('loadingTouchUser', bool);
-          break;
         default:
           return state;
       }

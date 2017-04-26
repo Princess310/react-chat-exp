@@ -18,15 +18,6 @@ const TabWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-};
-
 class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
     const { chatTab } = this.props;

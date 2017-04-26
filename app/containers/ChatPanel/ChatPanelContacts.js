@@ -21,19 +21,19 @@ export class ChatPanelContacts extends React.Component { // eslint-disable-line 
     const { contactList, loadContact, loading } = this.props;
     const listView = contactList ? contactList.map((contacts, index) => {
       const { name, list } = contacts;
-      let users = [];
+      const users = [];
 
-      list.map((contact, i) => {
+      for (const contact of list) {
         const { nickname, avatar } = contact;
         users.push((
           <ListItem
-            key={i}
+            key={contact.id}
             primaryText={nickname}
             leftIcon={<Avatar src={avatar} />}
-            onTouchTap={() => {loadContact(contact)}}
+            onTouchTap={() => { loadContact(contact); }}
           />
         ));
-      });
+      }
 
       return (
         <ListItem
@@ -47,12 +47,12 @@ export class ChatPanelContacts extends React.Component { // eslint-disable-line 
     }) : null;
 
     return (
-      <list>
+      <List>
         {loading && <FlexCenter>
           <CircularProgress size={24} />
         </FlexCenter>}
         {listView}
-      </list>
+      </List>
     );
   }
 }

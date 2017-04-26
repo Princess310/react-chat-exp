@@ -29,6 +29,7 @@ export class WeChatLogin extends React.Component { // eslint-disable-line react/
 
 WeChatLogin.propTypes = {
   doLogin: PropTypes.func,
+  location: PropTypes.object,
 };
 
 

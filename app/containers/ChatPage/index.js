@@ -9,7 +9,6 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import { createStructuredSelector } from 'reselect';
 import im from 'utils/im';
-import request from 'utils/request';
 
 import ChatPanel from 'containers/ChatPanel';
 import ChatContent from 'containers/ChatContent';
@@ -58,9 +57,11 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
         setChatMessage(msg);
 
         this.handleNotification('chat', msg);
-        touchUser && im.chat.setReadState(touchUser.im_account).then(() => {
-          getMessageUsers();
-        });
+        if (touchUser) {
+          im.chat.setReadState(touchUser.im_account).then(() => {
+            getMessageUsers();
+          });
+        }
       }
     });
 
@@ -80,10 +81,10 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
   }
 
   popNotice(type, title, content, icon) {
-    if (Notification.permission == "granted") {
+    if (Notification.permission === 'granted') {
       const notification = new Notification(title, {
         body: content,
-        icon: icon,
+        icon,
       });
 
       notification.onclick = () => {
@@ -97,10 +98,10 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
     const self = this;
 
     if (window.Notification) {
-      if (Notification.permission == "granted") {
+      if (Notification.permission === 'granted') {
         self.popNotice(type, title, content, icon);
-      } else if (Notification.permission != "denied") {
-        Notification.requestPermission(function (permission) {
+      } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(() => {
           self.popNotice(type, title, content, icon);
         });
       }
@@ -111,10 +112,9 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
     const self = this;
     const { groupList, contactList } = this.props;
     const { msg } = msgInfo;
-    const { header: { summary }, customize } = msg;
-    const info = JSON.parse(customize);
+    const { header: { summary } } = msg;
+    const content = summary;
     let title = '';
-    let content = summary;
     let icon = '';
 
     if (type === 'tribe') {

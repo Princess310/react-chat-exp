@@ -31,7 +31,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
   }
 
   componentDidMount() {
-    const obj = new WxLogin({
+    new WxLogin({
       id: 'weixin_login',
       appid: 'wx6cfafa809546088c',
       scope: 'snsapi_login',

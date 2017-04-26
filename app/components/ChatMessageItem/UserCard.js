@@ -104,6 +104,10 @@ UserCard.propTypes = {
   title: PropTypes.string,
   content: PropTypes.string,
   pic: PropTypes.string,
+  msgTime: PropTypes.number,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  role: PropTypes.string,
 };
 
 export default UserCard;

@@ -107,7 +107,7 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
     } else if (status === '1') {
       return (
         <FlexColumn>
-          <TimeLine time={msgTime} direction='center' />
+          <TimeLine time={msgTime} direction="center" />
           <CenterIconBubble
             iconClassName="mdi mdi-cellphone-iphone"
           >
@@ -115,16 +115,16 @@ class ChangeTel extends React.PureComponent { // eslint-disable-line react/prefe
           </CenterIconBubble>
         </FlexColumn>
       );
-    } else {
-      return (
-        <FlexColumn>
-          <TimeLine time={msgTime} direction='center' />
-          <CenterBubble>
-            {title}
-          </CenterBubble>
-        </FlexColumn>
-      );
     }
+
+    return (
+      <FlexColumn>
+        <TimeLine time={msgTime} direction="center" />
+        <CenterBubble>
+          {title}
+        </CenterBubble>
+      </FlexColumn>
+    );
   }
 }
 
@@ -132,6 +132,12 @@ ChangeTel.propTypes = {
   avatar: PropTypes.string,
   direction: PropTypes.string,
   status: PropTypes.string,
+  sendChatMessage: PropTypes.func,
+  disAgreeChangeTel: PropTypes.func,
+  agreeChangeTel: PropTypes.func,
+  currentUser: PropTypes.object,
+  touchUser: PropTypes.object,
+  msgTime: PropTypes.number,
 };
 
 export default ChangeTel;

@@ -17,19 +17,19 @@ import RaisedButton from 'material-ui/RaisedButton';
 import QRCode from 'qrcode.react';
 import request from 'utils/request';
 
-import messages from './messages';
-import Wrapper from './Wrapper';
-
-import {
-  makeSelectChatGroup,
-} from './selectors';
-
 import {
   loadTouchGroup,
   loadMessageGroup,
   fetchGroupMessageList,
   chageTab,
 } from 'containers/ChatPage/actions';
+
+import messages from './messages';
+import Wrapper from './Wrapper';
+
+import {
+  makeSelectChatGroup,
+} from './selectors';
 
 const ContentWrapper = styled.div`
   position: absolute;
@@ -54,11 +54,11 @@ const BlackChatWrapper = styled.div`
 
 export class ChatGroup extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
-    msgCount: 10
+    msgCount: 10,
   }
 
   render() {
-    const { group, loadMessageGroup, loadGroup, getMessageList, chageTab } = this.props;
+    const { group, getMessageGroup, loadGroup, getMessageList, doChageTab } = this.props;
     const url = request.getWebRoot();
     const qrcodeUrl = `${url}index.html#groupEdit!id=${group.id}`;
     const { msgCount } = this.state;
@@ -81,10 +81,10 @@ export class ChatGroup extends React.Component { // eslint-disable-line react/pr
             style={{ marginTop: '40px' }}
             onTouchTap={() => {
               group.tid = group.im_group_id;
-              loadMessageGroup(group);
+              getMessageGroup(group);
               loadGroup(group);
               getMessageList(group.im_group_id, '', msgCount);
-              chageTab('group');
+              doChageTab('group');
             }}
           />
         </ContentWrapper>
@@ -110,8 +110,8 @@ ChatGroup.propTypes = {
   ]),
   getMessageList: PropTypes.func,
   loadGroup: PropTypes.func,
-  loadMessageGroup: PropTypes.func,
-  chageTab: PropTypes.func,
+  getMessageGroup: PropTypes.func,
+  doChageTab: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -121,9 +121,9 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     getMessageList: (tid, nextkey, count) => dispatch(fetchGroupMessageList(tid, nextkey, count)),
-    loadMessageGroup: (data) => dispatch(loadMessageGroup(data)),
+    getMessageGroup: (data) => dispatch(loadMessageGroup(data)),
     loadGroup: (data) => dispatch(loadTouchGroup(data)),
-    chageTab: (tab) => dispatch(chageTab(tab)),
+    doChageTab: (tab) => dispatch(chageTab(tab)),
   };
 }
 

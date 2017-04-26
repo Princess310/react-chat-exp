@@ -61,6 +61,9 @@ MessageItem.propTypes = {
   avatar: PropTypes.string,
   value: PropTypes.string,
   direction: PropTypes.string,
+  msgTime: PropTypes.number,
+  name: PropTypes.string,
+  role: PropTypes.string,
 };
 
 export default MessageItem;

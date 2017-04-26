@@ -55,6 +55,13 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
     selectRange: null,
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { clearMessage } = nextProps;
+    if (clearMessage) {
+      this.editor.innerHTML = '';
+    }
+  }
+
   getSelection() {
     let sel = null;
     if (window.getSelection) {
@@ -89,7 +96,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
       type: 'text',
       value: msg,
     };
-    this.props.sendChatMessage(content, msg);
+    return this.props.sendChatMessage(content, msg);
   }
 
   handleFileChange = (e) => {
@@ -99,11 +106,11 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
     if (file) {
       const { name, size } = file;
 
-      const path = oss.getFolderPath('avatar', id) + "__" + size + "__" + oss.getFileSuffix(name);
+      const path = `${oss.getFolderPath('avatar', id)}__${size}__${oss.getFileSuffix(name)}`;
 
       // upload file here
       oss.multipartUpload(path, file).then((res) => {
-        const url =  oss.getImgDomain(oss.getFileDomain() + oss.getFilePath(res.name));
+        const url = oss.getImgDomain(oss.getFileDomain() + oss.getFilePath(res.name));
         const img = new Image();
 
         img.src = oss.getImgSuitablePath(url);
@@ -191,13 +198,6 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
     this.handleTouchTapOverlay();
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { clearMessage } = nextProps;
-    if (clearMessage) {
-      this.editor.innerHTML = '';
-    }
-  }
-
   render() {
     const { disabled } = this.props;
 
@@ -245,16 +245,20 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
           onClick={() => { this.saveSelection(); }}
           ref={(r) => { this.editor = r; }}
         />
-        {disabled && <div style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          backgroundColor: pallete.disable,
-          opacity: 0.2,
-          zIndex: 20,
-        }}/>}
+        {disabled &&
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            backgroundColor: pallete.disable,
+            opacity: 0.2,
+            zIndex: 20,
+          }}
+        />
+        }
       </div>
     );
   }

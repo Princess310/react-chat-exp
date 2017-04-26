@@ -104,6 +104,10 @@ ShareBusiness.propTypes = {
   title: PropTypes.string,
   content: PropTypes.string,
   pic: PropTypes.string,
+  msgTime: PropTypes.number,
+  name: PropTypes.string,
+  role: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default ShareBusiness;

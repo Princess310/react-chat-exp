@@ -262,7 +262,7 @@ export function loadTouchGroup(data) {
   return {
     type: LOAD_TOUCH_GROUP,
     payload: {
-      data: data,
+      data,
     },
   };
 }

@@ -7,12 +7,10 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import im from 'utils/im';
 import { loadTouchGroup, fetchGroupMessageList } from 'containers/ChatPage/actions';
 
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
-import Badge from 'material-ui/Badge';
 import CircularProgress from 'material-ui/CircularProgress';
 import FlexCenter from 'components/FlexCenter';
 
@@ -20,7 +18,7 @@ import { makeSelectChatMessageGroups, makeSelectTouchGroup, makeSelectLoadingMes
 
 export class ChatPanelGroup extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
-    msgCount: 10
+    msgCount: 10,
   }
 
   render() {
@@ -32,7 +30,7 @@ export class ChatPanelGroup extends React.Component { // eslint-disable-line rea
 
       // set active style for touch user
       if (touchGroup && (touchGroup.id === group.id)) {
-        itemStyle['backgroundColor'] = 'rgba(0, 0, 0, 0.125)';
+        itemStyle.backgroundColor = 'rgba(0, 0, 0, 0.125)';
       }
 
       return (

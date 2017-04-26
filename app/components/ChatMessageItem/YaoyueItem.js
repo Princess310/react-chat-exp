@@ -136,16 +136,16 @@ class YaoyueItem extends React.PureComponent { // eslint-disable-line react/pref
           {chatElement}
         </ItemWrapper>
       );
-    } else {
-      return (
-        <FlexColumn>
-          <TimeLine time={msgTime} direction='center' />
-          <CenterBubble>
-            {title}
-          </CenterBubble>
-        </FlexColumn>
-      )
     }
+
+    return (
+      <FlexColumn>
+        <TimeLine time={msgTime} direction="center" />
+        <CenterBubble>
+          {title}
+        </CenterBubble>
+      </FlexColumn>
+    );
   }
 }
 
@@ -161,6 +161,11 @@ YaoyueItem.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  agreeInterview: PropTypes.func,
+  currentUser: PropTypes.object,
+  sendChatMessage: PropTypes.func,
+  disAgreeInterview: PropTypes.func,
+  msgTime: PropTypes.number,
 };
 
 export default YaoyueItem;

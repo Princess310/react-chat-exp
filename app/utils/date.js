@@ -20,9 +20,9 @@ const dateUtil = {
 
     return `${y}-${mon}-${d} ${h}:${m}:${s}`;
   },
-  getZeroFull: (n) => {
-    return Number(n) > 10 ? n : `0${n}`;
-  },
+  getZeroFull: (n) => (
+    Number(n) > 10 ? n : `0${n}`
+  ),
 };
 
 export default dateUtil;

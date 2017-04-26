@@ -52,18 +52,18 @@ class ShareMoment extends React.PureComponent { // eslint-disable-line react/pre
     const ChatBubbleElement = (
       <div>
         <FlexColumn>
-            <TimeLine time={msgTime} direction={direction} name={name} role={role} />
-            <TouchWrapper onClick={this.handleOpenDialog}>
-              <ChatBubble direction={direction} >
-                <FlexColumn>
-                  <header>{title}</header>
-                  <FlexRow>
-                    {pic && pic !== '' ? <img src={pic} role="presentation" style={{ width: '56px', height: '56px' }} /> : null}
-                    <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help }}>{content}</section>
-                  </FlexRow>
-                </FlexColumn>
-              </ChatBubble>
-            </TouchWrapper>
+          <TimeLine time={msgTime} direction={direction} name={name} role={role} />
+          <TouchWrapper onClick={this.handleOpenDialog}>
+            <ChatBubble direction={direction} >
+              <FlexColumn>
+                <header>{title}</header>
+                <FlexRow>
+                  {pic && pic !== '' ? <img src={pic} role="presentation" style={{ width: '56px', height: '56px' }} /> : null}
+                  <section style={{ marginLeft: '8px', maxWidth: '280px', height: '48px', overflowY: 'hidden', color: pallete.text.help }}>{content}</section>
+                </FlexRow>
+              </FlexColumn>
+            </ChatBubble>
+          </TouchWrapper>
         </FlexColumn>
         <Dialog
           modal={false}
@@ -104,6 +104,10 @@ ShareMoment.propTypes = {
   title: PropTypes.string,
   content: PropTypes.string,
   pic: PropTypes.string,
+  msgTime: PropTypes.number,
+  name: PropTypes.string,
+  role: PropTypes.string,
+  id: PropTypes.string,
 };
 
 export default ShareMoment;

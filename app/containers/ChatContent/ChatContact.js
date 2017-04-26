@@ -8,7 +8,6 @@ import React, { PropTypes } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import im from 'utils/im';
 import styled from 'styled-components';
 import pallete from 'styles/colors';
 import FlexRow from 'components/FlexRow';
@@ -18,18 +17,18 @@ import ExpProgress from 'components/ExpProgress';
 import Avatar from 'material-ui/Avatar';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import {
+  fetchTouchUser,
+  loadMessageUser,
+  chageTab,
+} from 'containers/ChatPage/actions';
+
 import messages from './messages';
 import Wrapper from './Wrapper';
 
 import {
   makeSelectChatContact,
 } from './selectors';
-
-import {
-  fetchTouchUser,
-  loadMessageUser,
-  chageTab,
-} from 'containers/ChatPage/actions';
 
 const ContentWrapper = styled.div`
   position: absolute;
@@ -59,7 +58,7 @@ const LabelWrapper = styled.span`
 
 export class ChatContact extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { contact, loadUser, getTouchUser, chageTab } = this.props;
+    const { contact, loadUser, getTouchUser, doChageTab } = this.props;
 
     const contentView = contact ?
     (
@@ -85,7 +84,7 @@ export class ChatContact extends React.Component { // eslint-disable-line react/
             onTouchTap={() => {
               loadUser(contact);
               getTouchUser(contact.id);
-              chageTab('message');
+              doChageTab('message');
             }}
           />
         </ContentWrapper>
@@ -111,7 +110,7 @@ ChatContact.propTypes = {
   ]),
   loadUser: PropTypes.func,
   getTouchUser: PropTypes.func,
-  chageTab: PropTypes.func,
+  doChageTab: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -122,7 +121,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadUser: (data) => dispatch(loadMessageUser(data)),
     getTouchUser: (id) => dispatch(fetchTouchUser(id)),
-    chageTab: (tab) => dispatch(chageTab(tab)),
+    doChageTab: (tab) => dispatch(chageTab(tab)),
   };
 }
 

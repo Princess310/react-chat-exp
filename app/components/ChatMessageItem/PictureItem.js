@@ -60,6 +60,9 @@ PictureItem.propTypes = {
   avatar: PropTypes.string,
   url: PropTypes.string,
   direction: PropTypes.string,
+  msgTime: PropTypes.number,
+  name: PropTypes.number,
+  role: PropTypes.string,
 };
 
 export default PictureItem;

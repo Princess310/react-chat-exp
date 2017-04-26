@@ -127,7 +127,7 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
         onLoad={() => {
           this.props.getMessageList(touchUser.im_account, this.props.nextKey, this.state.msgCount);
         }}
-        visible = { (this.props.nextKey && this.props.nextKey !== '') ? true : false }
+        visible={(this.props.nextKey && this.props.nextKey !== '') ? true : false}
       />
     );
 
@@ -195,7 +195,7 @@ const mapStateToProps = createStructuredSelector({
   touchUser: makeSelectTouchUser(),
   clearChatMessage: makeSelectClearChatMessage(),
   nextKey: makeSelectMessageNextkey(),
-  loading:　makeSelectLoadingTouchUser(),
+  loading: makeSelectLoadingTouchUser(),
   loadingList: makeSelectLoadingMessageList(),
 });
 

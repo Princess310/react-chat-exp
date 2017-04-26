@@ -26,8 +26,8 @@ class ActionFooter extends React.PureComponent { // eslint-disable-line react/pr
 
     return (
       <FlexRow>
-        <ActionItem primary={true} label={saveText} onTouchTap={() => { onSave() }} />
-        <ActionItem secondary={true} label={cancelText} onTouchTap={() => { onCancel() }} />
+        <ActionItem primary={true} label={saveText} onTouchTap={() => { onSave(); }} />
+        <ActionItem secondary={true} label={cancelText} onTouchTap={() => { onCancel(); }} />
       </FlexRow>
     );
   }

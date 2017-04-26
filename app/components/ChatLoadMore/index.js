@@ -29,7 +29,7 @@ class ChatLoadMore extends React.PureComponent { // eslint-disable-line react/pr
     return (
       <Wrapper>
         {visible ?
-        (<section onTouchTap={() => { this.props.onLoad() }}>
+        (<section onTouchTap={() => { this.props.onLoad(); }}>
           <FormattedMessage {...messages.header} />
         </section>) : null}
       </Wrapper>

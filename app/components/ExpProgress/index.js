@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   borderRadius: 4px;
 `;
 
-const Progress= styled.div`
+const Progress = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -34,7 +34,7 @@ class ExpProgress extends React.PureComponent { // eslint-disable-line react/pre
 
     return (
       <Wrapper>
-        <Progress style={{width: width}} />
+        <Progress style={{ width }} />
       </Wrapper>
     );
   }

@@ -21,19 +21,19 @@ export class ChatPanelGroupList extends React.Component { // eslint-disable-line
     const { groupList, loadGroup, loading } = this.props;
     const listView = groupList ? groupList.map((groups, index) => {
       const { name, list } = groups;
-      let arr = [];
+      const arr = [];
 
-      list.map((group, i) => {
-        const { name, head } = group;
+      for (const group of list) {
+        const { name: groupName, head } = group;
         arr.push((
           <ListItem
-            key={i}
-            primaryText={name}
+            key={group.id}
+            primaryText={groupName}
             leftIcon={<Avatar src={head} />}
-            onTouchTap={() => {loadGroup(group)}}
+            onTouchTap={() => { loadGroup(group); }}
           />
         ));
-      });
+      }
 
       return (
         <ListItem
@@ -47,12 +47,12 @@ export class ChatPanelGroupList extends React.Component { // eslint-disable-line
     }) : null;
 
     return (
-      <list>
+      <List>
         {loading && <FlexCenter>
           <CircularProgress size={24} />
         </FlexCenter>}
         {listView}
-      </list>
+      </List>
     );
   }
 }
@@ -68,7 +68,7 @@ ChatPanelGroupList.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   groupList: makeSelectChatGroups(),
-  loading:　makeSelectLoadingGroupList(),
+  loading: makeSelectLoadingGroupList(),
 });
 
 function mapDispatchToProps(dispatch) {

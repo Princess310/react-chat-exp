@@ -28,12 +28,12 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
     yaoyue: {
       statusMine: ['邀约邀请已发送', '您同意了邀约邀请', '您拒绝了邀约邀请', '您取消了邀约邀请'],
       statusTouch: ['向您发起邀约', '同意了您的邀约邀请', '拒绝了您的邀约邀请', '取消了您的邀约邀请'],
-    }
+    },
   }
 
   render() {
-    const { messageUsers, getMessageList, getTouchUser, getMessageUsers, touchUser, loading } = this.props;
-    const { msgCount, tel, yaoyue } = this.state;
+    const { messageUsers, getTouchUser, getMessageUsers, touchUser, loading } = this.props;
+    const { tel, yaoyue } = this.state;
 
     const listView = messageUsers ? messageUsers.map((user, key) => {
       const { msg } = user;
@@ -44,14 +44,14 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
 
       // reset summary for tel and yaoyue msg
       if (type === 'exchange-tel') {
-        summary = from === user.im_account ? tel.statusTouch[status] : tel.statusTouch[statusMine]
+        summary = from === user.im_account ? tel.statusTouch[status] : tel.statusMine[status];
       } else if (type === 'yaoyue') {
-        summary = from === user.im_account ? yaoyue.statusTouch[status] : yaoyue.statusTouch[statusMine]
+        summary = from === user.im_account ? yaoyue.statusTouch[status] : yaoyue.statusMine[status];
       }
 
       // set active style for touch user
       if (touchUser && (touchUser.id === user.id)) {
-        itemStyle['backgroundColor'] = 'rgba(0, 0, 0, 0.125)';
+        itemStyle.backgroundColor = 'rgba(0, 0, 0, 0.125)';
       }
 
       return (
@@ -63,7 +63,7 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
             : null
           }
           primaryText={user.nickname}
-          secondaryText={user.msg.header.summary}
+          secondaryText={summary}
           style={itemStyle}
           onTouchTap={() => {
             getTouchUser(user.id);

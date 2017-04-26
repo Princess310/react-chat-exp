@@ -39,7 +39,7 @@ class TimeLine extends React.PureComponent { // eslint-disable-line react/prefer
     const { time, direction, name, role } = this.props;
     const fromatDate = date.getFormatDate(time);
 
-    const roleElement = `${role}` === '0' ?(
+    const roleElement = `${role}` === '0' ? (
       <div>
         <RolewWrapper>群主</RolewWrapper>
         <NamewWrapper>{name}</NamewWrapper>
@@ -58,7 +58,7 @@ class TimeLine extends React.PureComponent { // eslint-disable-line react/prefer
       timeElement,
     } :
     {
-      timeElement
+      timeElement,
     };
 
     const justify = direction === 'left' ? 'flex-start' : direction === 'right' ? 'flex-end' : 'center';
@@ -79,6 +79,8 @@ TimeLine.propTypes = {
     PropTypes.string,
   ]),
   direction: PropTypes.string,
+  name: PropTypes.string,
+  role: PropTypes.string,
 };
 
 export default TimeLine;
