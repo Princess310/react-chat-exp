@@ -33,6 +33,7 @@ import {
   loadGroupList,
   loadUserContacts,
   loadUserGroups,
+  loadLoadingStatus,
 } from './actions';
 
 export function* fetchUser() {
@@ -56,6 +57,7 @@ export function* fetchUser() {
 
 export function* fetchMessageUsers() {
   try {
+    yield put(loadLoadingStatus('messageUsers', true));
     const res = yield im.getRecentContact(20);
 
     const { cnts } = res.data;
@@ -107,6 +109,7 @@ export function* fetchMessageUsers() {
 
 export function* fetchMessageList(action) {
   try {
+    yield put(loadLoadingStatus('messageList', true));
     const { touid, nextkey, count } = action.payload;
     // Call our request helper (see 'utils/request')
     const res = yield im.chat.getHistory(im.getNick(touid), nextkey, count);
@@ -155,6 +158,7 @@ export function* sendMessage(action) {
 
 export function* fetchTouchUser(action) {
   try {
+    yield put(loadLoadingStatus('touchUser', true));
     const res = yield request.doGet('interview/info', action.payload);
 
     if (res.code === 200) {
@@ -210,11 +214,13 @@ export function* disAgreeInterview(action) {
 
 export function* fetchMessageGroups() {
   try {
+    yield put(loadLoadingStatus('messageGroups', true));
     const res = yield im.tribe.getTribeList();
     const { data } = res;
     const resultList = [];
 
     // fetch groups infos
+    yield put(loadLoadingStatus('groupList', true));
     const groupsList = yield request.doGet('group/lists', { list_type: 4 });
     const { list } = groupsList;
     // store group list info
@@ -251,6 +257,7 @@ export function* fetchMessageGroups() {
 
 export function* fetchGroupMessageList(action) {
   try {
+    yield put(loadLoadingStatus('gruopMessageList', true));
     const { tid, nextkey, count } = action.payload;
     // Call our request helper (see 'utils/request')
     const res = yield im.tribe.getHistory(tid, nextkey, count);
@@ -306,6 +313,7 @@ export function* sendGroupMessage(action) {
 
 export function* fetchUserContacts() {
   try {
+    yield put(loadLoadingStatus('userContacts', true));
     const res = yield request.doGet('follow/friend-lists');
     const { list } = res;
 
@@ -317,6 +325,7 @@ export function* fetchUserContacts() {
 
 export function* fetchUserGroups() {
   try {
+    yield put(loadLoadingStatus('userGruops', true));
     const res = yield request.doGet('group/lists');
 
     const { data: { host, join } } = res;

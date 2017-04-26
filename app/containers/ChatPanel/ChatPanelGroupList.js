@@ -11,12 +11,14 @@ import { loadUserGroup } from 'containers/ChatPage/actions';
 
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlexCenter from 'components/FlexCenter';
 
-import { makeSelectChatGroups } from './selectors';
+import { makeSelectChatGroups, makeSelectLoadingGroupList } from './selectors';
 
 export class ChatPanelGroupList extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
-    const { groupList, loadGroup } = this.props;
+    const { groupList, loadGroup, loading } = this.props;
     const listView = groupList ? groupList.map((groups, index) => {
       const { name, list } = groups;
       let arr = [];
@@ -46,6 +48,9 @@ export class ChatPanelGroupList extends React.Component { // eslint-disable-line
 
     return (
       <list>
+        {loading && <FlexCenter>
+          <CircularProgress size={24} />
+        </FlexCenter>}
         {listView}
       </list>
     );
@@ -58,10 +63,12 @@ ChatPanelGroupList.propTypes = {
     PropTypes.bool,
   ]),
   loadGroup: PropTypes.func,
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   groupList: makeSelectChatGroups(),
+  loading:　makeSelectLoadingGroupList(),
 });
 
 function mapDispatchToProps(dispatch) {

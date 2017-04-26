@@ -40,6 +40,7 @@ import {
   LOAD_USER_GROUPS,
   LOAD_USER_GROUP,
   LOAD_SEARCH_FILTER,
+  LOAD_LOADING_STATUS,
 } from './constants';
 
 export function defaultAction() {
@@ -349,6 +350,16 @@ export function loadSearchFilter(value) {
     type: LOAD_SEARCH_FILTER,
     payload: {
       value,
+    },
+  };
+}
+
+export function loadLoadingStatus(type, bool) {
+  return {
+    type: LOAD_LOADING_STATUS,
+    payload: {
+      type,
+      bool,
     },
   };
 }

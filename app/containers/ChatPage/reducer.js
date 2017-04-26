@@ -28,23 +28,43 @@ import {
   LOAD_USER_GROUPS,
   LOAD_USER_GROUP,
   LOAD_SEARCH_FILTER,
+  LOAD_LOADING_STATUS,
 } from './constants';
 
 const initialState = fromJS({
   chatTab: 'message',
+  loadingMessageUsers: false,
   chatMassageUsers: false,
+
+  loadingMessageList: false,
   chatMessageList: false,
   chatMessageNextkey: '',
+
+  loadingTouchUser: false,
   chatTouchUser: false,
   clearChatContent: false,
+
+  loadingMessageGroups: false,
   chatMessageGroups: false,
+
+  loadingGroupMessageList: false,
   chatGroupMessageList: false,
   chatGroupMessageNextkey: '',
+
+  loadingTouchGroup: false,
   chatTouchGroup: false,
+
+  loadingGroupList: false,
   chatGroupList: false,
+
+  loadingUserContacts: false,
   chatUserContacts: false,
+
   chatUserContact: false,
+
+  loadingUserGroups: false,
   chatUserGroups: false,
+
   chatUserGroup: false,
   chatSearchFilter: '',
 });
@@ -61,7 +81,7 @@ function chatPageReducer(state = initialState, action) {
     case LOAD_MESSAGE_USERS: {
       const { list } = action.payload;
 
-      return state.set('chatMassageUsers', list);
+      return state.set('chatMassageUsers', list).set('loadingMessageUsers', false);
     }
     case LOAD_MESSAGE_USER: {
       const { data } = action.payload;
@@ -100,7 +120,7 @@ function chatPageReducer(state = initialState, action) {
         newList = [...newList, ...oldList];
       }
 
-      return state.set('chatMessageList', newList);
+      return state.set('chatMessageList', newList).set('loadingMessageList', false);
     }
     case LOAD_MESSAGE_LIST_NEXTKEY: {
       const { nextkey } = action.payload;
@@ -124,7 +144,7 @@ function chatPageReducer(state = initialState, action) {
     case LOAD_TOUCH_USER: {
       const { data } = action.payload;
 
-      return state.set('chatTouchUser', data);
+      return state.set('chatTouchUser', data).set('loadingTouchUser', false);
     }
     case LOAD_CLEAR_MESSAGE_CONTENT: {
       const { doClear } = action.payload;
@@ -134,7 +154,7 @@ function chatPageReducer(state = initialState, action) {
     case LOAD_MESSAGE_GROUPS: {
       const { list } = action.payload;
 
-      return state.set('chatMessageGroups', list);
+      return state.set('chatMessageGroups', list).set('loadingMessageGroups', false);
     }
     case LOAD_MESSAGE_GROUP: {
       const { data } = action.payload;
@@ -167,7 +187,7 @@ function chatPageReducer(state = initialState, action) {
         newList = [...newList, ...oldList];
       }
 
-      return state.set('chatGroupMessageList', newList);
+      return state.set('chatGroupMessageList', newList).set('loadingGroupMessageList', false);
     }
     case LOAD_GROUP_MESSAGE_LIST_NEXTKEY: {
       const { nextkey } = action.payload;
@@ -194,12 +214,12 @@ function chatPageReducer(state = initialState, action) {
     case LOAD_GROUP_LIST: {
       const { list } = action.payload;
 
-      return state.set('chatGroupList', list);
+      return state.set('chatGroupList', list).set('loadingGroupList', false);
     }
     case LOAD_USER_CONTACTS: {
       const { list } = action.payload;
 
-      return state.set('chatUserContacts', list);
+      return state.set('chatUserContacts', list).set('loadingUserContacts', false);
     }
     case LOAD_USER_CONTACT: {
       const { data } = action.payload;
@@ -220,6 +240,38 @@ function chatPageReducer(state = initialState, action) {
       const { value } = action.payload;
 
       return state.set('chatSearchFilter', value);
+    }
+    case LOAD_LOADING_STATUS: {
+      const { type, bool } = action.payload;
+
+      switch (type) {
+        case 'messageUsers':
+          return state.set('loadingMessageUsers', bool);
+          break;
+        case 'messageList':
+          return state.set('loadingMessageList', bool);
+          break;
+        case 'messageGroups':
+          return state.set('loadingMessageGroups', bool);
+          break;
+        case 'gruopMessageList':
+          return state.set('loadingGroupMessageList', bool);
+          break;
+        case 'userContacts':
+          return state.set('loadingUserContacts', bool);
+          break;
+        case 'userGruops':
+          return state.set('loadingUserGroups', bool);
+          break;
+        case 'groupList':
+          return state.set('loadingGroupList', bool);
+          break;
+        case 'touchUser':
+          return state.set('loadingTouchUser', bool);
+          break;
+        default:
+          return state;
+      }
     }
     default:
       return state;

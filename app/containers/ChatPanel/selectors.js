@@ -112,6 +112,26 @@ const makeSelectFilterGroups = () => createSelector(
   },
 );
 
+const makeSelectLoadingMessageUsers = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingMessageUsers'),
+);
+
+const makeSelectLoadingMessageGroups = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingMessageGroups'),
+);
+
+const makeSelectLoadingGroupList = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingGroupList'),
+);
+
+const makeSelectLoadingUserContacts = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingUserContacts'),
+);
+
 export default makeSelectCurrentUser;
 export {
   makeSelectChatTab,
@@ -123,4 +143,8 @@ export {
   makeSelectChatGroups,
   makeSelectFilterContacts,
   makeSelectFilterGroups,
+  makeSelectLoadingMessageUsers,
+  makeSelectLoadingMessageGroups,
+  makeSelectLoadingGroupList,
+  makeSelectLoadingUserContacts,
 };

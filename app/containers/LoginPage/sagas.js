@@ -6,6 +6,7 @@ import request from 'utils/request';
 import im from 'utils/im';
 
 import { DO_LOGIN } from './constants';
+import { loadLoginError } from './actions';
 
 export function* doLogin(action) {
   try {
@@ -18,7 +19,7 @@ export function* doLogin(action) {
 
     hashHistory.push('/chat');
   } catch (err) {
-    // console.log(err);
+    yield put(loadLoginError(true, err));
   }
 }
 

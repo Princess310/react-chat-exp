@@ -19,7 +19,21 @@ const makeSelectLoginPage = () => createSelector(
   (substate) => substate.toJS()
 );
 
+const makeSelectLoginError = () => createSelector(
+  selectLoginPageDomain(),
+  (substate) => {
+    const error = substate.get('error');
+    const msg = substate.get('errorMsg');
+
+    return {
+      error,
+      msg,
+    };
+  }
+);
+
 export default makeSelectLoginPage;
 export {
   selectLoginPageDomain,
+  makeSelectLoginError,
 };

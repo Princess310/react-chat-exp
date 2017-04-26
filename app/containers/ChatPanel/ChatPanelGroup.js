@@ -13,8 +13,10 @@ import { loadTouchGroup, fetchGroupMessageList } from 'containers/ChatPage/actio
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import Badge from 'material-ui/Badge';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlexCenter from 'components/FlexCenter';
 
-import { makeSelectChatMessageGroups, makeSelectTouchGroup } from './selectors';
+import { makeSelectChatMessageGroups, makeSelectTouchGroup, makeSelectLoadingMessageGroups } from './selectors';
 
 export class ChatPanelGroup extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -22,7 +24,7 @@ export class ChatPanelGroup extends React.Component { // eslint-disable-line rea
   }
 
   render() {
-    const { messageGroups, loadGroup, getMessageList, touchGroup } = this.props;
+    const { messageGroups, loadGroup, getMessageList, touchGroup, loading } = this.props;
     const { msgCount } = this.state;
 
     const listView = messageGroups ? messageGroups.map((group, key) => {
@@ -53,6 +55,9 @@ export class ChatPanelGroup extends React.Component { // eslint-disable-line rea
 
     return (
       <List>
+        {loading && <FlexCenter>
+          <CircularProgress size={24} />
+        </FlexCenter>}
         {listView}
       </List>
     );
@@ -70,11 +75,13 @@ ChatPanelGroup.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   messageGroups: makeSelectChatMessageGroups(),
   touchGroup: makeSelectTouchGroup(),
+  loading: makeSelectLoadingMessageGroups(),
 });
 
 function mapDispatchToProps(dispatch) {

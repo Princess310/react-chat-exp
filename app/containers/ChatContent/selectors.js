@@ -70,6 +70,21 @@ const makeSelectChatGroup = () => createSelector(
   (substate) => substate.get('chatUserGroup'),
 );
 
+const makeSelectLoadingTouchUser = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingTouchUser'),
+);
+
+const makeSelectLoadingMessageList = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingMessageList'),
+);
+
+const makeSelectLoadingGroupMessageList = () => createSelector(
+  selectChat,
+  (substate) => substate.get('loadingGroupMessageList'),
+);
+
 export {
   makeSelectChatTab,
   makeSelectChatMessage,
@@ -82,4 +97,7 @@ export {
   makeSelectGroupNextkey,
   makeSelectChatContact,
   makeSelectChatGroup,
+  makeSelectLoadingTouchUser,
+  makeSelectLoadingMessageList,
+  makeSelectLoadingGroupMessageList,
 };

@@ -16,6 +16,8 @@ import ChatMessageItem from 'components/ChatMessageItem';
 import ChatTool from 'components/ChatTool';
 import ChatLoadMore from 'components/ChatLoadMore';
 import styled from 'styled-components';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlexCenter from 'components/FlexCenter';
 
 import {
   sendChatMessage,
@@ -32,6 +34,8 @@ import {
   makeSelectTouchUser,
   makeSelectClearChatMessage,
   makeSelectMessageNextkey,
+  makeSelectLoadingTouchUser,
+  makeSelectLoadingMessageList,
 } from './selectors';
 
 import messages from './messages';
@@ -67,7 +71,7 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
   }
 
   render() {
-    const { messageList, currentUser, touchUser, clearChatMessage } = this.props;
+    const { messageList, currentUser, touchUser, clearChatMessage, loading, loadingList } = this.props;
     let userId = '';
 
     if (currentUser.id) {
@@ -108,18 +112,38 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
       />);
     }) : null;
 
+    const headerTitle = loading ?
+    (
+      <CircularProgress size={24} />
+    ) : (touchUser ? touchUser.nickname : '');
+
+    const loadElement = loadingList ?
+    (
+      <FlexCenter>
+        <CircularProgress size={24} />
+      </FlexCenter>
+    ) : (
+      <ChatLoadMore
+        onLoad={() => {
+          this.props.getMessageList(touchUser.im_account, this.props.nextKey, this.state.msgCount);
+        }}
+        visible = { (this.props.nextKey && this.props.nextKey !== '') ? true : false }
+      />
+    );
+
+    const contentListView = loading ? null : (
+      <div>
+        {loadElement}
+        {listView}
+      </div>
+    );
+
     const contentView = touchUser ?
     (
       <Wrapper>
-        <ChatHeader title={touchUser ? touchUser.nickname : ''} />
+        <ChatHeader title={headerTitle} />
         <ContentWrapper>
-          <ChatLoadMore
-            onLoad={() => {
-              this.props.getMessageList(touchUser.im_account, this.props.nextKey, this.state.msgCount);
-            }}
-            visible = { this.props.nextKey !== '' ? true : false }
-          />
-          {listView}
+          {contentListView}
         </ContentWrapper>
         <ChatWrapper>
           <ChatTool
@@ -128,12 +152,14 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
               this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summary);
             }}
             currentUser={currentUser}
+            disabled={loading}
           />
         </ChatWrapper>
       </Wrapper>
     ) : (
       <BlackChatWrapper>
         <FormattedMessage {...messages.noSelectChat} />
+        {loading && <CircularProgress style={{ marginLeft: '15px' }} />}
       </BlackChatWrapper>
     );
 
@@ -159,6 +185,8 @@ ChatMessage.propTypes = {
   doDisAgreeChangeTel: PropTypes.func,
   doAgreeInterview: PropTypes.func,
   doDisAgreeInterview: PropTypes.func,
+  loading: PropTypes.bool,
+  loadingList: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -167,6 +195,8 @@ const mapStateToProps = createStructuredSelector({
   touchUser: makeSelectTouchUser(),
   clearChatMessage: makeSelectClearChatMessage(),
   nextKey: makeSelectMessageNextkey(),
+  loading:　makeSelectLoadingTouchUser(),
+  loadingList: makeSelectLoadingMessageList(),
 });
 
 function mapDispatchToProps(dispatch) {

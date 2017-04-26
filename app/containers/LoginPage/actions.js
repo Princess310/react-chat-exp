@@ -7,6 +7,7 @@
 import {
   DEFAULT_ACTION,
   DO_LOGIN,
+  LOAD_LOGIN_ERROR,
 } from './constants';
 
 export function defaultAction() {
@@ -21,6 +22,16 @@ export function doLogin(username, password) {
     payload: {
       username,
       password,
+    },
+  };
+}
+
+export function loadLoginError(error, data) {
+  return {
+    type: LOAD_LOGIN_ERROR,
+    payload: {
+      error,
+      data,
     },
   };
 }

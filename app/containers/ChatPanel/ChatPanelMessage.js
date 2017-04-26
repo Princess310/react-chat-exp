@@ -13,8 +13,10 @@ import { fetchTouchUser, fetchMessageUsers } from 'containers/ChatPage/actions';
 import Avatar from 'material-ui/Avatar';
 import { List, ListItem } from 'material-ui/List';
 import Badge from 'material-ui/Badge';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlexCenter from 'components/FlexCenter';
 
-import { makeSelectChatMessageUsers, makeSelectTouchUser } from './selectors';
+import { makeSelectChatMessageUsers, makeSelectTouchUser, makeSelectLoadingMessageUsers } from './selectors';
 
 export class ChatPanelMessage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -30,7 +32,7 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    const { messageUsers, getMessageList, getTouchUser, getMessageUsers, touchUser } = this.props;
+    const { messageUsers, getMessageList, getTouchUser, getMessageUsers, touchUser, loading } = this.props;
     const { msgCount, tel, yaoyue } = this.state;
 
     const listView = messageUsers ? messageUsers.map((user, key) => {
@@ -74,6 +76,9 @@ export class ChatPanelMessage extends React.Component { // eslint-disable-line r
     }) : null;
     return (
       <List>
+        {loading && <FlexCenter>
+          <CircularProgress size={24} />
+        </FlexCenter>}
         {listView}
       </List>
     );
@@ -91,11 +96,13 @@ ChatPanelMessage.propTypes = {
     PropTypes.object,
     PropTypes.bool,
   ]),
+  loading: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   messageUsers: makeSelectChatMessageUsers(),
   touchUser: makeSelectTouchUser(),
+  loading: makeSelectLoadingMessageUsers(),
 });
 
 function mapDispatchToProps(dispatch) {

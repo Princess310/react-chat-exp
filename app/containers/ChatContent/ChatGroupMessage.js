@@ -17,6 +17,8 @@ import ChatTool from 'components/ChatTool';
 import ChatLoadMore from 'components/ChatLoadMore';
 import styled from 'styled-components';
 import { Base64 } from 'js-base64';
+import CircularProgress from 'material-ui/CircularProgress';
+import FlexCenter from 'components/FlexCenter';
 
 import {
   fetchGroupMessageList,
@@ -30,6 +32,7 @@ import {
   makeSelectTouchGroup,
   makeSelectClearChatMessage,
   makeSelectGroupNextkey,
+  makeSelectLoadingGroupMessageList,
 } from './selectors';
 
 import messages from './messages';
@@ -65,7 +68,7 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
   }
 
   render() {
-    const { messageList, currentUser, touchGroup, clearChatMessage } = this.props;
+    const { messageList, currentUser, touchGroup, clearChatMessage, loadingList } = this.props;
     let userId = '';
 
     if (currentUser.id) {
@@ -96,17 +99,26 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
       />);
     }) : null;
 
+    const loadElement = loadingList ?
+    (
+      <FlexCenter>
+        <CircularProgress size={24} />
+      </FlexCenter>
+    ) : (
+      <ChatLoadMore
+        onLoad={() => {
+          this.props.getMessageList(touchGroup.tid, this.props.nextKey, this.state.msgCount);
+        }}
+        visible = { (this.props.nextKey && this.props.nextKey !== '') ? true : false }
+      />
+    );
+
     const contentView = touchGroup ?
     (
       <Wrapper>
         <ChatHeader title={touchGroup ? touchGroup.name : ''} />
         <ContentWrapper>
-          <ChatLoadMore
-            onLoad={() => {
-              this.props.getMessageList(touchGroup.tid, this.props.nextKey, this.state.msgCount);
-            }}
-            visible = { this.props.nextKey !== '' ? true : false }
-          />
+          {loadElement}
           {listView}
         </ContentWrapper>
         <ChatWrapper>
@@ -156,6 +168,7 @@ const mapStateToProps = createStructuredSelector({
   touchGroup: makeSelectTouchGroup(),
   clearChatMessage: makeSelectClearChatMessage(),
   nextKey: makeSelectGroupNextkey(),
+  loadingList: makeSelectLoadingGroupMessageList(),
 });
 
 function mapDispatchToProps(dispatch) {

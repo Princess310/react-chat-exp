@@ -13,12 +13,13 @@ import request from 'utils/request';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
+import Snackbar from 'material-ui/Snackbar';
 
-import makeSelectLoginPage from './selectors';
+import { makeSelectLoginError } from './selectors';
 import messages from './messages';
 import Warpper, { Container } from './Wrapper';
 
-import { doLogin } from './actions';
+import { doLogin, loadLoginError } from './actions';
 
 export class LoginPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
   state = {
@@ -26,6 +27,7 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
     password: '',
     usernameErr: false,
     passwordErr: false,
+    autoHideDuration: 4000,
   }
 
   componentDidMount() {
@@ -81,6 +83,8 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
   }
 
   render() {
+    const { loginError: { error, msg } } = this.props;
+
     return (
       <Container>
         <Warpper>
@@ -112,6 +116,14 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
           />
         </Warpper>
         <div id="weixin_login"></div>
+        <Snackbar
+          open={error}
+          message={msg !== '' ? msg : '登录异常'}
+          autoHideDuration={this.state.autoHideDuration}
+          onRequestClose={() => {
+            this.props.setLoadingError(false, { message: '' });
+          }}
+        />
       </Container>
     );
   }
@@ -119,16 +131,19 @@ export class LoginPage extends React.Component { // eslint-disable-line react/pr
 
 LoginPage.propTypes = {
   doLogin: PropTypes.func,
+  setLoadingError: PropTypes.func,
+  loginError: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  LoginPage: makeSelectLoginPage(),
+  loginError: makeSelectLoginError(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
     doLogin: (u, p) => dispatch(doLogin(u, p)),
+    setLoadingError: (b, d) => dispatch(loadLoginError(b, d)),
   };
 }
 

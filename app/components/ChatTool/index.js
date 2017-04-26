@@ -199,6 +199,8 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
   }
 
   render() {
+    const { disabled } = this.props;
+
     return (
       <div>
         <HeaderWrapper>
@@ -211,7 +213,7 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
           </FlexRow>
           <FlexRow style={{ alignItems: 'center' }}>
             <span style={{ fontSize: '12px', marginRight: '15px' }}>按下Ctrl+Enter 发送</span>
-            <RaisedButton label="发送" primary={true} onTouchTap={this.handleSendMessage} />
+            <RaisedButton label="发送" primary={true} onTouchTap={this.handleSendMessage} disabled={disabled} />
           </FlexRow>
         </HeaderWrapper>
         { this.state.showEmojiPanel &&
@@ -243,6 +245,16 @@ class ChatTool extends React.PureComponent { // eslint-disable-line react/prefer
           onClick={() => { this.saveSelection(); }}
           ref={(r) => { this.editor = r; }}
         />
+        {disabled && <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          backgroundColor: pallete.disable,
+          opacity: 0.2,
+          zIndex: 20,
+        }}/>}
       </div>
     );
   }
@@ -252,6 +264,7 @@ ChatTool.propTypes = {
   sendChatMessage: PropTypes.func,
   clearMessage: PropTypes.bool,
   currentUser: PropTypes.object,
+  disabled: PropTypes.bool,
 };
 
 export default ChatTool;
