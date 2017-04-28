@@ -26,7 +26,7 @@ import {
 } from 'containers/ChatPage/actions';
 
 import {
-  makeSelectChatGroupMessage,
+  makeSelectChatGroupMessageList,
   makeSelectCurrentUser,
   makeSelectTouchGroup,
   makeSelectClearChatMessage,
@@ -77,7 +77,7 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
 
     const listView = messageList ? messageList.map((msgInfo, index) => {
       const { time } = msgInfo;
-      const { customize } = msgInfo.msg;
+      const { customize, header: { summary } } = msgInfo.msg;
       const msg = JSON.parse(customize);
       const direction = (userId === im.getNick(msgInfo.from) ? 'right' : 'left');
       const avatar = msg.head;
@@ -94,6 +94,7 @@ export class ChatGroupMessage extends React.Component { // eslint-disable-line r
         touchGroup={touchGroup}
         currentUser={currentUser}
         msgTime={time}
+        summary={summary}
         {...msg}
       />);
     }) : null;
@@ -162,7 +163,7 @@ ChatGroupMessage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  messageList: makeSelectChatGroupMessage(),
+  messageList: makeSelectChatGroupMessageList(),
   currentUser: makeSelectCurrentUser(),
   touchGroup: makeSelectTouchGroup(),
   clearChatMessage: makeSelectClearChatMessage(),

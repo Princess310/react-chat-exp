@@ -23,6 +23,7 @@ import {
   loadChatGroupMessage,
   fetchUserContacts,
   fetchUserGroups,
+  loadRevokeList,
 } from './actions';
 
 export class ChatPage extends React.Component { // eslint-disable-line react/prefer-stateless-function
@@ -45,7 +46,7 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
   }
 
   handleListenMessage() {
-    const { getMessageUsers, setChatMessage, setChatGroupMessage, getMessageGroups } = this.props;
+    const { getMessageUsers, setChatMessage, setChatGroupMessage, getMessageGroups, setRevokeList } = this.props;
 
     // single chat
     im.chat.recieveMsg((res) => {
@@ -54,9 +55,17 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
       const { msgs } = data;
 
       for (const msg of msgs) {
-        setChatMessage(msg);
-
         this.handleNotification('chat', msg);
+        const { msg: msgInfo } = msg;
+        const { customize } = msgInfo;
+        const msgObj = JSON.parse(customize);
+
+        if (msgObj.type === 'revoke') {
+          setRevokeList([msgObj.id]);
+        }
+
+        // set chat message
+        setChatMessage(msg);
         if (touchUser) {
           im.chat.setReadState(touchUser.im_account).then(() => {
             getMessageUsers();
@@ -71,9 +80,16 @@ export class ChatPage extends React.Component { // eslint-disable-line react/pre
       const { msgs, touid } = data;
 
       for (const msg of msgs) {
-        msg.tid = touid;
-
         this.handleNotification('tribe', msg);
+        msg.tid = touid;
+        const { msg: msgInfo } = msg;
+        const { customize } = msgInfo;
+        const msgObj = JSON.parse(customize);
+
+        if (msgObj.type === 'revoke') {
+          setRevokeList([msgObj.id]);
+        }
+
         setChatGroupMessage(msg);
         getMessageGroups();
       }
@@ -180,6 +196,7 @@ ChatPage.propTypes = {
   ]),
   getUserContacts: PropTypes.func,
   getUserGroups: PropTypes.func,
+  setRevokeList: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -199,6 +216,7 @@ function mapDispatchToProps(dispatch) {
     setChatGroupMessage: (data) => dispatch(loadChatGroupMessage(data)),
     getUserContacts: () => dispatch(fetchUserContacts()),
     getUserGroups: () => dispatch(fetchUserGroups()),
+    setRevokeList: (list) => dispatch(loadRevokeList(list)),
   };
 }
 

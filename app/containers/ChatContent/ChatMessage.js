@@ -29,7 +29,7 @@ import {
 } from 'containers/ChatPage/actions';
 
 import {
-  makeSelectChatMessage,
+  makeSelectChatMessageList,
   makeSelectCurrentUser,
   makeSelectTouchUser,
   makeSelectClearChatMessage,
@@ -81,7 +81,7 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
 
     const listView = messageList ? messageList.map((msgInfo, index) => {
       const { time } = msgInfo;
-      const { customize } = msgInfo.msg;
+      const { customize, header: { summary } } = msgInfo.msg;
       const msg = JSON.parse(customize);
       const direction = (userId === im.getNick(msgInfo.from) ? 'right' : 'left');
       const avatar = (userId === im.getNick(msgInfo.from) ? currentUser.avatar : touchUser.avatar);
@@ -93,8 +93,9 @@ export class ChatMessage extends React.Component { // eslint-disable-line react/
         touchUser={touchUser}
         currentUser={currentUser}
         msgTime={time}
-        sendChatMessage={(content, summary) => {
-          this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summary);
+        summary={summary}
+        sendChatMessage={(content, summaryMsg) => {
+          this.props.sendChatMessage(currentUser.im_account, touchUser.im_account, content, summaryMsg);
         }}
         agreeChangeTel={() => {
           this.props.doAgreeChangeTel(touchUser.id);
@@ -190,7 +191,7 @@ ChatMessage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  messageList: makeSelectChatMessage(),
+  messageList: makeSelectChatMessageList(),
   currentUser: makeSelectCurrentUser(),
   touchUser: makeSelectTouchUser(),
   clearChatMessage: makeSelectClearChatMessage(),

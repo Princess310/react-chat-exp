@@ -34,6 +34,7 @@ import {
   loadUserContacts,
   loadUserGroups,
   loadLoadingStatus,
+  loadRevokeList,
 } from './actions';
 
 export function* fetchUser() {
@@ -114,7 +115,18 @@ export function* fetchMessageList(action) {
     // Call our request helper (see 'utils/request')
     const res = yield im.chat.getHistory(im.getNick(touid), nextkey, count);
     const { msgs, nextKey } = res.data;
+    const revokeList = [];
 
+    for (const m of msgs) {
+      const { msg: { customize } } = m;
+      const msgInfo = JSON.parse(customize);
+
+      if (msgInfo.type === 'revoke') {
+        revokeList.push(msgInfo.id);
+      }
+    }
+
+    yield put(loadRevokeList(revokeList));
     yield put(loadMessageList(msgs, nextkey));
     yield put(loadMessageListNextkey(nextKey));
   } catch (err) {
@@ -263,6 +275,19 @@ export function* fetchGroupMessageList(action) {
     const res = yield im.tribe.getHistory(tid, nextkey, count);
     const { msgs, nextKey } = res.data;
 
+    // set revoke list
+    const revokeList = [];
+
+    for (const m of msgs) {
+      const { msg: { customize } } = m;
+      const msgInfo = JSON.parse(customize);
+
+      if (msgInfo.type === 'revoke') {
+        revokeList.push(msgInfo.id);
+      }
+    }
+
+    yield put(loadRevokeList(revokeList));
     yield put(loadGroupMessageList(msgs, nextkey));
     yield put(loadGroupMessageListNextkey(nextKey));
   } catch (err) {

@@ -25,6 +25,24 @@ const makeSelectChatMessage = () => createSelector(
   (substate) => substate.get('chatMessageList'),
 );
 
+const makeSelectChatRevokeList = () => createSelector(
+  selectChat,
+  (substate) => substate.get('revokeList'),
+);
+
+const makeSelectChatMessageList = () => createSelector(
+  [makeSelectChatMessage(), makeSelectChatRevokeList()],
+  (msgList, revokeList) => {
+    let list = [];
+
+    if (msgList) {
+      list = msgList.filter((msg) => (!revokeList.includes(msg.msgId)));
+    }
+
+    return list;
+  },
+);
+
 const makeSelectCurrentUser = () => createSelector(
   selectAppGlobale,
   (globalState) => globalState.get('currentUser'),
@@ -53,6 +71,19 @@ const makeSelectTouchGroup = () => createSelector(
 const makeSelectChatGroupMessage = () => createSelector(
   selectChat,
   (substate) => substate.get('chatGroupMessageList'),
+);
+
+const makeSelectChatGroupMessageList = () => createSelector(
+  [makeSelectChatGroupMessage(), makeSelectChatRevokeList()],
+  (msgList, revokeList) => {
+    let list = [];
+
+    if (msgList) {
+      list = msgList.filter((msg) => (!revokeList.includes(msg.msgId)));
+    }
+
+    return list;
+  },
 );
 
 const makeSelectGroupNextkey = () => createSelector(
@@ -87,13 +118,13 @@ const makeSelectLoadingGroupMessageList = () => createSelector(
 
 export {
   makeSelectChatTab,
-  makeSelectChatMessage,
+  makeSelectChatMessageList,
   makeSelectCurrentUser,
   makeSelectTouchUser,
   makeSelectClearChatMessage,
   makeSelectMessageNextkey,
   makeSelectTouchGroup,
-  makeSelectChatGroupMessage,
+  makeSelectChatGroupMessageList,
   makeSelectGroupNextkey,
   makeSelectChatContact,
   makeSelectChatGroup,

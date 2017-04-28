@@ -29,6 +29,7 @@ import {
   LOAD_USER_GROUP,
   LOAD_SEARCH_FILTER,
   LOAD_LOADING_STATUS,
+  LOAD_REVOKE_LIST,
 } from './constants';
 
 const initialState = fromJS({
@@ -67,6 +68,7 @@ const initialState = fromJS({
 
   chatUserGroup: false,
   chatSearchFilter: '',
+  revokeList: false,
 });
 
 function chatPageReducer(state = initialState, action) {
@@ -264,6 +266,19 @@ function chatPageReducer(state = initialState, action) {
         default:
           return state;
       }
+    }
+    case LOAD_REVOKE_LIST: {
+      const { list } = action.payload;
+      const oldList = state.get('revokeList');
+      const resultList = oldList ? oldList : [];
+
+      for (const msgId of list) {
+        if (!resultList.includes(msgId)) {
+          resultList.push(msgId);
+        }
+      }
+
+      return state.set('revokeList', resultList);
     }
     default:
       return state;

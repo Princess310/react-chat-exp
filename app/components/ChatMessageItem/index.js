@@ -15,6 +15,7 @@ import ShareBusiness from './ShareBusiness';
 import CenterBubble from './CenterBubble';
 import SoundItem from './SoundItem';
 import PictureItem from './PictureItem';
+import RevokeItem from './RevokeItem';
 import Wrapper from './Wrapper';
 
 class ChatMessage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -52,6 +53,9 @@ class ChatMessage extends React.PureComponent { // eslint-disable-line react/pre
         break;
       case 'pic':
         itemView = (<PictureItem {...other} />);
+        break;
+      case 'revoke':
+        itemView = (<RevokeItem {...other} />);
         break;
       default:
         itemView = null;

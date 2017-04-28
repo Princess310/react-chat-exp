@@ -41,6 +41,7 @@ import {
   LOAD_USER_GROUP,
   LOAD_SEARCH_FILTER,
   LOAD_LOADING_STATUS,
+  LOAD_REVOKE_LIST,
 } from './constants';
 
 export function defaultAction() {
@@ -360,6 +361,15 @@ export function loadLoadingStatus(type, bool) {
     payload: {
       type,
       bool,
+    },
+  };
+}
+
+export function loadRevokeList(list) {
+  return {
+    type: LOAD_REVOKE_LIST,
+    payload: {
+      list,
     },
   };
 }
