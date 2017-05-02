@@ -7,7 +7,8 @@ const Wrapper = styled(Paper)`
   align-items: center;
   position: relative;
   width: 1040px;
-  height: 640px;
+  height: 100%;
+  max-height: 640px;
 `;
 
 export default Wrapper;

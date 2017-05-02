@@ -14,9 +14,26 @@ import ChatPanelContacts from './ChatPanelContacts';
 import ChatPanelGroupList from './ChatPanelGroupList';
 
 const TabWrapper = styled.div`
-  height: 472px;
+  height: 100%;
   overflow-y: scroll;
 `;
+
+const tabPanelStyle = {
+  position: 'absolute',
+  top: '120px',
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
+
+const tabStyle = {
+  position: 'absolute',
+  top: '48px',
+  left: 0,
+  right: 0,
+  bottom: 0,
+  overflowY: 'scroll',
+};
 
 class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer-stateless-function
   render() {
@@ -24,8 +41,9 @@ class ChatPanelTab extends React.Component { // eslint-disable-line react/prefer
 
     return (
       <Tabs
-        style={{ position: 'relative' }}
+        style={tabPanelStyle}
         value={chatTab}
+        contentContainerStyle={tabStyle}
       >
         <Tab
           icon={<span className="mdi mdi-comment-processing-outline" />}
